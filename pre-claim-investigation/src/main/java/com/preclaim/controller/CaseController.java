@@ -85,7 +85,7 @@ public class CaseController {
     	details.setSub_menu2("Manage Cases");
     	details.setSub_menu2_path("../message/pending_message.jsp");
     	session.setAttribute("ScreenDetails", details);    	
-    	
+    	session.setAttribute("userRole", userDao.getUserRoleList());
     	session.setAttribute("investigation_list", investigationDao.getActiveInvestigationList());
     	session.setAttribute("intimation_list", intimationTypeDao.getActiveIntimationType());
     	session.setAttribute("location_list", locationDao.getActiveLocationList());

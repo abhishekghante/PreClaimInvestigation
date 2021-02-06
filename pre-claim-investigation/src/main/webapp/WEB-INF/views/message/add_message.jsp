@@ -1,8 +1,11 @@
+<%@page import="com.preclaim.models.UserRole"%>
+<%@page import="com.preclaim.models.UserDetails"%>
 <%@page import = "java.util.List" %>
 <%@page import = "java.util.ArrayList" %>
 <%@page import = "com.preclaim.models.Location"%>
 <%@page import = "com.preclaim.models.InvestigationType"%>
 <%@page import = "com.preclaim.models.IntimationType"%>
+
 <%
 List<String>user_permission=(List<String>)session.getAttribute("user_permission");
 List<InvestigationType> investigationList = (List<InvestigationType>) session.getAttribute("investigation_list");
@@ -11,6 +14,9 @@ List<IntimationType> intimationTypeList = (List<IntimationType>) session.getAttr
 session.removeAttribute("intimation_list");
 List<Location> location_list = (List<Location>) session.getAttribute("location_list");
 session.removeAttribute("location_list");
+List<UserRole> userRole =(List<UserRole>)session.getAttribute("userRole");
+System.out.println(userRole);
+session.removeAttribute("userRole");
 %>
 <style type="text/css">
 .placeImg { display:none !important;}
@@ -189,6 +195,19 @@ session.removeAttribute("location_list");
                   <textarea name="insuredAdd" id="insuredAdd" class="form-control" rows="6"></textarea>
                 </div>
               </div>
+              <%--  <div class="form-group selectDiv">
+                <label class="col-md-4 control-label" for="roleName">Select Role Name 
+                	<span class="text-danger">*</span></label>
+                <div class="col-md-2">
+                  <select name="roleName" id="roleName" class="form-control" tabindex="-1">
+                    <option value="-1" selected disabled>Select</option>
+                    <%if(userRole != null){
+                    	for(UserRole userRoleLists: userRole){%>
+                    	<option value = "<%=userRoleLists.getRole()%>"><%=userRoleLists.getRole() %></option>
+                    <%}} %>
+                  </select>
+                </div>
+              </div> --%>
               <!-- 
               <div class="form-group">
        		  	<label class="col-md-4 control-label">Upload PDF</label>

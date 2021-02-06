@@ -93,6 +93,12 @@ session.removeAttribute("location_list");
                 </div>
               </div>
               <div class="form-group">
+                <label class="col-md-4 control-label" for="address2">Address 2</label>
+                <div class="col-md-8">
+                  <textarea name="address2" id="address2" class="form-control" rows="3"><%=user_details.getAddress2() %></textarea>
+                </div>
+              </div>
+              <div class="form-group">
                 <label class="col-md-4 control-label">Upload image</label>
                 <div class="col-md-8">
                   <a href="javascript:void(0);">
@@ -156,6 +162,18 @@ session.removeAttribute("location_list");
            	  		 </option>
                   	 <%}} %>
                   </select>
+                </div>
+              </div>
+               <div class="form-group">
+                <label class="col-md-4 control-label" for="address1">Address 1</label>
+                <div class="col-md-8">
+                  <textarea name="address1" id="address1" class="form-control" rows="3"><%=user_details.getAddress1() %></textarea>
+                </div>
+              </div>
+               <div class="form-group">
+                <label class="col-md-4 control-label" for="address3">Address 3</label>
+                <div class="col-md-8">
+                  <textarea name="address3" id="address3" class="form-control" rows="3"><%=user_details.getAddress3() %></textarea>
                 </div>
               </div>
             </div>
@@ -239,8 +257,10 @@ function updateAccountValidate() {
     var status       = $.trim($('#edit_account_form #status').val());
     var contactNumber = $.trim($('#edit_account_form #contactNumber').val());
     var state        = $.trim($('#edit_account_form #state').val());
-    var zone         = $.trim($('#edit_account_form #zone').val());
     var city         = $.trim($('#edit_account_form #city').val());
+    var address1     = $.trim($('#add_account_form #address1').val());
+    var address2     = $.trim($('#add_account_form #address2').val());
+    var address3     = $.trim($('#add_account_form #address3').val());
     
     $('#full_name').removeClass('has-error-2');
     $('#username').removeClass('has-error-2');
@@ -268,11 +288,11 @@ function updateAccountValidate() {
         validflag = 0;
         toastr.error("Kindly enter your State Name","Error");
     }
-    if( zone == "" ){
-        $('#zone').addClass('has-error-2');
-        $('#zone').focus();
+    if( address1 == "" ){
+        $('#address1').addClass('has-error-2');
+        $('#address1').focus();
         validflag = 0;
-        toastr.error("Kindly enter your Zone Area","Error");
+        toastr.error("Kindly enter your address 1","Error");
     }
     if( city == "" ){
         $('#city').addClass('has-error-2');
@@ -376,7 +396,7 @@ function updateAccountValidate() {
     $("#editaccountsubmit").prop('disabled', true);
     var formdata = {"full_name":full_name, "username":username, "user_email":user_email,
         "password":password, "account_type":account_type, "user_id":user_id, "account_img":account_img,
-        "status":status, "city":city, "state":state, "zone":zone, "contactNumber":contactNumber}
+        "status":status, "city":city, "state":state, "address1":address1, "contactNumber":contactNumber}
     
     $.ajax({
         type    : 'POST',

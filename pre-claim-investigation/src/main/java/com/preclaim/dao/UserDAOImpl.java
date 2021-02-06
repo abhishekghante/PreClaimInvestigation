@@ -173,6 +173,11 @@ public class UserDAOImpl implements UserDAO{
 						details.setUsername(rs.getString("username"));
 						details.setUserID(rs.getInt("user_id"));
 						details.setState(rs.getString("state"));
+						details.setAddress1(rs.getString("address1"));
+						details.setAddress2(rs.getString("address2"));
+						details.setAddress3(rs.getString("address3"));
+						details.setCreatedBy(rs.getString("createdBy"));
+						details.setUpdatedBy(rs.getString("updatedBy"));
 						details.setCity(rs.getString("city"));
 						details.setContactNumber(rs.getString("mobile_number"));
 						return details;
@@ -371,6 +376,14 @@ public class UserDAOImpl implements UserDAO{
         String sql="select role from user_role where role_code='"+roleCode+"'";
 	    return this.template.queryForObject(sql,String.class);
 	
+	}
+	
+	@Override
+	public List<String> getUserRoleList() {
+		String query = "SELECT * FROM user_role WHERE status = 1";
+		return template.query(query, (ResultSet rs, int rowNum) -> {
+			return rs.getString("role");
+		});
 	}
 		
 }
