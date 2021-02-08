@@ -5,7 +5,6 @@
 <%@page import = "com.preclaim.models.InvestigationType" %>
 <%
 List<String>user_permission=(List<String>)session.getAttribute("user_permission");
-boolean allow_statusChg = user_permission.contains("messages/status");
 boolean allow_delete = user_permission.contains("messages/delete");
 List<CaseDetailList> pendingCaseDetailList = (List<CaseDetailList>)session.getAttribute("pendingCaseList");
 session.removeAttribute("pendingCaseList");
@@ -45,22 +44,19 @@ session.removeAttribute("intimation_list");
                     <table id="pending_case_list" class="table table-striped table-bordered table-hover table-checkable dataTable data-tbl">
                       <thead>
                         <tr class="tbl_head_bg">
-                          <th class="head1 no-sort"><input type="checkbox" id="chk-all" name="chk-all"/></th>
+                          <th class="head1 no-sort">Sr No.</th>
                           <th class="head1 no-sort">Case ID</th>
                           <th class="head1 no-sort">Policy No</th>
                           <th class="head1 no-sort">Name of Insured</th>
                           <th class="head1 no-sort">Type of Investigation</th>
-                          <th class="head1 no-sort">Zone</th>
                           <th class="head1 no-sort">Sum Assured</th>
                           <th class="head1 no-sort">Type of Intimation</th>
                           <th class="head1 no-sort">View history</th>
-                          <th class="head1 no-sort">Status</th>
                           <th class="head1 no-sort">Action</th>
                         </tr>
                       </thead>
                       <tfoot>
                         <tr class="tbl_head_bg">
-                          <th class="head2 no-sort"></th>
                           <th class="head2 no-sort"></th>
                           <th class="head2 no-sort"></th>
                           <th class="head2 no-sort"></th>
@@ -78,30 +74,27 @@ session.removeAttribute("intimation_list");
                         	for(CaseDetailList list_case :pendingCaseDetailList){%>                       
                           
                           <tr>
-                  				<td><input type="checkbox" name = "selectCase"></td>
-                  				<td><%=list_case.getSrNo()%></td>
+                  				<td><%= list_case.getSrNo()%></td>
+                  				<td><%=list_case.getCaseId()%></td>
                   			   	<td><%=list_case.getPolicyNumber()%></td>
                   				<td><%=list_case.getInsuredName()%></td>
                   				<td><%=list_case.getInvestigationCategory()%></td>
-                  				<td><%=list_case.getClaimantZone()%></td>
-                                <td><%=list_case.getSumAssured()%></td>
+                  				<td><%=list_case.getSumAssured()%></td>
                                 <td><%=list_case.getIntimationType()%></td>
-                                <td>Case Details</td>
-                                <td><span class="label label-sm label-warning">Pending</span></td>
+                                <td>View History</td>
                                 <td>
-                             <a href="${pageContext.request.contextPath}/message/edit?caseId=<%=list_case.getCaseId()%>" data-toggle="tooltip" title="Edit" 
-                         		 class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-edit"></i>
-                         	 </a>
-           
-                             <a href="javascript:;" data-toggle="tooltip" title="Assign case" onClick="return updateMessageStatus('<%=list_case.getCaseId()%>','ARM',<%=allow_statusChg%>);" 
-                         		 class="btn btn-success btn-xs"><i class="glyphicon glyphicon-ok-circle"></i>
-                       		 </a>
-                       		  
-                             <a href="javascript:;" data-toggle="tooltip" title="Delete" onClick="return deleteMessage('<%=list_case.getCaseId() %>',<%=allow_statusChg%>);" 
-                             	class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-remove"></i>
-                           	 </a>
+	                             <a href="${pageContext.request.contextPath}/message/edit?caseId=<%=list_case.getCaseId()%>" 
+	                             	data-toggle="tooltip" title="Edit" class="btn btn-primary btn-xs">
+	                             	<i class="glyphicon glyphicon-edit"></i>
+	                         	 </a>
+                         	   
+	                             <a href="#" data-toggle="tooltip" title="Delete" 
+	                             	onClick="return deleteMessage('<%=list_case.getCaseId() %>',
+	                             	<%=allow_delete%>);" class="btn btn-danger btn-xs"> 
+	                             	<i class="glyphicon glyphicon-remove"></i>
+	                           	 </a>
                          
-                         </td>
+                         		</td>
                                 
                           
                           </tr>                      
@@ -115,9 +108,6 @@ session.removeAttribute("intimation_list");
                       
                       </tbody>
                     </table>
-                     <div class="text-center">
-   						 <a class="btn btn-danger" id="assignCase" >Assign Case</a>
-				   </div>
                   </div>                 
                 </div>
               <div class="clearfix"></div>
@@ -227,7 +217,7 @@ $("#assignCase").click(function(){
 	}
  	$.ajax({
       type: "POST",
-      url:"assignToRM",
+      url:"assignCase",
       data: {"caseList":caseList},
       beforeSend: function() { 
           $("#assignCase").html('<img src="${pageContext.request.contextPath}/resources/img/input-spinner.gif"> Loading...');

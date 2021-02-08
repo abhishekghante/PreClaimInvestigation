@@ -1,5 +1,6 @@
 package com.preclaim.dao;
 
+import java.util.HashMap;
 import java.util.List;
 
 import com.preclaim.models.InvestigationType;
@@ -14,5 +15,6 @@ public interface InvestigationTypeDao {
     String deleteInvestigationType(int investigationId);
     List<InvestigationType> getActiveInvestigationList();
     List<String> getActiveInvestigationStringList();
+	List<HashMap<Integer, String>> getActiveInvestigationMapping();
     
 }

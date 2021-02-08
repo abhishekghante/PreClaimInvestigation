@@ -1,6 +1,7 @@
 package com.preclaim.dao;
 
 import java.sql.ResultSet;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -123,4 +124,13 @@ public class InvestigationTypeDaoImpl implements InvestigationTypeDao {
 		});
 	}
 	
+	@Override
+	public List<HashMap<Integer,String>> getActiveInvestigationMapping() {
+		String query = "SELECT * FROM investigation_type WHERE status = 1";
+		return template.query(query, (ResultSet rs, int rowNum) -> {
+			HashMap<Integer,String> mapping = new HashMap<Integer,String>();
+			mapping.put(rs.getInt("investigationId"), rs.getString("investigationType"));
+			return mapping;
+		});
+	}
 }

@@ -1,5 +1,10 @@
+<%@page import="com.preclaim.models.UserRole"%>
+<%@page import = "java.util.List" %>
 <%@page import="com.preclaim.models.ScreenDetails" %>
 <%
+List<String>user_permission=(List<String>)session.getAttribute("user_permission");
+List<UserRole> userRole =(List<UserRole>)session.getAttribute("userRole");
+session.removeAttribute("userRole");
 ScreenDetails details = (ScreenDetails) session.getAttribute("ScreenDetails");
 %>
 <style type="text/css">
@@ -30,21 +35,6 @@ ScreenDetails details = (ScreenDetails) session.getAttribute("ScreenDetails");
 
       <div class="box-body">
         <div class="row">
-          <div class="col-md-12" style="margin-bottom: 50px;">
-            <div class="form-group selectDiv">
-              <div class="col-md-4">
-                <select name="msgGroup" id="msgGroup" class="form-control" tabindex="-1" >
-                  <option value="1">Successful Upload</option>
-                  <option value="2">Duplicate Upload</option>
-                  <option value="3">Error Upload</option>
-                </select>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="box-body">
-        <div class="row">
           <div class="col-md-12">
           <form id="import_user_form" class="form-horizontal" method = "POST" action = "importData" 
           	enctype="multipart/form-data" onsubmit = "importData()">
@@ -62,6 +52,28 @@ ScreenDetails details = (ScreenDetails) session.getAttribute("ScreenDetails");
                 <div class="col-md-12 text-center">
                   <div><a style="display: inline-block;" href="../resources/uploads/Import Case.xlsx">Click to download sample "Excel" file</a></div>
                 </div>
+              </div>
+              <div class="form-group selectDiv">
+                <label class="col-md-4 control-label" for="roleName">Select Role Name 
+                	<span class="text-danger">*</span></label>
+                <div class="col-md-2">
+                  <select name="roleName" id="roleName" class="form-control" tabindex="-1">
+                    <option value="-1" selected disabled>Select</option>
+                     <%if(userRole != null){
+                    	for(UserRole userRoleLists: userRole){%>
+                    	<option value = "<%=userRoleLists.getRole_code()%>"><%=userRoleLists.getRole() %></option>
+                    <%}} %> 
+                  </select>
+                </div>
+                
+                <label class="col-md-2 control-label" for="userRole">Select User 
+                	<span class="text-danger">*</span></label>
+                <div class="col-md-2">
+                  <select name="assigneeId" id="assigneeId" class="form-control">
+                  	<option value = '-1' selected disabled>Select</option>
+                  </select>
+                </div>
+                
               </div>
             </form>
           </div>
@@ -84,4 +96,27 @@ function importData()
 	return true;
 }
 
+</script>
+<script>
+$("#roleName").change(function(){
+	console.log($("#roleName option:selected").val());
+	var roleCode = $(this).val();
+	$.ajax({
+	    type: "POST",
+	    url: 'getUserByRole',
+	    data: {"role_code": roleCode},
+	    success: function(userList)
+	    {
+	    	console.log(userList);
+	  		var options = "";
+	    	for(i = 0; i < userList.length ; i++)
+	  			{
+	  				options += "<option value ='" + userList[i].username + "'>" + userList[i].full_name + "</option>";  
+	  			}
+	  		console.log(options);
+	    	$("#assigneeId").append(options);
+	    }
+});
+
+});
 </script>

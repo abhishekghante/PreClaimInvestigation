@@ -4,6 +4,7 @@ public class CaseDetails {
 
 	private long caseId;
 	private String policyNumber;
+	private int investigationId;
 	private String investigationCategory;
 	private String insuredName;
 	private String insuredDOD;
@@ -36,7 +37,7 @@ public class CaseDetails {
 	public CaseDetails() {
 		caseId = 0;
 		policyNumber = "";
-		investigationCategory = "";
+		investigationId = 0;
 		insuredName = "";
 		insuredDOD = "";
 		insuredDOB = "";
@@ -81,6 +82,14 @@ public class CaseDetails {
 
 	public void setPolicyNumber(String policyNumber) {
 		this.policyNumber = policyNumber;
+	}
+
+	public int getInvestigationId() {
+		return investigationId;
+	}
+
+	public void setInvestigationId(int investigationId) {
+		this.investigationId = investigationId;
 	}
 
 	public String getInvestigationCategory() {
@@ -305,23 +314,5 @@ public class CaseDetails {
 		this.signatureFilePath = signatureFilePath;
 	}
 	
-
-	@Override
-	public String toString() {
-		return "CaseDetails [caseId=" + caseId + ", policyNumber=" + policyNumber + ", investigationCategory="
-				+ investigationCategory + ", insuredName=" + insuredName + ", insuredDOD=" + insuredDOD
-				+ ", insuredDOB=" + insuredDOB + ", sumAssured=" + sumAssured + ", intimationType=" + intimationType
-				+ ", locationId=" + locationId + ", caseStatus=" + caseStatus + ", nominee_name=" + nominee_name
-				+ ", nomineeContactNumber=" + nomineeContactNumber + ", nominee_address=" + nominee_address
-				+ ", insured_address=" + insured_address + ", case_description=" + case_description + ", longitude="
-				+ longitude + ", claimantCity=" + claimantCity + ", claimantZone=" + claimantZone + ", claimantState="
-				+ claimantState + ", latitude=" + latitude + ", pdf1FilePath=" + pdf1FilePath + ", pdf2FilePath="
-				+ pdf2FilePath + ", pdf3FilePath=" + pdf3FilePath + ", audioFilePath=" + audioFilePath
-				+ ", videoFilePath=" + videoFilePath + ", signatureFilePath=" + signatureFilePath + ", createdBy="
-				+ createdBy + ", createdDate=" + createdDate + ", updatedDate=" + updatedDate + ", updatedBy="
-				+ updatedBy + "]";
-	}
-
-
 
 }

@@ -13,6 +13,7 @@ session.removeAttribute("intimation_list");
 CaseDetails case_detail=(CaseDetails)session.getAttribute("case_detail");
 session.removeAttribute("case_detail");
 List<Location> locationList=(List<Location>)session.getAttribute("location_lists");
+boolean allow_edit = user_permission.contains("messages/add");
 %>
 <style type="text/css">
 .placeImg { display:none !important;}
@@ -48,23 +49,36 @@ List<Location> locationList=(List<Location>)session.getAttribute("location_lists
           <div class="row">
             <div class="col-sm-10 col-md-10 col-xs-12"> 
 			  <div class="form-group">
-                <label class="col-md-4 control-label" for="msgTitleEn">Policy Number 
+                <label class="col-md-4 control-label" for="msgTitleEn">Case ID 
                 	<span class="text-danger">*</span>
                	</label>
                 <div class="col-md-8">
-                  <input type="text" value="<%=case_detail.getPolicyNumber()%>" placeholder="Policy Number" name="policyNumber" id="policyNumber" 
-                  	class="form-control">
+                  <input type="text" value="<%=case_detail.getCaseId()%>" placeholder="Case ID" 
+                  	name="caseId" id="caseId" class="form-control" readonly>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-md-4 control-label" for="msgTitleEn">Policy Number 
+                	<span class="text-danger" >*</span>
+               	</label>
+                <div class="col-md-8">
+                  <input type="text" value="<%=case_detail.getPolicyNumber()%>" 
+                  	placeholder="Policy Number" name="policyNumber" id="policyNumber" 
+                  	class="form-control" <%if(allow_edit) {%>readonly disabled<%} %>>
                 </div>
               </div>
               <div class="form-group selectDiv">
                 <label class="col-md-4 control-label" for="msgCategory">Select Investigation Category 
                 	<span class="text-danger">*</span></label>
                 <div class="col-md-8">
-                  <select name="msgCategory" id="msgCategory" class="form-control" tabindex="-1">
+                  <select name="msgCategory" id="msgCategory" class="form-control" tabindex="-1"
+                  	<%if(allow_edit) {%>disabled<%} %>>
                     <option value="-1" selected disabled>Select</option>
                     <%if(investigationList != null){
                     	for(InvestigationType investigation: investigationList){%>
-                    	<option value = "<%=investigation.getInvestigationId()%>"><%=investigation.getInvestigationType() %></option>
+                    	<option value = "<%=investigation.getInvestigationId()%>"
+                    		<%if(case_detail.getInvestigationId() == investigation.getInvestigationId()){ %> selected <%} %>>
+                    		<%=investigation.getInvestigationType() %></option>
                     <%}} %>
                   </select>
                 </div>
@@ -74,8 +88,9 @@ List<Location> locationList=(List<Location>)session.getAttribute("location_lists
                 	<span class="text-danger">*</span>
                	</label>
                 <div class="col-md-8">
-                  <input type="text" value="<%=case_detail.getInsuredName()%>" placeholder="Insured Name" name="insuredName" id="insuredName" 
-                  	class="form-control">
+                  <input type="text" value="<%=case_detail.getInsuredName()%>" placeholder="Insured Name" 
+                  	name="insuredName" id="insuredName" class="form-control" 
+                  	<%if(allow_edit) {%>readonly disabled<%} %>>
                 </div>
               </div>
               <div class="form-group">
@@ -83,7 +98,8 @@ List<Location> locationList=(List<Location>)session.getAttribute("location_lists
                 	<span class="text-danger">*</span>
                	</label>
                 <div class="col-md-8">
-                  <input type="date" value="<%=case_detail.getInsuredDOD()%>" placeholder="Date of Death" name="insuredDOD" id="insuredDOD" 
+                  <input type="date" value="<%=case_detail.getInsuredDOD()%>" placeholder="Date of Death" 
+                  	name="insuredDOD" id="insuredDOD" <%if(allow_edit) {%>readonly disabled<%} %>
                   	class="form-control">
                 </div>  
               </div>
@@ -92,8 +108,9 @@ List<Location> locationList=(List<Location>)session.getAttribute("location_lists
                 	<span class="text-danger">*</span>
                	</label>
                 <div class="col-md-8">
-                  <input type="date" value="<%=case_detail.getInsuredDOB()%>" placeholder="Date of Death" name="insuredDOB" id="insuredDOB" 
-                  	class="form-control">
+                  <input type="date" value="<%=case_detail.getInsuredDOB()%>" placeholder="Date of Death" 
+                  	name="insuredDOB" id="insuredDOB" class="form-control"
+                  	<%if(allow_edit) {%>readonly disabled<%} %>>
                 </div>  
               </div>
               <div class="form-group">
@@ -101,19 +118,24 @@ List<Location> locationList=(List<Location>)session.getAttribute("location_lists
                 	<span class="text-danger">*</span>
                	</label>
                 <div class="col-md-8">
-                  <input type="number" value="<%=case_detail.getSumAssured()%>" placeholder="Sum Assured" name="sumAssured" id="sumAssured" 
-                  	class="form-control">
+                  <input type="number" value="<%=case_detail.getSumAssured()%>" placeholder="Sum Assured" 
+                  	name="sumAssured" id="sumAssured" class="form-control" 
+                  	<%if(allow_edit) {%>readonly disabled<%} %>>
                 </div>
               </div>
               <div class="form-group selectDiv">
                 <label class="col-md-4 control-label" for="msgIntimationType">Select Intimation Type 
                 	<span class="text-danger">*</span></label>
                 <div class="col-md-8">
-                  <select name="msgIntimationType" id="msgIntimationType" class="form-control" tabindex="-1">
+                  <select name="msgIntimationType" id="msgIntimationType" class="form-control" 
+                  	tabindex="-1" <%if(allow_edit) {%>disabled<%} %>>
                     <option value="-1" selected disabled>Select</option>
                     <%if(intimationTypeList != null){
                     	for(IntimationType intimation: intimationTypeList){%>
-                    	<option value = "<%=intimation.getIntimationId()%>"><%=intimation.getIntimationType() %></option>
+                    	<option value = "<%=intimation.getIntimationType()%>"
+                    		<%if(intimation.getIntimationType().equals(case_detail.getIntimationType())) {%>
+                    		selected <%} %>>
+                    	<%=intimation.getIntimationType() %></option>
                     <%}} %>
                   </select>
                 </div>
@@ -123,8 +145,9 @@ List<Location> locationList=(List<Location>)session.getAttribute("location_lists
                 	<span class="text-danger">*</span>
                	</label>
                 <div class="col-md-8">
-                  <input type="text" value="<%=case_detail.getClaimantCity()%>" placeholder="Claimant City" name="claimantCity" id="claimantCity" 
-                  	class="form-control">
+                  <input type="text" value="<%=case_detail.getClaimantCity()%>" placeholder="Claimant City" 
+                  	name="claimantCity" id="claimantCity" class="form-control"
+                  	<%if(allow_edit) {%>readonly disabled<%} %>>
                 </div>
               </div>
               <div class="form-group">
@@ -149,42 +172,42 @@ List<Location> locationList=(List<Location>)session.getAttribute("location_lists
                 <label class="col-md-4 control-label" for="msgTitleEn">Status</label>
                 <div class="col-md-8">
                   <input type="text" placeholder="Status" name="status" id="status" class="form-control"
-                  	value = "Open"  disabled readonly>
+                  	value = "<%= case_detail.getCaseStatus() %>"  disabled readonly>
                 </div>
               </div>
-              <div class="form-group">
-                <label class="col-md-4 control-label" for="subStatus">Sub-Status</label>
-                <div class="col-md-8">
-                  <input type="text" placeholder="Sub Status" name="subStatus" id="subStatus" 
-                  	class="form-control" value = "Pending for Assignment" disabled readonly>
-                </div>
-              </div>           
               <div class="form-group">
                 <label class="col-md-4 control-label" for="nomineeName">Nominee Name
                 	<span class="text-danger">*</span>
                 </label>
                 <div class="col-md-8">
                   <input type="text" value="<%=case_detail.getNominee_name()%>" placeholder="Nominee Name" name="nomineeName" id="nomineeName" 
-                  	class="form-control">
+                  	class="form-control" <%if(allow_edit) {%>readonly disabled<%} %>>
                 </div>
               </div>
               <div class="form-group">
                 <label class="col-md-4 control-label" for="nomineeMob">Nominee Contact Number</label>
                 <div class="col-md-8">
-                  <input type="number" value="<%=case_detail.getNomineeContactNumber()%>" placeholder="Nominee Contact Number" name="nomineeMob" id="nomineeMob" 
-                  	class="form-control">
+                  <input type="number" value="<%=case_detail.getNomineeContactNumber()%>" 
+                  	placeholder="Nominee Contact Number" name="nomineeMob" id="nomineeMob" 
+                  	class="form-control" <%if(allow_edit) {%>readonly disabled<%} %>>
                 </div>
               </div>
               <div class="form-group">
                 <label class="col-md-4 control-label" for="nomineeAdd">Nominee Address</label>
                 <div class="col-md-8">
-                  <textarea name="nomineeAdd" id="nomineeAdd" class="form-control" rows="6"><%=case_detail.getNominee_address()%></textarea>
+                  <textarea name="nomineeAdd" id="nomineeAdd" class="form-control" rows="6"
+                  	<%if(allow_edit) {%>readonly disabled<%} %>>
+                  	<%=case_detail.getNominee_address()%>
+               	  </textarea>
                 </div>
               </div>
               <div class="form-group">
                 <label class="col-md-4 control-label" for="insuredAdd">Insured Address</label>
                 <div class="col-md-8">
-                  <textarea name="insuredAdd" id="insuredAdd" class="form-control" rows="6"><%=case_detail.getInsured_address()%></textarea>
+                  <textarea name="insuredAdd" id="insuredAdd" class="form-control" rows="6"
+                  	<%if(allow_edit) {%>readonly disabled<%} %>>
+                  	<%=case_detail.getInsured_address()%>
+                  </textarea>
                 </div>
               </div>
               <!-- 
@@ -275,6 +298,32 @@ List<Location> locationList=(List<Location>)session.getAttribute("location_lists
                       </a>
                     </div>
                     
+	              <div class="form-group">
+	       		  	<label class="col-md-4 control-label">Audio</label>
+	           		<div class="col-md-8">
+	                	<audio controls id="caseAudio">
+							<source src="<%= case_detail.getAudioFilePath() %>">	
+                		</audio>
+	              	</div>
+	              </div>                    
+	              
+	              <%if(!case_detail.getVideoFilePath().equals("")) {%>
+	              <div class="form-group">
+	       		  	<label class="col-md-4 control-label">Video</label>
+	           		<div class="col-md-8">
+	                	<video controls id="caseVideo" width="320" height="240">
+	                		<source src="<%= case_detail.getVideoFilePath() %>">
+	                	</video>
+	              	</div>
+	              </div>                    
+	              <%} %>
+	              <div class="form-group">
+	                <label class="col-md-4 control-label" for="assigneeRemarks">Remarks</label>
+	                <div class="col-md-8">
+	                  <textarea name="assigneeRemarks" id="assigneeRemarks" class="form-control" rows="6">
+	               	  </textarea>
+	                </div>
+              	</div>
               </div>
               </div>
               </div>
@@ -282,7 +331,6 @@ List<Location> locationList=(List<Location>)session.getAttribute("location_lists
               <div class="box-footer">
                 <div class="row">
                   <div class="col-md-offset-4 col-md-8">
-                    <input type="hidden" id="csrf" name="<?= $token_name; ?>" value="<?= $token_hash; ?>" />
                     <button class="btn btn-info" id="editmessagesubmit" type="submit">Update Case</button>
                     <button class="btn btn-danger" onClick="return clearForm();" type="button">Clear</button>
                   </div>
@@ -427,9 +475,12 @@ function displayUploadImg(input, PlaceholderID, deleteID, linkID) {
     $.ajax({
 	    type: "POST",
 	    url: 'updateMessageDetails',
-	    data: {'policyNumber':policyNumber,'msgCategory':msgCategory,'insuredName':insuredName,'insuredDOD':insuredDOB,'insuredDOB':insuredDOD,
-	    	       'sumAssured':sumAssured,'msgIntimationType':msgIntimationType,'claimantCity':claimantCity,'claimantZone':claimantZone,'claimantState':claimantState,
-	    	       'nomineeName':nomineeName,'nomineeMob':nomineeMob,'nomineeAdd':nomineeAdd,'insuredAdd':insuredAdd},
+	    data: {'policyNumber':policyNumber,'msgCategory':msgCategory,'insuredName':insuredName,
+	    		'insuredDOD':insuredDOB,'insuredDOB':insuredDOD,   
+	    		'sumAssured':sumAssured,'msgIntimationType':msgIntimationType,
+	    		'claimantCity':claimantCity,'claimantZone':claimantZone,'claimantState':claimantState,
+	    		'nomineeName':nomineeName,'nomineeMob':nomineeMob,'nomineeAdd':nomineeAdd,
+	    		'insuredAdd':insuredAdd},
 	    beforeSend: function() {
 	    	$("#editmessagesubmit").html('<img src="${pageContext.request.contextPath}/resources/img/input-spinner.gif"> Loading...');
 	        $("#editmessagesubmit").prop('disabled', true);
@@ -458,10 +509,6 @@ function clearForm(){
   $( '#sm_modal_footer' ).html( '<button type="button" class="btn dark btn-outline" data-dismiss="modal">Cancel</button><button type="button" id="continuemodal_cl" class="btn green">Yes</button>' );
   $( '#continuemodal_cl' ).click( function() {
     $("form#editmessagesubmit").trigger("reset");
-    $("#msgCategory").select2("val", "");
-    $("#msgChannel").select2("val", "");
-    $(".add_link_btn").hide();
-    $('.add_link_btn').attr('data-val','');
     $('#small_modal').modal('hide');
   });
 }
