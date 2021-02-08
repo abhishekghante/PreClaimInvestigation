@@ -68,7 +68,7 @@ session.removeAttribute("userRole");
                     <option value="-1" selected disabled>Select</option>
                     <%if(investigationList != null){
                     	for(InvestigationType investigation: investigationList){%>
-                    	<option value = "<%=investigation.getInvestigationType()%>"><%=investigation.getInvestigationType() %></option>
+                    	<option value = "<%=investigation.getInvestigationId()%>"><%=investigation.getInvestigationType() %></option>
                     <%}} %>
                   </select>
                 </div>
@@ -131,7 +131,7 @@ session.removeAttribute("userRole");
                   	 <option value="-1" selected disabled>Select</option>
                   	 <%if(location_list!=null){ 
                   	  for(Location location : location_list){%>  
-                  	  <option value=<%=location.getCity()%> data-state = <%=location.getState() %>
+                  	  <option value=<%=location.getLocationId()%> data-state = <%=location.getState() %>
                   	  	data-zone = <%=location.getZone() %>><%=location.getCity()%></option>
                   	 <%}} %>
                   	</select>
@@ -357,13 +357,13 @@ function displayUploadImg(input, PlaceholderID, deleteID, linkID) {
     }
     if(roleName == '')
     {
-       toastr.error('Please select role name','Error') 	
-   	   errorflag = 1;
+        toastr.error('Role Name cannot be empty','Error');
+        errorFlag = 1;
     }
-    if(assigneeId == '-1')
+    if(assigneeId == '')
     {
-       toastr.error('Please select user','Error') 	
-   	   errorflag = 1;
+        toastr.error('please select user type','Error');
+        errorFlag = 1;
     }
    
     

@@ -52,11 +52,11 @@ session.removeAttribute("intimation_list");
                           <th class="head1 no-sort">Sum Assured</th>
                           <th class="head1 no-sort">Type of Intimation</th>
                           <th class="head1 no-sort">View history</th>
+                           <th class="head1 no-sort">Action</th>
                         </tr>
                       </thead>
                       <tfoot>
                         <tr class="tbl_head_bg">
-                          <th class="head2 no-sort"></th>
                           <th class="head2 no-sort"></th>
                           <th class="head2 no-sort"></th>
                           <th class="head2 no-sort"></th>
@@ -79,8 +79,22 @@ session.removeAttribute("intimation_list");
                   				<td><%=list_case.getInsuredName()%></td>
                   				<td><%=list_case.getInvestigationCategory()%></td>
                   				<td><%=list_case.getSumAssured()%></td>
-                                <td><%=list_case.getIntimationType()%></td>
+                                <td><%=list_case.getIntimationType()%></td>   
                                 <td>View History</td>
+                               
+                                <td>
+	                             <a href="${pageContext.request.contextPath}/message/edit?caseId=<%=list_case.getCaseId()%>" 
+	                             	data-toggle="tooltip" title="Edit" class="btn btn-primary btn-xs">
+	                             	<i class="glyphicon glyphicon-edit"></i>
+	                         	 </a>
+                         	   
+	                             <a href="#" data-toggle="tooltip" title="Delete" 
+	                             	onClick="return deleteMessage('<%=list_case.getCaseId() %>',
+	                             	<%=allow_delete%>);" class="btn btn-danger btn-xs"> 
+	                             	<i class="glyphicon glyphicon-remove"></i>
+	                           	 </a>
+                         
+                         		</td>
                                 
                           </tr>                      
                        

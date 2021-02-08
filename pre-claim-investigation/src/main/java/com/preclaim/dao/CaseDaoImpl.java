@@ -65,26 +65,34 @@ public class CaseDaoImpl implements CaseDao {
 	}
 	
 	@Override
-	public String addcase(CaseDetails casedetail) 
+	public long addcase(CaseDetails casedetail) 
 	{
 		try 
 		{
-			String query = "INSERT INTO case_lists (policyNumber, investigationCategory, insuredName, insuredDOD, insuredDOB, sumAssured, intimationType, locationId,"
-							+ " caseStatus, nominee_name, nomineeContactNumber, nominee_address, insured_address, case_description, longitude, latitude, pdf1FilePath"
-							+ ", pdf2FilePath, pdf3FilePath, audioFilePath, videoFilePath, signatureFilePath "
-							+ "createdBy, createdDate, updatedDate, updatedBy) "
-							+ "values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, '', '', '', '', '', '', ?, now(), now(), '')";    
-			this.template.update(query, casedetail.getPolicyNumber(), casedetail.getInvestigationCategory(), casedetail.getInsuredName(), casedetail.getInsuredDOD(),
-					casedetail.getInsuredDOB(), casedetail.getSumAssured(), casedetail.getIntimationType(), casedetail.getLocationId(), casedetail.getCaseStatus(), 
-					casedetail.getNominee_name(), casedetail.getNomineeContactNumber(), casedetail.getNominee_address(), casedetail.getInsured_address(), 
-					casedetail.getCase_description(), casedetail.getLongitude(), casedetail.getLatitude(), casedetail.getCreatedBy());				    	
+			String query = "INSERT INTO case_lists (policyNumber, investigationId, insuredName, insuredDOD, insuredDOB, sumAssured, "
+						+ "intimationType, locationId, caseStatus, nominee_name, nominee_ContactNumber, nominee_address, "
+						+ "insured_address, case_description, longitude, latitude, pdf1FilePath , pdf2FilePath, pdf3FilePath, "
+						+ "audioFilePath, videoFilePath, signatureFilePath , createdBy, createdDate, updatedDate, updatedBy) "
+						+ "values(?, ?, ?, ?, ?, ?, ?, ?, 'Assigned', ?, ?, ?, ?, '', '', '', '', '', '', '', '', '', ?, now(), now(), '')";    
+			this.template.update(query, casedetail.getPolicyNumber(), casedetail.getInvestigationId(), casedetail.getInsuredName(), 
+					casedetail.getInsuredDOD(), casedetail.getInsuredDOB(), casedetail.getSumAssured(), casedetail.getIntimationType(), 
+					casedetail.getLocationId(), casedetail.getNominee_name(), casedetail.getNomineeContactNumber(), 
+					casedetail.getNominee_address(), casedetail.getInsured_address(), 
+					casedetail.getCreatedBy());				    	
+			
+			query = "SELECT caseId FROM case_lists where policyNumber = ? and createdBy = ? and updatedBy = ''";
+			return template.query(query, new Object[] {casedetail.getPolicyNumber(), casedetail.getCreatedBy()}, 
+					(ResultSet rs, int rowcount) ->
+					{
+						return rs.getLong("caseId");
+					}).get(0);			
+			
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
-			return "Error adding case. Kindly contact system administrator";
+			return 0;
 		}
-		return "****";
 	}
 
 	@Override

@@ -29,7 +29,7 @@ import com.preclaim.dao.IntimationTypeDao;
 import com.preclaim.dao.InvestigationTypeDao;
 import com.preclaim.dao.LocationDao;
 import com.preclaim.dao.UserDAO;
-import com.preclaim.dao.case_movementDao;
+import com.preclaim.dao.Case_movementDao;
 import com.preclaim.models.CaseDetails;
 import com.preclaim.models.ScreenDetails;
 import com.preclaim.models.UserDetails;
@@ -55,7 +55,7 @@ public class CaseController {
 	LocationDao locationDao;
 	
 	@Autowired
-	case_movementDao caseMovementDao;
+	Case_movementDao caseMovementDao;
 	
     @RequestMapping(value = "/import_case", method = RequestMethod.GET)
     public String import_case(HttpSession session) {
@@ -115,8 +115,8 @@ public class CaseController {
     	session.setAttribute("pendingCaseList", caseDao.getPendingCaseList(user.getUsername()));
     	session.setAttribute("investigation_list", investigationDao.getActiveInvestigationList());
     	session.setAttribute("intimation_list", intimationTypeDao.getActiveIntimationType());
-    	
-    	return "common/templatecontent";
+    	System.out.println( caseDao.getPendingCaseList(user.getUsername()));
+    	return "common/templatecontent"; 
     }
   
     @RequestMapping(value = "/active_message", method = RequestMethod.GET)
@@ -132,7 +132,6 @@ public class CaseController {
     	details.setMain_menu("Case Management");
     	details.setSub_menu1("RCU Active Cases");
     	session.setAttribute("ScreenDetails", details);
-    	
     	session.setAttribute("activeCaseList", caseDao.getAssignedCaseList(user.getUsername()));
     	session.setAttribute("investigation_list", investigationDao.getActiveInvestigationList());
     	session.setAttribute("intimation_list", intimationTypeDao.getActiveIntimationType());
@@ -215,26 +214,30 @@ public class CaseController {
        	
 		CaseDetails caseDetail=new CaseDetails();
        	caseDetail.setPolicyNumber(request.getParameter("policyNumber"));
-       	caseDetail.setInvestigationCategory(request.getParameter("msgCategory"));
+       	caseDetail.setInvestigationId(Integer.parseInt(request.getParameter("msgCategory")));
        	caseDetail.setInsuredName( request.getParameter("insuredName"));
        	caseDetail.setInsuredDOD(request.getParameter("insuredDOD"));
        	caseDetail.setInsuredDOB(request.getParameter("insuredDOB"));
        	caseDetail.setSumAssured(Integer.parseInt(request.getParameter("sumAssured")));
        	caseDetail.setIntimationType( request.getParameter("msgIntimationType"));
-       	caseDetail.setClaimantCity(request.getParameter("claimantCity"));
-       	caseDetail.setClaimantState(request.getParameter("claimantState"));
+       	caseDetail.setLocationId(request.getParameter("claimantCity"));
        	caseDetail.setNominee_name(request.getParameter("nomineeName"));
        	caseDetail.setNomineeContactNumber(request.getParameter("nomineeMob"));
        	caseDetail.setNominee_address(request.getParameter("nomineeAdd"));
        	caseDetail.setInsured_address(request.getParameter("insuredAdd"));
 		caseDetail.setCreatedBy(user.getUsername()); 
-       	String message= caseDao.addcase(caseDetail);
+       	long caseId = caseDao.addcase(caseDetail);
        	
-       	caseMovement caseMovement=new caseMovement();
+       	if(caseId == 0)
+       		return "Error adding case";
+       	
+       	System.out.println("caseDetail============="+caseDetail);
+       	caseMovement caseMovement = new caseMovement();
+       	caseMovement.setCaseId(caseId);
        	caseMovement.setFromId(caseDetail.getCreatedBy());
        	caseMovement.setToId(request.getParameter("roleName"));
-       	caseMovementDao.CreatecaseMovement(caseMovement);
-       	System.out.println("caseMovement-------"+caseMovement);
+       	String message = caseMovementDao.CreatecaseMovement(caseMovement);
+       	
        	userDao.activity_log("CASE HISTORY", caseDetail.getPolicyNumber(), "ADD CASE", user.getUsername());
    		
        	return message;
@@ -280,7 +283,7 @@ public class CaseController {
        	
 		CaseDetails caseDetail=new CaseDetails();
        	caseDetail.setPolicyNumber(request.getParameter("policyNumber"));
-       	caseDetail.setInvestigationCategory(request.getParameter("msgCategory"));
+       	caseDetail.setInvestigationId(Integer.parseInt(request.getParameter("msgCategory")));
        	caseDetail.setInsuredName( request.getParameter("insuredName"));
        	caseDetail.setInsuredDOD(request.getParameter("insuredDOD"));
        	caseDetail.setInsuredDOB(request.getParameter("insuredDOB"));

@@ -2,7 +2,7 @@ package com.preclaim.models;
 
 public class caseMovement {
 
-	private int caseId;
+	private long caseId;
 	private String fromId;
 	private String toId;
 	private String caseStatus;
@@ -20,12 +20,12 @@ public class caseMovement {
 		this.updatedDate = "";
 	}
 
-	public int getCaseId() {
+	public long getCaseId() {
 		return caseId;
 	}
 
-	public void setCaseId(int caseId) {
-		this.caseId = caseId;
+	public void setCaseId(long caseId2) {
+		this.caseId = caseId2;
 	}
 
 	public String getFromId() {

@@ -66,7 +66,6 @@ session.removeAttribute("intimation_list");
                           <th class="head2 no-sort"></th>
                           <th class="head2 no-sort"></th>
                           <th class="head2 no-sort"></th>
-                          <th class="head2 no-sort"></th>
                         </tr>
                       </tfoot>
                       <tbody>
