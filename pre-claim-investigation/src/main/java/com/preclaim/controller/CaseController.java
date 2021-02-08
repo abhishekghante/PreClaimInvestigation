@@ -33,7 +33,7 @@ import com.preclaim.dao.Case_movementDao;
 import com.preclaim.models.CaseDetails;
 import com.preclaim.models.ScreenDetails;
 import com.preclaim.models.UserDetails;
-import com.preclaim.models.caseMovement;
+import com.preclaim.models.CaseMovement;
 
 @Controller
 @RequestMapping(value = "/message")
@@ -115,7 +115,6 @@ public class CaseController {
     	session.setAttribute("pendingCaseList", caseDao.getPendingCaseList(user.getUsername()));
     	session.setAttribute("investigation_list", investigationDao.getActiveInvestigationList());
     	session.setAttribute("intimation_list", intimationTypeDao.getActiveIntimationType());
-    	System.out.println( caseDao.getPendingCaseList(user.getUsername()));
     	return "common/templatecontent"; 
     }
   
@@ -220,7 +219,7 @@ public class CaseController {
        	caseDetail.setInsuredDOB(request.getParameter("insuredDOB"));
        	caseDetail.setSumAssured(Integer.parseInt(request.getParameter("sumAssured")));
        	caseDetail.setIntimationType( request.getParameter("msgIntimationType"));
-       	caseDetail.setLocationId(request.getParameter("claimantCity"));
+       	caseDetail.setLocationId(Integer.parseInt(request.getParameter("claimantCity")));
        	caseDetail.setNominee_name(request.getParameter("nomineeName"));
        	caseDetail.setNomineeContactNumber(request.getParameter("nomineeMob"));
        	caseDetail.setNominee_address(request.getParameter("nomineeAdd"));
@@ -232,10 +231,10 @@ public class CaseController {
        		return "Error adding case";
        	
        	System.out.println("caseDetail============="+caseDetail);
-       	caseMovement caseMovement = new caseMovement();
+       	CaseMovement caseMovement = new CaseMovement();
        	caseMovement.setCaseId(caseId);
        	caseMovement.setFromId(caseDetail.getCreatedBy());
-       	caseMovement.setToId(request.getParameter("roleName"));
+       	caseMovement.setToId(request.getParameter("assigneeId"));
        	String message = caseMovementDao.CreatecaseMovement(caseMovement);
        	
        	userDao.activity_log("CASE HISTORY", caseDetail.getPolicyNumber(), "ADD CASE", user.getUsername());

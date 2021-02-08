@@ -80,7 +80,7 @@ session.removeAttribute("intimation_list");
                   				<td><%=list_case.getInvestigationCategory()%></td>
                   				<td><%=list_case.getSumAssured()%></td>
                                 <td><%=list_case.getIntimationType()%></td>
-                                <td>View History</td>
+                                <td>Case History</td>
                                 <td>
 	                             <a href="${pageContext.request.contextPath}/message/edit?caseId=<%=list_case.getCaseId()%>" 
 	                             	data-toggle="tooltip" title="Edit" class="btn btn-primary btn-xs">
@@ -124,7 +124,7 @@ $(document).ready(function() {
   var table = $('#pending_case_list').DataTable();
 
    $('#pending_case_list tfoot th').each( function () {
-    if( i == 1 || i == 2 || i == 3 || i == 6){
+    if( i == 1 || i == 2 || i == 3 || i == 5){
       $(this).html( '<input type="text" class="form-control" placeholder="" />' );
     }
     else if(i == 4)
@@ -140,18 +140,7 @@ $(document).ready(function() {
 		cat_selectbox += '</select>';
         $(this).html( cat_selectbox );
     }
-    else if(i == 5)
-    {
-      var cat_selectbox = '<select name="zone" id="zone" class="form-control">'
-                              +'<option value="">All</option>';
-		cat_selectbox += "<option value = North>North</option>";
-		cat_selectbox += "<option value = West>West</option>";
-		cat_selectbox += "<option value = East>East</option>";
-		cat_selectbox += "<option value = South>South</option>";
-		cat_selectbox += '</select>';
-        $(this).html( cat_selectbox );
-    }
-    else if(i == 7)
+    else if(i == 6)
     {
       var cat_selectbox = '<select name="intimation" id="intimation" class="form-control">'
                               +'<option value="">All</option>';

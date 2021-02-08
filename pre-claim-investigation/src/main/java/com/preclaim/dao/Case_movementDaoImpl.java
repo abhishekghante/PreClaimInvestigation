@@ -1,11 +1,13 @@
 package com.preclaim.dao;
 
+import java.sql.ResultSet;
+
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import com.preclaim.models.caseMovement;
+import com.preclaim.models.CaseMovement;
 
 public class Case_movementDaoImpl implements Case_movementDao {
 
@@ -20,7 +22,7 @@ public class Case_movementDaoImpl implements Case_movementDao {
 	}
 
 	@Override
-	public String CreatecaseMovement(caseMovement caseMovement) {
+	public String CreatecaseMovement(CaseMovement caseMovement) {
 
 		try
 		{
@@ -40,6 +42,20 @@ public class Case_movementDaoImpl implements Case_movementDao {
 		
 		
 		return "****";
+	}
+
+	@Override
+	public CaseMovement getCaseById(long caseId) {
+		String sql = "SELECT * FROM case_movement where caseId = ?";	
+		return template.query(sql, new Object[] {caseId}, (ResultSet rs, int rowNum) -> {
+			CaseMovement case_movement = new CaseMovement();
+			case_movement.setCaseId(caseId);
+			case_movement.setFromId(rs.getString("fromId"));
+			case_movement.setToId(rs.getString("toId"));
+			case_movement.setCaseStatus(rs.getString("caseStatus"));
+			case_movement.setRemarks(rs.getString("Remarks"));
+			return case_movement;
+		}).get(0);
 	}
 
 

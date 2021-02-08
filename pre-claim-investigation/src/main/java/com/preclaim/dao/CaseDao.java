@@ -12,7 +12,7 @@ public interface CaseDao {
 	long addcase(CaseDetails casedetail);
 	String deleteCase(int caseId);
 	String assignToRM(String policyNumber, String username, String caseSubStatus);
-	CaseDetails getCaseDetail(int caseID);
+	CaseDetails getCaseDetail(long caseID);
 	String updateCaseDetails(CaseDetails case_details);
 	
 	List<CaseDetailList> getPendingCaseList(String username);

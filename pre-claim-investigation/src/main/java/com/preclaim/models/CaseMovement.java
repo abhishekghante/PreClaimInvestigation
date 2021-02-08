@@ -1,6 +1,6 @@
 package com.preclaim.models;
 
-public class caseMovement {
+public class CaseMovement {
 
 	private long caseId;
 	private String fromId;
@@ -10,7 +10,7 @@ public class caseMovement {
 	private String createdDate;
 	private String updatedDate;
 
-	public caseMovement() {
+	public CaseMovement() {
 		this.caseId = 0;
 		this.fromId = "";
 		this.toId = "";

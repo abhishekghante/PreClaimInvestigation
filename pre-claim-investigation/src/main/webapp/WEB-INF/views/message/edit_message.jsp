@@ -1,18 +1,23 @@
-<%@page import="com.preclaim.models.CaseDetails"%>
 <%@page import = "java.util.List" %>
 <%@page import = "java.util.ArrayList" %>
-<%@ page import="com.preclaim.models.Location" %>
+<%@page import="com.preclaim.models.CaseDetails"%>
+<%@page import="com.preclaim.models.UserRole"%>
+<%@page import = "com.preclaim.models.Location"%>
 <%@page import = "com.preclaim.models.InvestigationType"%>
 <%@page import = "com.preclaim.models.IntimationType"%>
+
 <%
 List<String>user_permission=(List<String>)session.getAttribute("user_permission");
+CaseDetails case_detail = (CaseDetails) session.getAttribute("case_detail");
+session.removeAttribute("case_detail");
 List<InvestigationType> investigationList = (List<InvestigationType>) session.getAttribute("investigation_list");
 session.removeAttribute("investigation_list");
 List<IntimationType> intimationTypeList = (List<IntimationType>) session.getAttribute("intimation_list");
 session.removeAttribute("intimation_list");
-CaseDetails case_detail=(CaseDetails)session.getAttribute("case_detail");
-session.removeAttribute("case_detail");
-List<Location> locationList=(List<Location>)session.getAttribute("location_lists");
+List<Location> location_list = (List<Location>) session.getAttribute("location_list");
+session.removeAttribute("location_list");
+List<UserRole> userRole =(List<UserRole>)session.getAttribute("userRole");
+session.removeAttribute("userRole");
 boolean allow_edit = user_permission.contains("messages/add");
 %>
 <style type="text/css">
@@ -73,7 +78,7 @@ boolean allow_edit = user_permission.contains("messages/add");
                 <div class="col-md-8">
                   <select name="msgCategory" id="msgCategory" class="form-control" tabindex="-1"
                   	<%if(allow_edit) {%>disabled<%} %>>
-                    <option value="-1" selected disabled>Select</option>
+                    <option value="-1" disabled>Select</option>
                     <%if(investigationList != null){
                     	for(InvestigationType investigation: investigationList){%>
                     	<option value = "<%=investigation.getInvestigationId()%>"
@@ -129,7 +134,7 @@ boolean allow_edit = user_permission.contains("messages/add");
                 <div class="col-md-8">
                   <select name="msgIntimationType" id="msgIntimationType" class="form-control" 
                   	tabindex="-1" <%if(allow_edit) {%>disabled<%} %>>
-                    <option value="-1" selected disabled>Select</option>
+                    <option value="-1" disabled>Select</option>
                     <%if(intimationTypeList != null){
                     	for(IntimationType intimation: intimationTypeList){%>
                     	<option value = "<%=intimation.getIntimationType()%>"
@@ -145,9 +150,16 @@ boolean allow_edit = user_permission.contains("messages/add");
                 	<span class="text-danger">*</span>
                	</label>
                 <div class="col-md-8">
-                  <input type="text" value="<%=case_detail.getClaimantCity()%>" placeholder="Claimant City" 
-                  	name="claimantCity" id="claimantCity" class="form-control"
-                  	<%if(allow_edit) {%>readonly disabled<%} %>>
+                  <select name="claimantCity" id="claimantCity" class="form-control" tabindex="-1">
+                  	 <option value="-1" selected disabled>Select</option>
+                  	 <%if(location_list!=null){ 
+                  	  for(Location location : location_list){%>  
+                  	  <option value=<%=location.getLocationId()%> data-state = <%=location.getState() %>
+                  	  	data-zone = <%=location.getZone() %>
+                  	  	<%if(location.getLocationId() == case_detail.getLocationId()) {%>selected<%} %>
+                  	  	><%=location.getCity()%></option>
+                  	 <%}} %>
+                  	</select>
                 </div>
               </div>
               <div class="form-group">
@@ -297,7 +309,7 @@ boolean allow_edit = user_permission.contains("messages/add");
                         <input type="hidden" name="d_link_msgImgEn_5" id="d_link_msgImgEn_5" />
                       </a>
                     </div>
-                    
+                  <%if(!case_detail.getAudioFilePath().equals("")) {%>
 	              <div class="form-group">
 	       		  	<label class="col-md-4 control-label">Audio</label>
 	           		<div class="col-md-8">
@@ -306,7 +318,7 @@ boolean allow_edit = user_permission.contains("messages/add");
                 		</audio>
 	              	</div>
 	              </div>                    
-	              
+	              <%} %>
 	              <%if(!case_detail.getVideoFilePath().equals("")) {%>
 	              <div class="form-group">
 	       		  	<label class="col-md-4 control-label">Video</label>
@@ -317,6 +329,64 @@ boolean allow_edit = user_permission.contains("messages/add");
 	              	</div>
 	              </div>                    
 	              <%} %>
+	              
+	              <div class = "form-group selectDiv">
+	              	<label class="col-md-4 control-label" for="assignerRole">
+	              	<div class = "col-md-2">
+		              	<input type = "text" id = "assignerRole" name = "assignerRole" class = "form-control"
+		              		value = "<%=case_detail.getAssignerRole() %>" readonly disabled>
+              		
+	              	</div>
+	              	
+	              	<label class="col-md-4 control-label" for="assignerName">
+	              	<div class = "col-md-2">
+		              	<input type = "text" id = "assignerName" name = "assignerName" class = "form-control"
+		              		value = "<%=case_detail.getAssignerName() %>" readonly disabled>
+              		
+	              	</div>
+	              </div>
+	              <div class="form-group">
+	                <label class="col-md-4 control-label" for="assignerStatus">Assigner Status
+	                	<span class="text-danger">*</span>
+	                </label>
+	                <div class="col-md-8">
+	                  <input type="text" value="<%=case_detail.getApprovedStatus()%>" 
+	                  	placeholder="Assigner Status" name="assignerStatus" id="assignerStatus" 
+	                  	class="form-control" readonly disabled>
+	                </div>
+	              </div>
+	              <div class="form-group">
+	                <label class="col-md-4 control-label" for="assigneeRemarks">Remarks</label>
+	                <div class="col-md-8">
+	                  <textarea name="assigneeRemarks" id="assigneeRemarks" class="form-control" rows="6"
+	                  	disabled readonly>
+	               	  	<%=case_detail.getAssignerRemarks() %>
+	               	  </textarea>
+	                </div>
+              	 </div>
+		          <div class="form-group selectDiv">
+		                <label class="col-md-4 control-label" for="roleName">Select Role Name 
+		                	<span class="text-danger">*</span></label>
+		                <div class="col-md-2">
+		                  <select name="roleName" id="roleName" class="form-control" tabindex="-1">
+		                    <option value="-1" selected disabled>Select</option>
+		                     <%if(userRole != null){
+		                    	for(UserRole userRoleLists: userRole){%>
+		                    	<option value = "<%=userRoleLists.getRole_code()%>"><%=userRoleLists.getRole() %></option>
+		                    <%}} %> 
+		                  </select>
+		                </div>
+	                
+		                <label class="col-md-2 control-label" for="userRole">Select User 
+		                	<span class="text-danger">*</span></label>
+		                <div class="col-md-2">
+		                  <select name="assigneeId" id="assigneeId" class="form-control">
+		                  	<option value = '-1' selected disabled>Select</option>
+		                  </select>
+		            	</div>
+	                
+	              </div>
+	              
 	              <div class="form-group">
 	                <label class="col-md-4 control-label" for="assigneeRemarks">Remarks</label>
 	                <div class="col-md-8">

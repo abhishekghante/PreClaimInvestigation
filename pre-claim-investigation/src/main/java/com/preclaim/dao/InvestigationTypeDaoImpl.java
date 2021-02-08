@@ -133,4 +133,11 @@ public class InvestigationTypeDaoImpl implements InvestigationTypeDao {
 			return mapping;
 		});
 	}
+
+	@Override
+	public String getInvestigationById(int investigationId) {
+		String sql = "SELECT investigationType from investigation_type where investigationId = " 
+					+ investigationId;
+		return template.queryForObject(sql, String.class);
+	}
 }

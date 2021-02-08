@@ -1,9 +1,10 @@
 package com.preclaim.dao;
 
-import com.preclaim.models.caseMovement;
+import com.preclaim.models.CaseMovement;
 
 public interface Case_movementDao {
 
-	public String CreatecaseMovement(caseMovement caseMovement);
+	String CreatecaseMovement(CaseMovement caseMovement);
+	CaseMovement getCaseById(long caseId);
 	
 }

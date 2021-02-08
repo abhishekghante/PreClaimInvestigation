@@ -1,5 +1,4 @@
 <%@page import="com.preclaim.models.UserRole"%>
-<%@page import="com.preclaim.models.UserDetails"%>
 <%@page import = "java.util.List" %>
 <%@page import = "java.util.ArrayList" %>
 <%@page import = "com.preclaim.models.Location"%>
@@ -413,6 +412,7 @@ function clearForm(){
 $("#roleName").change(function(){
 	console.log($("#roleName option:selected").val());
 	var roleCode = $(this).val();
+	$("#assigneeId option").remove();
 	$.ajax({
 	    type: "POST",
 	    url: 'getUserByRole',
@@ -420,7 +420,7 @@ $("#roleName").change(function(){
 	    success: function(userList)
 	    {
 	    	console.log(userList);
-	  		var options = "";
+	  		var options = "<option value = -1 selected disabled>Select</option>";
 	    	for(i = 0; i < userList.length ; i++)
 	  			{
 	  				options += "<option value ='" + userList[i].username + "'>" + userList[i].full_name + "</option>";  

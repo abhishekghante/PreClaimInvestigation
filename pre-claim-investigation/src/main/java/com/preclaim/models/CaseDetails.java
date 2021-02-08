@@ -11,7 +11,10 @@ public class CaseDetails {
 	private String insuredDOB;
 	private double sumAssured;
 	private String intimationType;
-	private String locationId;
+	private int locationId;
+	private String claimantCity;
+	private String claimantZone;
+	private String claimantState;
 	private String caseStatus;
 	private String nominee_name;
 	private String nomineeContactNumber;
@@ -19,9 +22,6 @@ public class CaseDetails {
 	private String insured_address;
 	private String case_description;
 	private String longitude;
-	private String claimantCity;
-	private String claimantZone;
-	private String claimantState;
 	private String latitude;
 	private String pdf1FilePath;
 	private String pdf2FilePath;
@@ -29,6 +29,12 @@ public class CaseDetails {
 	private String audioFilePath;
 	private String videoFilePath;
 	private String signatureFilePath;
+	private String capturedDate;
+	private String approvedStatus;
+	private String assignerRole;
+	private String assignerName;
+	private String assignerStatus;
+	private String assignerRemarks;
 	private String createdBy;
 	private String createdDate;
 	private String updatedDate;
@@ -43,7 +49,7 @@ public class CaseDetails {
 		insuredDOB = "";
 		sumAssured = 0;
 		intimationType = "";
-		locationId = "";
+		locationId = 0;
 		claimantCity = "";
 		claimantState = "";
 		claimantZone = "";
@@ -61,11 +67,15 @@ public class CaseDetails {
 		audioFilePath = "";
 		videoFilePath = "";
 		signatureFilePath = "";
+		assignerRole = "";
+		assignerName = "";
+		assignerStatus = "";
+		assignerRemarks = "";
+		capturedDate = "";
 		createdBy = "";
 		createdDate = "";
 		updatedDate = "";
 		updatedBy = "";
-
 	}
 
 	public long getCaseId() {
@@ -140,13 +150,14 @@ public class CaseDetails {
 		this.intimationType = intimationType;
 	}
 
-	public String getCaseStatus() {
-		return caseStatus;
+	public int getLocationId() {
+		return locationId;
 	}
 
-	public void setCaseStatus(String caseStatus) {
-		this.caseStatus = caseStatus;
+	public void setLocationId(int locationId) {
+		this.locationId = locationId;
 	}
+
 	public String getClaimantCity() {
 		return claimantCity;
 	}
@@ -170,6 +181,15 @@ public class CaseDetails {
 	public void setClaimantState(String claimantState) {
 		this.claimantState = claimantState;
 	}
+
+	public String getCaseStatus() {
+		return caseStatus;
+	}
+
+	public void setCaseStatus(String caseStatus) {
+		this.caseStatus = caseStatus;
+	}
+
 	public String getNominee_name() {
 		return nominee_name;
 	}
@@ -200,46 +220,6 @@ public class CaseDetails {
 
 	public void setInsured_address(String insured_address) {
 		this.insured_address = insured_address;
-	}
-
-	public String getCreatedBy() {
-		return createdBy;
-	}
-
-	public void setCreatedBy(String createdBy) {
-		this.createdBy = createdBy;
-	}
-
-	public String getCreatedDate() {
-		return createdDate;
-	}
-
-	public void setCreatedDate(String createdDate) {
-		this.createdDate = createdDate;
-	}
-
-	public String getUpdatedDate() {
-		return updatedDate;
-	}
-
-	public void setUpdatedDate(String updatedDate) {
-		this.updatedDate = updatedDate;
-	}
-
-	public String getUpdatedBy() {
-		return updatedBy;
-	}
-
-	public void setUpdatedBy(String updatedBy) {
-		this.updatedBy = updatedBy;
-	}
-
-	public String getLocationId() {
-		return locationId;
-	}
-
-	public void setLocationId(String locationId) {
-		this.locationId = locationId;
 	}
 
 	public String getCase_description() {
@@ -313,6 +293,84 @@ public class CaseDetails {
 	public void setSignatureFilePath(String signatureFilePath) {
 		this.signatureFilePath = signatureFilePath;
 	}
-	
 
+	public String getCapturedDate() {
+		return capturedDate;
+	}
+
+	public void setCapturedDate(String capturedDate) {
+		this.capturedDate = capturedDate;
+	}
+
+	public String getApprovedStatus() {
+		return approvedStatus;
+	}
+
+	public void setApprovedStatus(String approvedStatus) {
+		this.approvedStatus = approvedStatus;
+	}
+
+	public String getAssignerRole() {
+		return assignerRole;
+	}
+
+	public void setAssignerRole(String assignerRole) {
+		this.assignerRole = assignerRole;
+	}
+
+	public String getAssignerName() {
+		return assignerName;
+	}
+
+	public String getAssignerStatus() {
+		return assignerStatus;
+	}
+
+	public void setAssignerStatus(String assignerStatus) {
+		this.assignerStatus = assignerStatus;
+	}
+
+	public String getAssignerRemarks() {
+		return assignerRemarks;
+	}
+
+	public void setAssignerRemarks(String assignerRemarks) {
+		this.assignerRemarks = assignerRemarks;
+	}
+
+	public void setAssignerName(String assignerName) {
+		this.assignerName = assignerName;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public String getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(String createdDate) {
+		this.createdDate = createdDate;
+	}
+
+	public String getUpdatedDate() {
+		return updatedDate;
+	}
+
+	public void setUpdatedDate(String updatedDate) {
+		this.updatedDate = updatedDate;
+	}
+
+	public String getUpdatedBy() {
+		return updatedBy;
+	}
+
+	public void setUpdatedBy(String updatedBy) {
+		this.updatedBy = updatedBy;
+	}
 }

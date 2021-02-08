@@ -30,6 +30,7 @@ import com.preclaim.config.Config;
 import com.preclaim.config.CustomMethods;
 import com.preclaim.models.CaseDetailList;
 import com.preclaim.models.CaseDetails;
+import com.preclaim.models.CaseMovement;
 import com.preclaim.models.Location;
 import com.preclaim.models.UserDetails;
 
@@ -49,6 +50,12 @@ public class CaseDaoImpl implements CaseDao {
 	
 	@Autowired
 	LocationDao locationDao;
+	
+	@Autowired
+	UserDAO userDao;
+	
+	@Autowired
+	Case_movementDao case_movementDao;
 	
 	public void setTemplate(JdbcTemplate template) {
 		this.template = template;
@@ -72,8 +79,8 @@ public class CaseDaoImpl implements CaseDao {
 			String query = "INSERT INTO case_lists (policyNumber, investigationId, insuredName, insuredDOD, insuredDOB, sumAssured, "
 						+ "intimationType, locationId, caseStatus, nominee_name, nominee_ContactNumber, nominee_address, "
 						+ "insured_address, case_description, longitude, latitude, pdf1FilePath , pdf2FilePath, pdf3FilePath, "
-						+ "audioFilePath, videoFilePath, signatureFilePath , createdBy, createdDate, updatedDate, updatedBy) "
-						+ "values(?, ?, ?, ?, ?, ?, ?, ?, 'Assigned', ?, ?, ?, ?, '', '', '', '', '', '', '', '', '', ?, now(), now(), '')";    
+						+ "audioFilePath, videoFilePath, signatureFilePath , capturedDate, createdBy, createdDate, updatedDate, updatedBy) "
+						+ "values(?, ?, ?, ?, ?, ?, ?, ?, 'Assigned', ?, ?, ?, ?, '', '', '', '', '', '', '', '', '', '', ?, now(), now(), '')";    
 			this.template.update(query, casedetail.getPolicyNumber(), casedetail.getInvestigationId(), casedetail.getInsuredName(), 
 					casedetail.getInsuredDOD(), casedetail.getInsuredDOB(), casedetail.getSumAssured(), casedetail.getIntimationType(), 
 					casedetail.getLocationId(), casedetail.getNominee_name(), casedetail.getNomineeContactNumber(), 
@@ -100,7 +107,7 @@ public class CaseDaoImpl implements CaseDao {
 		try
 		{
 			String sql ="SELECT * FROM case_lists a, case_movement b where a.caseId = b.caseId and"
-					+ " caseStatus <> 'Closed' and toId = ?"; 			   
+					+ " a.caseStatus <> 'Closed' and b.toId = ?"; 			   
 			List<CaseDetailList> casedetailList = template.query(sql, new Object[] {username},
 					(ResultSet rs, int rowCount) -> 
 					{
@@ -120,7 +127,14 @@ public class CaseDaoImpl implements CaseDao {
 			for(HashMap<Integer, String> investigation: investigationList)
 			{
 				for(CaseDetailList caseDetail: casedetailList)
-					caseDetail.setInvestigationCategory(investigation.get(caseDetail.getInvestigationCategoryId()));
+				{
+					if(investigation.get(caseDetail.getInvestigationCategoryId()) != null)
+					{
+						caseDetail.setInvestigationCategory(investigation.get(caseDetail.getInvestigationCategoryId()));
+						continue;
+					}
+						
+				}
 			}
 			return casedetailList;
 		}
@@ -160,15 +174,15 @@ public class CaseDaoImpl implements CaseDao {
 	}
 	
 	@Override
-	public CaseDetails getCaseDetail(int caseID) {
+	public CaseDetails getCaseDetail(long caseID) {
 		try
 		{
-			String sql = "SELECT * FROM case_lists where caseID = ?";
-			     List<CaseDetails> caseDetail= this.template.query(sql, new Object[] {caseID}, 
+			String sql = "SELECT * FROM case_lists a where a.caseId = ?";
+			     List<CaseDetails> caseDetail = this.template.query(sql, new Object[] {caseID}, 
 					(ResultSet rs, int rowCount) -> 
 					{
 						CaseDetails detail = new CaseDetails();
-						detail.setCaseId(rs.getInt("caseID"));
+						detail.setCaseId(rs.getLong("caseId"));
 						detail.setPolicyNumber(rs.getString("policyNumber"));
 						detail.setInvestigationId(rs.getInt("investigationId"));
 						detail.setInsuredName(rs.getString("insuredName"));
@@ -176,16 +190,35 @@ public class CaseDaoImpl implements CaseDao {
 						detail.setInsuredDOB(rs.getString("insuredDOB"));
 						detail.setSumAssured(rs.getInt("sumAssured"));
 						detail.setIntimationType(rs.getString("intimationType"));
-						detail.setClaimantCity(rs.getString("claimantCity"));
-						detail.setClaimantState(rs.getString("claimantState"));
-						detail.setClaimantZone(rs.getString("claimantZone"));
+						detail.setLocationId(rs.getInt("locationId"));
 						detail.setNominee_name(rs.getString("nominee_name"));
 						detail.setNomineeContactNumber(rs.getString("nomineeContactNumber"));
 						detail.setNominee_address(rs.getString("nominee_address"));
 						detail.setInsured_address(rs.getString("insured_address"));
+						detail.setCase_description(rs.getString("CaseDescription"));
+						detail.setLongitude(rs.getString("longitude"));
+						detail.setLatitude(rs.getString("latitude"));
+						detail.setPdf1FilePath(rs.getString("pdf1FilePath"));
+						detail.setPdf2FilePath(rs.getString("pdf2FilePath"));
+						detail.setPdf3FilePath(rs.getString("pdf3FilePath"));
+						detail.setAudioFilePath(rs.getString("audioFilePath"));
+						detail.setVideoFilePath(rs.getString("videoFilePath"));
+						detail.setSignatureFilePath(rs.getString("signatureFilePath"));
+						detail.setCapturedDate(rs.getString("capturedDate"));
 						return detail;
 					}
 					);
+			   
+			     //Assigner Details
+			     sql = "SELECT * FROM case_movement where caseId = " + caseID;
+			     CaseMovement case_movement = case_movementDao.getCaseById(caseID);
+			     UserDetails user = userDao.getUserDetails(case_movement.getFromId());
+			     caseDetail.get(0).setApprovedStatus(case_movement.getCaseStatus());
+			     caseDetail.get(0).setAssignerRemarks(case_movement.getRemarks());
+			     
+			     //Get Role Name
+			     caseDetail.get(0).setAssignerRole(userDao.getUserRole(user.getAccount_type()));
+			     
 			     return caseDetail.get(0);
 		          
 		}

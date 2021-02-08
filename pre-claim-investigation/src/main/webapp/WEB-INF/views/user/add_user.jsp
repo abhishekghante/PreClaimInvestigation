@@ -222,12 +222,7 @@ function accountValidate() {
         validflag = 0;
         toastr.error("Kindly enter your State Name","Error");
     }
-    if( address1 == "" ){
-        $('#address1').addClass('has-error-2');
-        $('#address1').focus();
-        validflag = 0;
-        toastr.error("Kindly enter your address 1 ","Error");
-    }
+    
     if( city == "" ){
         $('#city').addClass('has-error-2');
         $('#city').focus();
