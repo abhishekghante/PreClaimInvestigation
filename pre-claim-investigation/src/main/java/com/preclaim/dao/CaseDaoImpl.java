@@ -91,21 +91,29 @@ public class CaseDaoImpl implements CaseDao {
 	public List<CaseDetailList> getPendingCaseList(String username) {
 		try
 		{
-			String sql ="SELECT * FROM case_lists where caseSubStatus = 'PA' and createdBy = '" + username +"'"; 			   
-			List<CaseDetailList> casedetailList = template.query(sql,(ResultSet rs, int rowCount) -> {
-						CaseDetailList casedetail=new CaseDetailList();
+			String sql ="SELECT * FROM case_lists a, case_movement b where a.caseId = b.caseId and"
+					+ " caseStatus <> 'Closed' and toId = ?"; 			   
+			List<CaseDetailList> casedetailList = template.query(sql, new Object[] {username},
+					(ResultSet rs, int rowCount) -> 
+					{
+						CaseDetailList casedetail = new CaseDetailList();
 						casedetail.setSrNo(rowCount+1);
 						casedetail.setCaseId(rs.getInt("caseId"));
 						casedetail.setPolicyNumber(rs.getString("policyNumber"));
 						casedetail.setInsuredName(rs.getString("insuredName"));
-						casedetail.setInvestigationCategory(rs.getString("investigationCategory"));
-						casedetail.setClaimantZone(rs.getString("claimantZone"));
-						casedetail.setSumAssured(rs.getInt("sumAssured"));
+						casedetail.setInvestigationCategoryId(rs.getInt("investigationId"));
+						casedetail.setSumAssured(rs.getDouble("sumAssured"));
 						casedetail.setCaseStatus(rs.getString("caseStatus"));
-						casedetail.setCaseSubstatus(rs.getString("caseSubStatus"));
 						casedetail.setIntimationType(rs.getString("intimationType"));	
 						return casedetail;
 					});
+			
+			List<HashMap<Integer, String>> investigationList = investigationDao.getActiveInvestigationMapping();
+			for(HashMap<Integer, String> investigation: investigationList)
+			{
+				for(CaseDetailList caseDetail: casedetailList)
+					caseDetail.setInvestigationCategory(investigation.get(caseDetail.getInvestigationCategoryId()));
+			}
 			return casedetailList;
 		}
 		catch(Exception ex)
@@ -128,10 +136,8 @@ public class CaseDaoImpl implements CaseDao {
 						casedetail.setPolicyNumber(rs.getString("policyNumber"));
 						casedetail.setInsuredName(rs.getString("insuredName"));
 						casedetail.setInvestigationCategory(rs.getString("investigationCategory"));
-						casedetail.setClaimantZone(rs.getString("claimantZone"));
 						casedetail.setSumAssured(rs.getInt("sumAssured"));
 						casedetail.setCaseStatus(rs.getString("caseStatus"));
-						casedetail.setCaseSubstatus(rs.getString("caseSubStatus"));
 						casedetail.setIntimationType(rs.getString("intimationType"));	
 						return casedetail;
 					});
@@ -156,7 +162,7 @@ public class CaseDaoImpl implements CaseDao {
 						CaseDetails detail = new CaseDetails();
 						detail.setCaseId(rs.getInt("caseID"));
 						detail.setPolicyNumber(rs.getString("policyNumber"));
-						detail.setInvestigationCategory(rs.getString("investigationCategory"));
+						detail.setInvestigationId(rs.getInt("investigationId"));
 						detail.setInsuredName(rs.getString("insuredName"));
 						detail.setInsuredDOD(rs.getString("insuredDOD"));
 						detail.setInsuredDOB(rs.getString("insuredDOB"));
@@ -202,10 +208,10 @@ public class CaseDaoImpl implements CaseDao {
 	public String updateCaseDetails(CaseDetails casedetail) {
 		try
 		{
-			String sql = "UPDATE case_lists SET policyNumber = ?, investigationCategory = ?, insuredName = ?, insuredDOD = ?, insuredDOB = ?, sumAssured = ?, intimationType = ?, claimantCity = ?,"
+			String sql = "UPDATE case_lists SET policyNumber = ?, investigationId = ?, insuredName = ?, insuredDOD = ?, insuredDOB = ?, sumAssured = ?, intimationType = ?, claimantCity = ?,"
 					+ "claimantZone = ?, claimantState = ?,nominee_name = ?, nomineeContactNumber = ?, nominee_address = ?, "
 					+ "insured_address = ?";
-			template.update(sql, casedetail.getPolicyNumber(), casedetail.getInvestigationCategory(), casedetail.getInsuredName(), casedetail.getInsuredDOD(),
+			template.update(sql, casedetail.getPolicyNumber(), casedetail.getInvestigationId(), casedetail.getInsuredName(), casedetail.getInsuredDOD(),
 					casedetail.getInsuredDOB(), casedetail.getSumAssured(), casedetail.getIntimationType(), casedetail.getClaimantCity(), casedetail.getClaimantZone(), 
 					casedetail.getClaimantState(), casedetail.getNominee_name(), casedetail.getNomineeContactNumber(), casedetail.getNominee_address(),
 					casedetail.getInsured_address());
@@ -403,12 +409,10 @@ public class CaseDaoImpl implements CaseDao {
 			//Error File
 			writeErrorCase(error_case);
 			
-			String sql = "INSERT INTO case_lists(policyNumber, investigationCategory, insuredName, insuredDOD, insuredDOB, "
-					+ "sumAssured, intimationType, claimantCity, claimantZone, claimantState, caseStatus, caseSubStatus, "
+			String sql = "INSERT INTO case_lists(policyNumber, investigationId, insuredName, insuredDOD, insuredDOB, "
+					+ "sumAssured, intimationType, claimantCity, claimantZone, claimantState, caseStatus, "
 					+ "nominee_name, nomineeContactNumber, nominee_address, insured_address, "
-					+ "supervisor, supervisor2managerRemarks, supervisor2investigatorRemarks, regionalManager2supervisorRemarks, "
-					+ "investigator, investigator2supervisorRemarks, underwriter, underwriter2regionalManagerRemarks, "
-					+ "talicManager, talicManager2underwriteRemarks, createdBy, createdDate, updatedDate, updatedBy) "
+					+ "createdBy, createdDate, updatedDate, updatedBy) "
 					+ "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '', '', '', '', '', '', '', '', '', '', ?, now(), "
 					+ "'0000-00-00 00:00:00', 0)";
 			
@@ -417,7 +421,7 @@ public class CaseDaoImpl implements CaseDao {
 	                    public void setValues(PreparedStatement ps, CaseDetails caseDetails) throws SQLException          
 	                    {
 	                    	ps.setString(1, caseDetails.getPolicyNumber());
-	                    	ps.setString(2, caseDetails.getInvestigationCategory());
+	                    	ps.setInt(2, caseDetails.getInvestigationId());
 	                    	ps.setString(3, caseDetails.getInsuredName());
 	                    	ps.setString(4, caseDetails.getInsuredDOD());
 	                    	ps.setString(5, caseDetails.getInsuredDOB());
@@ -537,7 +541,7 @@ public class CaseDaoImpl implements CaseDao {
 				cell.setCellValue(entry.getKey().getPolicyNumber());
 				colNum++;
 				cell = newRow.createCell(colNum);
-				cell.setCellValue(entry.getKey().getInvestigationCategory());
+				cell.setCellValue(entry.getKey().getInvestigationId());
 				colNum++;
 				cell = newRow.createCell(colNum);
 				cell.setCellValue(entry.getKey().getIntimationType());
