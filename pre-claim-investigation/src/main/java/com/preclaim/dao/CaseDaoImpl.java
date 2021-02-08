@@ -31,6 +31,7 @@ import com.preclaim.config.CustomMethods;
 import com.preclaim.models.CaseDetailList;
 import com.preclaim.models.CaseDetails;
 import com.preclaim.models.Location;
+import com.preclaim.models.UserDetails;
 
 public class CaseDaoImpl implements CaseDao {
 
@@ -583,6 +584,20 @@ public class CaseDaoImpl implements CaseDao {
 		}
 		
 		return;
+	}
+
+	@Override
+	public List<UserDetails> getUserListByRole(String role_code) {
+		String sql = "SELECT * FROM admin_user where status = 1 and role_name = ?";
+		return template.query(sql, new Object[] {role_code},
+				(ResultSet rs, int rowCount) -> 
+				{
+					UserDetails details = new UserDetails();
+					details.setFull_name(rs.getString("full_name"));
+					details.setUsername(rs.getString("username"));
+					details.setUserID(rs.getInt("user_id"));
+					return details;
+				});
 	}
 	
 }

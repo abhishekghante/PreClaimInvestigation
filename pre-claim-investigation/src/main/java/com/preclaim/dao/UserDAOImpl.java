@@ -388,15 +388,20 @@ public class UserDAOImpl implements UserDAO{
 		});
 			
 	}
-	
+
 	@Override
-	public List<UserRole> getUserRoleList() {
-		String query = "SELECT * FROM user_role WHERE status = 1";
-		return template.query(query, (ResultSet rs, int rowNum) -> {
-			UserRole uRole=new UserRole();
-			uRole.setRoleId(rs.getInt("roleId"));
-			uRole.setRole(rs.getString("role"));
-			return uRole;
+	public List<UserRole> getAssigneeRole() {
+		String sql = "select * from user_role where role_code NOT IN ('SUPADM') and status = 1";
+		return template.query(sql, new RowMapper<UserRole>(){			
+			public UserRole mapRow(ResultSet rs, int row) throws SQLException
+			{
+				UserRole role = new UserRole();
+				role.setRoleId(rs.getInt(1));
+				role.setRole(rs.getString(2));
+				role.setRole_code(rs.getString(3));
+				role.setStatus(rs.getInt(4));
+				return role;
+			}
 		});
 	}
 		

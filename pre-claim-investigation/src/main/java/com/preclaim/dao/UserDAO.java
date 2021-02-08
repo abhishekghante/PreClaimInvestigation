@@ -22,19 +22,10 @@ public interface UserDAO {
 	String addPermission(List<String> role_permission, String role_code);
 	String accountValidate(String username);
 	String updateProfile(UserDetails user_details);
-	/**
-	 * Activity Log - Keeps the log of all the activities performed on Pre-Claims Investigation Menu
-	 * @param Module Name
-	 * @param Module Code
-	 * @param Module Action - Add, Edit, Delete, Status Change etc
-	 * @param Username
-	 * @return void
-	 * 
-	 */
 	void activity_log(String moduleName,String moduleCode,String moduleAction,String username);
 	String getUserRole(String roleCode);
 	UserDetails getUserDetails(String username);
-	public List<UserDetails> getActiveUserList();
-	public List<UserRole> getUserRoleList(); 
+	List<UserDetails> getActiveUserList();
+	List<UserRole> getAssigneeRole();
 	
 }

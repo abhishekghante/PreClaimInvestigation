@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.preclaim.models.CaseDetailList;
 import com.preclaim.models.CaseDetails;
+import com.preclaim.models.UserDetails;
 
 public interface CaseDao {
 	
@@ -16,5 +17,6 @@ public interface CaseDao {
 	
 	List<CaseDetailList> getPendingCaseList(String username);
 	List<CaseDetailList> getAssignedCaseList(String username);
+	List<UserDetails> getUserListByRole(String role_code);
 
 }

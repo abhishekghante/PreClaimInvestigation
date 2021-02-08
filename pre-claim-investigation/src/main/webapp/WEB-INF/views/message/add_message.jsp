@@ -17,7 +17,6 @@ List<Location> location_list = (List<Location>) session.getAttribute("location_l
 session.removeAttribute("location_list");
 List<UserRole> userRole =(List<UserRole>)session.getAttribute("userRole");
 session.removeAttribute("userRole");
-List<UserDetails> userList=(List<UserDetails>)session.getAttribute("userList");
 %>
 <style type="text/css">
 .placeImg { display:none !important;}
@@ -153,20 +152,6 @@ List<UserDetails> userList=(List<UserDetails>)session.getAttribute("userList");
                 <div class="col-md-8">
                   	<input type = "text" name="claimantZone" id="claimantZone" class="form-control" readonly disabled>
                 </div>
-              </div>
-              <div class="form-group">
-                <label class="col-md-4 control-label" for="msgTitleEn">Status</label>
-                <div class="col-md-8">
-                  <input type="text" placeholder="Status" name="status" id="status" class="form-control"
-                  	value = "Open"  disabled readonly>
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-md-4 control-label" for="subStatus">Sub-Status</label>
-                <div class="col-md-8">
-                  <input type="text" placeholder="Sub Status" name="subStatus" id="subStatus" 
-                  	class="form-control" value = "Pending for Assignment" disabled readonly>
-                </div>
               </div>           
               <div class="form-group">
                 <label class="col-md-4 control-label" for="nomineeName">Nominee Name
@@ -204,7 +189,7 @@ List<UserDetails> userList=(List<UserDetails>)session.getAttribute("userList");
                     <option value="-1" selected disabled>Select</option>
                      <%if(userRole != null){
                     	for(UserRole userRoleLists: userRole){%>
-                    	<option value = "<%=userRoleLists.getRole()%>"><%=userRoleLists.getRole() %></option>
+                    	<option value = "<%=userRoleLists.getRole_code()%>"><%=userRoleLists.getRole() %></option>
                     <%}} %> 
                   </select>
                 </div>
@@ -212,114 +197,16 @@ List<UserDetails> userList=(List<UserDetails>)session.getAttribute("userList");
                 <label class="col-md-2 control-label" for="userRole">Select User 
                 	<span class="text-danger">*</span></label>
                 <div class="col-md-2">
-                  <select name="userRole" id="userRole" class="form-control" tabindex="-1">
-                    <option value="-1" selected disabled>Select</option>
-                   <%if(userList != null){
-                    	for(UserDetails user_lists: userList){%>
-                    	<option value = "<%=user_lists.getUsername()%>"><%=user_lists.getUsername()%></option>
-                    <%}} %> 
+                  <select name="assigneeId" id="assigneeId" class="form-control">
+                  	<option value = '-1' selected disabled>Select</option>
                   </select>
                 </div>
                 
               </div>
-              <!-- 
-              <div class="form-group">
-       		  	<label class="col-md-4 control-label">Upload PDF</label>
-           		<div class="col-md-8">
-                	<input type="file" name="casePDF" id="casePDF" accept="application/pdf" />
-              	</div>
-              </div>
-               -->
-               <!--  
-              <div id="uploadImageDiv">
-                <div class="form-group">
-                  <label class="col-md-4 control-label">Upload Image(En)</label>
-                  <div class="col-md-8 col-nopadding-l">
-                    <div class="col-md-3">
-                      <a href="javascript:void(0);">
-                        <div class="uploadFileDiv">
-                          <span data-imgID="imgMsgEnLbl_1" data-ID="imgMsgEn_1" id="enLblDelBtn_1" class="delete_btn" data-linkID="link_msgImgEn_1" data-toggle="tooltip" data-toggle="tooltip" title="Remove">
-                            <i class="fa fa-remove"></i>
-                          </span>
-                          <span class="add_link_btn" data-val="" id="link_msgImgEn_1" data-toggle="tooltip" data-toggle="tooltip" title="Update hyperlink">
-                            <i class="fa fa-link"></i>
-                          </span>
-                          <img src="${pageContext.request.contextPath}/resources/uploads/default_img.png" class="imgMsgEnLbl" id="imgMsgEnLbl_1" style="height:height:120px;width: 100%;" data-src="#" data-toggle="tooltip" data-toggle="tooltip" title="Click to upload Image 1" />
-                        </div>
-                        <input type="file" onchange="displayUploadImg(this, 'imgMsgEnLbl_1', 'enLblDelBtn_1', 'link_msgImgEn_1');" name="imgMsgEn_1" id="imgMsgEn_1" class="placeImg" accept="image/*" />
-                        <input type="hidden" name="d_link_msgImgEn_1" id="d_link_msgImgEn_1" />
-                      </a>
-                    </div>
-                    <div class="col-md-3">
-                      <a href="javascript:void(0);">
-                        <div class="uploadFileDiv">
-                          <span data-imgID="imgMsgEnLbl_2" data-ID="imgMsgEn_2" id="enLblDelBtn_2" class="delete_btn" data-linkID="link_msgImgEn_2" data-toggle="tooltip" data-toggle="tooltip" title="Remove">
-                            <i class="fa fa-remove"></i>
-                          </span>
-                          <span class="add_link_btn" data-val="" id="link_msgImgEn_2" data-toggle="tooltip" data-toggle="tooltip" title="Update hyperlink">
-                            <i class="fa fa-link"></i>
-                          </span>
-                          <img src="${pageContext.request.contextPath}/resources/uploads/default_img.png" class="imgMsgEnLbl" id="imgMsgEnLbl_2" style="height:height:120px;width: 100%;" data-src="#" data-toggle="tooltip" data-toggle="tooltip" title="Click to upload Image 2" />
-                        </div>
-                        <input type="file" onchange="displayUploadImg(this, 'imgMsgEnLbl_2', 'enLblDelBtn_2', 'link_msgImgEn_2');" name="imgMsgEn_2" id="imgMsgEn_2" class="placeImg" accept="image/*" />
-                        <input type="hidden" name="d_link_msgImgEn_2" id="d_link_msgImgEn_2" />
-                      </a>
-                    </div>
-                    <div class="col-md-3">
-                      <a href="javascript:void(0);">
-                        <div class="uploadFileDiv">
-                          <span data-imgID="imgMsgEnLbl_3" data-ID="imgMsgEn_3" id="enLblDelBtn_3" class="delete_btn" data-linkID="link_msgImgEn_3" data-toggle="tooltip" data-toggle="tooltip" title="Remove">
-                            <i class="fa fa-remove"></i>
-                          </span>
-                          <span class="add_link_btn" data-val="" id="link_msgImgEn_3" data-toggle="tooltip" data-toggle="tooltip" title="Update hyperlink">
-                            <i class="fa fa-link"></i>
-                          </span>
-                          <img src="${pageContext.request.contextPath}/resources/uploads/default_img.png" class="imgMsgEnLbl" id="imgMsgEnLbl_3" style="height:height:120px;width: 100%;" data-src="#" data-toggle="tooltip" data-toggle="tooltip" title="Click to upload Image 3" />
-                        </div>
-                        <input type="file" onchange="displayUploadImg(this, 'imgMsgEnLbl_3', 'enLblDelBtn_3', 'link_msgImgEn_3');" name="imgMsgEn_3" id="imgMsgEn_3" class="placeImg" accept="image/*" />
-                        <input type="hidden" name="d_link_msgImgEn_3" id="d_link_msgImgEn_3" />
-                      </a>
-                    </div>
-                    <div class="col-md-3">
-                      <a href="javascript:void(0);">
-                        <div class="uploadFileDiv">
-                          <span data-imgID="imgMsgEnLbl_4" data-ID="imgMsgEn_4" id="enLblDelBtn_4" class="delete_btn" data-linkID="link_msgImgEn_4" data-toggle="tooltip" data-toggle="tooltip" title="Remove">
-                            <i class="fa fa-remove"></i>
-                          </span>
-                          <span class="add_link_btn" data-val="" id="link_msgImgEn_4" data-toggle="tooltip" data-toggle="tooltip" title="Update hyperlink">
-                            <i class="fa fa-link"></i>
-                          </span>
-                          <img src="${pageContext.request.contextPath}/resources/uploads/default_img.png" class="imgMsgEnLbl" id="imgMsgEnLbl_4" style="height:height:120px;width: 100%;" data-src="#" data-toggle="tooltip" data-toggle="tooltip" title="Click to upload Image 4" />
-                        </div>
-                        <input type="file" onchange="displayUploadImg(this, 'imgMsgEnLbl_4', 'enLblDelBtn_4', 'link_msgImgEn_4');" name="imgMsgEn_4" id="imgMsgEn_4" class="placeImg" accept="image/*" />
-                        <input type="hidden" name="d_link_msgImgEn_4" id="d_link_msgImgEn_4" />
-                      </a>
-                    </div>
-                    <div class="col-md-3">
-                      <a href="javascript:void(0);">
-                        <div class="uploadFileDiv">
-                          <span data-imgID="imgMsgEnLbl_5" data-ID="imgMsgEn_5" id="enLblDelBtn_5" class="delete_btn" data-linkID="link_msgImgEn_5" data-toggle="tooltip" data-toggle="tooltip" title="Remove">
-                            <i class="fa fa-remove"></i>
-                          </span>
-                          <span class="add_link_btn" data-val="" id="link_msgImgEn_5" data-toggle="tooltip" data-toggle="tooltip" title="Update hyperlink">
-                            <i class="fa fa-link"></i>
-                          </span>
-                          <img src="${pageContext.request.contextPath}/resources/uploads/default_img.png" class="imgMsgEnLbl" id="imgMsgEnLbl_5" style="height:height:120px;width: 100%;" data-src="#" data-toggle="tooltip" data-toggle="tooltip" title="Click to upload Image 5" />
-                        </div>
-                        <input type="file" onchange="displayUploadImg(this, 'imgMsgEnLbl_5', 'enLblDelBtn_5', 'link_msgImgEn_5');" name="imgMsgEn_5" id="imgMsgEn_5" class="placeImg" accept="image/*" />
-                        <input type="hidden" name="d_link_msgImgEn_5" id="d_link_msgImgEn_5" />
-                      </a>
-                    </div>
-                    
-              </div>
-              </div>
-              </div>
-               -->
               <!--  Footer -->
               <div class="box-footer">
                 <div class="row">
                   <div class="col-md-offset-4 col-md-8">
-                    <input type="hidden" id="csrf" name="<?= $token_name; ?>" value="<?= $token_hash; ?>" />
                     <button class="btn btn-info" id="addmessagesubmit" type="submit">Broadcast</button>
                     <button class="btn btn-danger" onClick="return clearForm();" type="button">Clear</button>
                   </div>
@@ -341,7 +228,7 @@ $("document").ready(function(){
 		$("#claimantState").val($("#claimantCity option:selected").data("state"));
 		$("#claimantZone").val($("#claimantCity option:selected").data("zone"));
 	});
-	
+		
 });
 
 
@@ -392,7 +279,7 @@ function displayUploadImg(input, PlaceholderID, deleteID, linkID) {
     var nomineeAdd     = $( '#add_message_form #nomineeAdd' ).val();
     var insuredAdd     = $( '#add_message_form #insuredAdd' ).val();
     var roleName       = $( '#add_message_form #roleName ' ).val();
-    var userRole       = $( '#add_message_form #userRole').val();
+    var assigneeId       = $( '#add_message_form #assigneeId').val();
     
     $('#policyNumber').removeClass('has-error-2');
     
@@ -473,9 +360,9 @@ function displayUploadImg(input, PlaceholderID, deleteID, linkID) {
        toastr.error('Please select role name','Error') 	
    	   errorflag = 1;
     }
-    if(userRole == '')
+    if(assigneeId == '-1')
     {
-       toastr.error('Please select user role','Error') 	
+       toastr.error('Please select user','Error') 	
    	   errorflag = 1;
     }
    
@@ -488,7 +375,7 @@ function displayUploadImg(input, PlaceholderID, deleteID, linkID) {
 	    url: 'addMessage',
 	    data: {'policyNumber':policyNumber,'msgCategory':msgCategory,'insuredName':insuredName,'insuredDOD':insuredDOB,'insuredDOB':insuredDOD,
 	    	       'sumAssured':sumAssured,'msgIntimationType':msgIntimationType,'claimantCity':claimantCity,'claimantState':claimantState,
-	    	       'nomineeName':nomineeName,'nomineeMob':nomineeMob,'nomineeAdd':nomineeAdd,'insuredAdd':insuredAdd, 'roleName':roleName, 'userRole':userRole},
+	    	       'nomineeName':nomineeName,'nomineeMob':nomineeMob,'nomineeAdd':nomineeAdd,'insuredAdd':insuredAdd, 'roleName':roleName, 'assigneeId':assigneeId},
 	    beforeSend: function() {
 	    	$("#addmessagesubmit").html('<img src="${pageContext.request.contextPath}/resources/img/input-spinner.gif"> Loading...');
 	        $("#addmessagesubmit").prop('disabled', true);
@@ -516,12 +403,32 @@ function clearForm(){
   $( '#sm_modal_body' ).html( 'Do you really want to clear this form data?' );
   $( '#sm_modal_footer' ).html( '<button type="button" class="btn dark btn-outline" data-dismiss="modal">Cancel</button><button type="button" id="continuemodal_cl" class="btn green">Yes</button>' );
   $( '#continuemodal_cl' ).click( function() {
-    $("form#add_message_form").trigger("reset");
-    $("#msgCategory").select2("val", "");
-    $("#msgChannel").select2("val", "");
-    $(".add_link_btn").hide();
-    $('.add_link_btn').attr('data-val','');
-    $('#small_modal').modal('hide');
+  $("form#add_message_form").trigger("reset");
+  $('#small_modal').modal('hide');
   });
 }
+</script>
+
+<script>
+$("#roleName").change(function(){
+	console.log($("#roleName option:selected").val());
+	var roleCode = $(this).val();
+	$.ajax({
+	    type: "POST",
+	    url: 'getUserByRole',
+	    data: {"role_code": roleCode},
+	    success: function(userList)
+	    {
+	    	console.log(userList);
+	  		var options = "";
+	    	for(i = 0; i < userList.length ; i++)
+	  			{
+	  				options += "<option value ='" + userList[i].username + "'>" + userList[i].full_name + "</option>";  
+	  			}
+	  		console.log(options);
+	    	$("#assigneeId").append(options);
+	    }
+});
+
+});
 </script>

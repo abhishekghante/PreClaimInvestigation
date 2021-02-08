@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -90,12 +91,12 @@ public class CaseController {
     	details.setSub_menu2("Manage Cases");
     	details.setSub_menu2_path("../message/pending_message.jsp");
     	session.setAttribute("ScreenDetails", details);    	
-    	session.setAttribute("userRole", userDao.getUserRoleList());
-    	session.setAttribute("userList", userDao.getActiveUserList());
+    
+    	session.setAttribute("userRole", userDao.getAssigneeRole());
     	session.setAttribute("investigation_list", investigationDao.getActiveInvestigationList());
     	session.setAttribute("intimation_list", intimationTypeDao.getActiveIntimationType());
     	session.setAttribute("location_list", locationDao.getActiveLocationList());
-    	System.out.println("sysout"+investigationDao.getActiveInvestigationList());
+    	
     	return "common/templatecontent";
     }
     
@@ -349,4 +350,13 @@ public class CaseController {
         	return;
         }
     }
+    
+    @RequestMapping(value = "/getUserByRole",method = RequestMethod.POST)
+    public @ResponseBody List<UserDetails> getUserByRole(HttpServletRequest request,HttpSession session) 
+    {
+    	String role_code = request.getParameter("role_code");
+    	return caseDao.getUserListByRole(role_code);
+		
+    }
+    
 }
