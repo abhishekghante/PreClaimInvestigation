@@ -192,10 +192,10 @@ public class CaseDaoImpl implements CaseDao {
 						detail.setIntimationType(rs.getString("intimationType"));
 						detail.setLocationId(rs.getInt("locationId"));
 						detail.setNominee_name(rs.getString("nominee_name"));
-						detail.setNomineeContactNumber(rs.getString("nomineeContactNumber"));
+						detail.setNomineeContactNumber(rs.getString("nominee_ContactNumber"));
 						detail.setNominee_address(rs.getString("nominee_address"));
 						detail.setInsured_address(rs.getString("insured_address"));
-						detail.setCase_description(rs.getString("CaseDescription"));
+						detail.setCase_description(rs.getString("case_description"));
 						detail.setLongitude(rs.getString("longitude"));
 						detail.setLatitude(rs.getString("latitude"));
 						detail.setPdf1FilePath(rs.getString("pdf1FilePath"));

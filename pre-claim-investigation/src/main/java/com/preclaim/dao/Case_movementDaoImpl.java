@@ -23,7 +23,6 @@ public class Case_movementDaoImpl implements Case_movementDao {
 
 	@Override
 	public String CreatecaseMovement(CaseMovement caseMovement) {
-
 		try
 		{
 		   String query="INSERT INTO case_movement(caseId, fromID, toId, caseStatus, remarks, createdDate, updatedDate) values(?, ?, ?, ?, '', now(), now()) ";
@@ -56,6 +55,28 @@ public class Case_movementDaoImpl implements Case_movementDao {
 			case_movement.setRemarks(rs.getString("Remarks"));
 			return case_movement;
 		}).get(0);
+	}
+
+	@Override
+	public String updateCaseMovement(CaseMovement caseMovement) {
+		try
+		{
+		   String query="UPDATE case_movement SET fromID = ?, toId = ?, caseStatus = ?, remarks = ?, "
+		   		+ "createdDate = now(), updatedDate = now() where caseId = ?";
+		   this.template.update(caseMovement.getFromId(), caseMovement.getToId(), 
+				   caseMovement.getCaseStatus(),caseMovement.getRemarks(), caseMovement.getCaseId());
+		 
+		   query="INSERT INTO audit_case_movement(caseId, fromID, toId, caseStatus, remarks, createdDate, updatedDate) values(?, ?, ?, ?, '', now(), now()) ";
+		   this.template.update(query,caseMovement.getCaseId(), caseMovement.getFromId(), caseMovement.getToId(),caseMovement.getCaseStatus());
+			
+	    }
+		catch(Exception e) {
+			
+			e.printStackTrace();
+			return e.getMessage();
+			
+		}		
+		return "****";
 	}
 
 

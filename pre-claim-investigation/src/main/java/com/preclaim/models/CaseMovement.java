@@ -20,6 +20,15 @@ public class CaseMovement {
 		this.updatedDate = "";
 	}
 
+	public CaseMovement(long caseId, String fromId, String toId, String caseStatus, String remarks) {
+		super();
+		this.caseId = caseId;
+		this.fromId = fromId;
+		this.toId = toId;
+		this.caseStatus = caseStatus;
+		this.remarks = remarks;
+	}
+
 	public long getCaseId() {
 		return caseId;
 	}

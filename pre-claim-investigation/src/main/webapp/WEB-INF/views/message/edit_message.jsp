@@ -150,7 +150,8 @@ boolean allow_edit = user_permission.contains("messages/add");
                 	<span class="text-danger">*</span>
                	</label>
                 <div class="col-md-8">
-                  <select name="claimantCity" id="claimantCity" class="form-control" tabindex="-1">
+                  <select name="claimantCity" id="claimantCity" class="form-control" tabindex="-1"
+                  	<%if(allow_edit) {%>readonly disabled<%} %>>
                   	 <option value="-1" selected disabled>Select</option>
                   	 <%if(location_list!=null){ 
                   	  for(Location location : location_list){%>  
@@ -168,7 +169,7 @@ boolean allow_edit = user_permission.contains("messages/add");
                	</label>
                 <div class="col-md-8">
                   <input type="text" value="<%=case_detail.getClaimantState()%>" placeholder="Claimant State" name="claimantState" 
-                  	id="claimantState" class="form-control">
+                  	id="claimantState" class="form-control" <%if(allow_edit) {%>readonly disabled<%} %>>
                 </div>
               </div>
               <div class="form-group">
@@ -177,7 +178,7 @@ boolean allow_edit = user_permission.contains("messages/add");
                	</label>
                 <div class="col-md-8">
                   <input type="text" value="<%=case_detail.getClaimantZone()%>" placeholder="Claimant Zone" name="claimantZone" id="claimantZone" 
-                  	class="form-control">
+                  	class="form-control" <%if(allow_edit) {%>readonly disabled<%} %>>
                 </div>
               </div>
               <div class="form-group">
@@ -208,8 +209,7 @@ boolean allow_edit = user_permission.contains("messages/add");
                 <label class="col-md-4 control-label" for="nomineeAdd">Nominee Address</label>
                 <div class="col-md-8">
                   <textarea name="nomineeAdd" id="nomineeAdd" class="form-control" rows="6"
-                  	<%if(allow_edit) {%>readonly disabled<%} %>>
-                  	<%=case_detail.getNominee_address()%>
+                  	<%if(allow_edit) {%>readonly disabled<%} %>><%=case_detail.getNominee_address()%>
                	  </textarea>
                 </div>
               </div>
@@ -217,8 +217,7 @@ boolean allow_edit = user_permission.contains("messages/add");
                 <label class="col-md-4 control-label" for="insuredAdd">Insured Address</label>
                 <div class="col-md-8">
                   <textarea name="insuredAdd" id="insuredAdd" class="form-control" rows="6"
-                  	<%if(allow_edit) {%>readonly disabled<%} %>>
-                  	<%=case_detail.getInsured_address()%>
+                  	<%if(allow_edit) {%>readonly disabled<%} %>><%=case_detail.getInsured_address()%>
                   </textarea>
                 </div>
               </div>
@@ -293,23 +292,10 @@ boolean allow_edit = user_permission.contains("messages/add");
                         <input type="file" onchange="displayUploadImg(this, 'imgMsgEnLbl_4', 'enLblDelBtn_4', 'link_msgImgEn_4');" name="imgMsgEn_4" id="imgMsgEn_4" class="placeImg" accept="image/*" />
                         <input type="hidden" name="d_link_msgImgEn_4" id="d_link_msgImgEn_4" />
                       </a>
-                    </div>
-                    <div class="col-md-3">
-                      <a href="javascript:void(0);">
-                        <div class="uploadFileDiv">
-                          <span data-imgID="imgMsgEnLbl_5" data-ID="imgMsgEn_5" id="enLblDelBtn_5" class="delete_btn" data-linkID="link_msgImgEn_5" data-toggle="tooltip" data-toggle="tooltip" title="Remove">
-                            <i class="fa fa-remove"></i>
-                          </span>
-                          <span class="add_link_btn" data-val="" id="link_msgImgEn_5" data-toggle="tooltip" data-toggle="tooltip" title="Update hyperlink">
-                            <i class="fa fa-link"></i>
-                          </span>
-                          <img src="${pageContext.request.contextPath}/resources/uploads/default_img.png" class="imgMsgEnLbl" id="imgMsgEnLbl_5" style="height:height:120px;width: 100%;" data-src="#" data-toggle="tooltip" data-toggle="tooltip" title="Click to upload Image 5" />
-                        </div>
-                        <input type="file" onchange="displayUploadImg(this, 'imgMsgEnLbl_5', 'enLblDelBtn_5', 'link_msgImgEn_5');" name="imgMsgEn_5" id="imgMsgEn_5" class="placeImg" accept="image/*" />
-                        <input type="hidden" name="d_link_msgImgEn_5" id="d_link_msgImgEn_5" />
-                      </a>
-                    </div>
-                  <%if(!case_detail.getAudioFilePath().equals("")) {%>
+                    </div>  
+              	</div>
+              </div>
+              <%if(!case_detail.getAudioFilePath().equals("")) {%>
 	              <div class="form-group">
 	       		  	<label class="col-md-4 control-label">Audio</label>
 	           		<div class="col-md-8">
@@ -329,21 +315,29 @@ boolean allow_edit = user_permission.contains("messages/add");
 	              	</div>
 	              </div>                    
 	              <%} %>
-	              
-	              <div class = "form-group selectDiv">
-	              	<label class="col-md-4 control-label" for="assignerRole">
-	              	<div class = "col-md-2">
-		              	<input type = "text" id = "assignerRole" name = "assignerRole" class = "form-control"
-		              		value = "<%=case_detail.getAssignerRole() %>" readonly disabled>
-              		
-	              	</div>
-	              	
-	              	<label class="col-md-4 control-label" for="assignerName">
-	              	<div class = "col-md-2">
-		              	<input type = "text" id = "assignerName" name = "assignerName" class = "form-control"
-		              		value = "<%=case_detail.getAssignerName() %>" readonly disabled>
-              		
-	              	</div>
+	              <div class="mt-2 form-group selectDiv">
+		                <label class="col-md-4 control-label" for="roleName">From Role Name 
+		                	<span class="text-danger">*</span></label>
+		                <div class="col-md-2">
+		                  <select name="roleName" id="roleName" class="form-control" tabindex="-1"
+		                  	readonly disabled>
+		                    <option value="-1" selected disabled>Select</option>
+		                     <%if(userRole != null){
+		                    	for(UserRole userRoleLists: userRole){%>
+		                    	<option value = "<%=userRoleLists.getRole_code()%>"><%=userRoleLists.getRole() %></option>
+		                    <%}} %> 
+		                  </select>
+		                </div>
+	                
+		                <label class="col-md-2 control-label" for="assignerId">From User 
+		                	<span class="text-danger">*</span></label>
+		                <div class="col-md-2">
+		                  <select name="assigneeId" id="assigneeId" class="form-control"
+		                  	readonly disabled>
+		                  	<option value = '-1' selected disabled>Select</option>
+		                  </select>
+		            	</div>
+	                
 	              </div>
 	              <div class="form-group">
 	                <label class="col-md-4 control-label" for="assignerStatus">Assigner Status
@@ -351,8 +345,7 @@ boolean allow_edit = user_permission.contains("messages/add");
 	                </label>
 	                <div class="col-md-8">
 	                  <input type="text" value="<%=case_detail.getApprovedStatus()%>" 
-	                  	placeholder="Assigner Status" name="assignerStatus" id="assignerStatus" 
-	                  	class="form-control" readonly disabled>
+	                  	name="assignerStatus" id="assignerStatus" class="form-control" readonly disabled>
 	                </div>
 	              </div>
 	              <div class="form-group">
@@ -364,7 +357,7 @@ boolean allow_edit = user_permission.contains("messages/add");
 	               	  </textarea>
 	                </div>
               	 </div>
-		          <div class="form-group selectDiv">
+		         <div class="form-group selectDiv">
 		                <label class="col-md-4 control-label" for="roleName">Select Role Name 
 		                	<span class="text-danger">*</span></label>
 		                <div class="col-md-2">
@@ -377,25 +370,34 @@ boolean allow_edit = user_permission.contains("messages/add");
 		                  </select>
 		                </div>
 	                
-		                <label class="col-md-2 control-label" for="userRole">Select User 
+		                <label class="col-md-2 control-label" for="toId">Select User 
 		                	<span class="text-danger">*</span></label>
 		                <div class="col-md-2">
-		                  <select name="assigneeId" id="assigneeId" class="form-control">
+		                  <select name="toId" id="toId" class="form-control">
 		                  	<option value = '-1' selected disabled>Select</option>
 		                  </select>
 		            	</div>
 	                
 	              </div>
-	              
-	              <div class="form-group">
-	                <label class="col-md-4 control-label" for="assigneeRemarks">Remarks</label>
+	             <div class="form-group selectDiv">
+	                <label class="col-md-4 control-label" for="approveStatus">Case Status 
+	                	<span class="text-danger">*</span></label>
 	                <div class="col-md-8">
-	                  <textarea name="assigneeRemarks" id="assigneeRemarks" class="form-control" rows="6">
+	                  <select name="approveStatus" id="approveStatus" class="form-control" 
+	                  	tabindex="-1">
+	                    <option value="-1" disabled>Select</option>
+	                    <option value = "Approved">Approved</option>
+	                    <option value = "Rejected">Rejected</option>
+	                  </select>
+	                </div>
+	              </div>
+	              <div class="form-group">
+	                <label class="col-md-4 control-label" for="toRemarks">Remarks</label>
+	                <div class="col-md-8">
+	                  <textarea name="toRemarks" id="toRemarks" class="form-control" rows="6">
 	               	  </textarea>
 	                </div>
               	</div>
-              </div>
-              </div>
               </div>
               <!--  Footer -->
               <div class="box-footer">
@@ -446,6 +448,56 @@ function displayUploadImg(input, PlaceholderID, deleteID, linkID) {
 }
   $("#edit_message_form").on('submit', function(e){
     e.preventDefault();
+   
+    var caseId = $( '#edit_message_form #caseId' ).val();
+    var toId = $( '#edit_message_form #toId' ).val();
+    var toRole = $( '#edit_message_form #toRole' ).val();
+    var approveStatus = $( '#edit_message_form #approveStatus' ).val();
+    var toRemarks = $( '#edit_message_form #toRemarks' ).val();
+    var validFlag = 1;
+    
+    <%if(user_permission.contains("messages/assign")){%>
+	    if(toId == "-1")
+	   	{
+	   		toastr.error("Kindly select user", "Error");
+	   		validFlag = 0;
+	   	}
+	    if(approveStatus == "-1")
+	   	{
+	   		toastr.error("Kindly select status", "Error");
+	   		validFlag = 0;
+	   	}
+	    if(toRole == "-1")
+	   	{
+	   		toastr.error("Kindly select User Role", "Error");
+	   		validFlag = 0;
+	   	}
+	    
+	    if(validFlag == 0)
+	   	{
+			return false;    	
+	   	}
+    
+    $.ajax({
+	    type: "POST",
+	    url: 'assignCase',
+	    data:{"toId" : toId, "approveStatus" : approveStatus, "toRemarks" : 
+	    	toRemarks, "caseId": caseId},
+	    success:function(data)
+	    {
+	    	if(message == "****")
+	    		{
+		    		toastr.success("Case assigned successfully", "Success");
+		    		return;
+	    		}
+	    	else
+	    		{
+	    			toatr.error(message),"Error");
+    				return;
+	    		}
+	    }
+    });
+    <%}%>
     var policyNumber   = $( '#edit_message_form #policyNumber' ).val();
     var msgCategory    = $( '#editmessagesubmit #msgCategory' ).val();
     var insuredName    = $( '#editmessagesubmit #insuredName' ).val();
@@ -537,7 +589,21 @@ function displayUploadImg(input, PlaceholderID, deleteID, linkID) {
         toastr.error('Please enter Insured Address','Error');
         errorFlag = 1;
     }
-   
+    if(assigneeId == "-1")
+   	{
+   		toastr.error("Kindly select user", "Error");
+   		errorFlag = 1;
+   	}
+    if(assigneeStatus == "-1")
+   	{
+   		toastr.error("Kindly select status", "Error");
+   		errorFlag = 1;
+   	}
+    if(assigneeRole == "-1")
+   	{
+   		toastr.error("Kindly select User Role", "Error");
+   		errorFlag = 1;
+   	}
     
     if(errorFlag == 1)
     	return false;
@@ -582,4 +648,28 @@ function clearForm(){
     $('#small_modal').modal('hide');
   });
 }
+</script>
+<script>
+$("#roleName").change(function(){
+	console.log($("#roleName option:selected").val());
+	var roleCode = $(this).val();
+	$("#assigneeId option").remove();
+	$.ajax({
+	    type: "POST",
+	    url: 'getUserByRole',
+	    data: {"role_code": roleCode},
+	    success: function(userList)
+	    {
+	    	console.log(userList);
+	  		var options = "<option value = -1 selected disabled>Select</option>";
+	    	for(i = 0; i < userList.length ; i++)
+	  			{
+	  				options += "<option value ='" + userList[i].username + "'>" + userList[i].full_name + "</option>";  
+	  			}
+	  		console.log(options);
+	    	$("#assigneeId").append(options);
+	    }
+});
+
+});
 </script>

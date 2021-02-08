@@ -301,19 +301,20 @@ public class CaseController {
    		return message;
     }
     
-    @RequestMapping(value = "/assignToRM",method = RequestMethod.POST)
+    @RequestMapping(value = "/assignCase",method = RequestMethod.POST)
     public @ResponseBody String assignToRM(HttpServletRequest request,HttpSession session) 
     {
     	UserDetails user = (UserDetails) session.getAttribute("User_Login");
-		
-    	String[] paramValues = request.getParameterValues("caseList[]");
-		int caseLen = paramValues.length;
-		String caseList = "";
-		for (int i = 0; i < caseLen; i++)
-			caseList += "'" + paramValues[i] + "',";
-		caseList = caseList.substring(0, caseList.length() - 1);
-	 	userDao.activity_log("CASE HISTORY","", "ASSIGN CASE", user.getUsername());
-		return caseDao.assignToRM(caseList, "ARM", user.getUsername());
+    	long caseId = Integer.parseInt(request.getParameter("caseId"));
+		String assigneeId = request.getParameter("assigneeId");
+		String assignerId = user.getUsername();
+		String assignerStatus = request.getParameter("assignerStatus");
+		String assignerRemarks = request.getParameter("assignerRemarks");
+    	CaseMovement case_movement = new CaseMovement(caseId, assignerId, assigneeId, assignerStatus, 
+    			assignerRemarks);
+    	String message = caseMovementDao.updateCaseMovement(case_movement);
+    	userDao.activity_log("CASE HISTORY","", "ASSIGN CASE", user.getUsername());
+		return message;
 		
     }
     
