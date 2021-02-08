@@ -68,15 +68,15 @@ public class CaseDaoImpl implements CaseDao {
 	{
 		try 
 		{
-			String query = "INSERT INTO case_lists (policyNumber, investigationCategory, insuredName, insuredDOD, insuredDOB, sumAssured, intimationType, claimantCity,"
-							+ " claimantZone, claimantState, caseStatus, caseSubStatus, nominee_name, nomineeContactNumber, nominee_address, insured_address, supervisor,"
-							+ "supervisor2managerRemarks,supervisor2investigatorRemarks,regionalManager2supervisorRemarks,investigator, investigator2supervisorRemarks,underwriter,"
-							+ "underwriter2regionalManagerRemarks, talicManager, talicManager2underwriteRemarks, createdBy, createdDate, updatedDate, updatedBy) "
-							+ "values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'open', 'PA', ?, ?, ?, ?, '', '', '', '', '', '', '', '', '', '', ?, now(), now(), '')";    
+			String query = "INSERT INTO case_lists (policyNumber, investigationCategory, insuredName, insuredDOD, insuredDOB, sumAssured, intimationType, locationId,"
+							+ " caseStatus, nominee_name, nomineeContactNumber, nominee_address, insured_address, case_description, longitude, latitude, pdf1FilePath"
+							+ ", pdf2FilePath, pdf3FilePath, audioFilePath, videoFilePath, signatureFilePath "
+							+ "createdBy, createdDate, updatedDate, updatedBy) "
+							+ "values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, '', '', '', '', '', '', ?, now(), now(), '')";    
 			this.template.update(query, casedetail.getPolicyNumber(), casedetail.getInvestigationCategory(), casedetail.getInsuredName(), casedetail.getInsuredDOD(),
-					casedetail.getInsuredDOB(), casedetail.getSumAssured(), casedetail.getIntimationType(), casedetail.getClaimantCity(), casedetail.getClaimantZone(), 
-					casedetail.getClaimantState(), casedetail.getNominee_name(), casedetail.getNomineeContactNumber(), casedetail.getNominee_address(),
-					casedetail.getInsured_address(), casedetail.getCreatedBy());				    	
+					casedetail.getInsuredDOB(), casedetail.getSumAssured(), casedetail.getIntimationType(), casedetail.getLocationId(), casedetail.getCaseStatus(), 
+					casedetail.getNominee_name(), casedetail.getNomineeContactNumber(), casedetail.getNominee_address(), casedetail.getInsured_address(), 
+					casedetail.getCase_description(), casedetail.getLongitude(), casedetail.getLatitude(), casedetail.getCreatedBy());				    	
 		}
 		catch(Exception e)
 		{
@@ -389,7 +389,7 @@ public class CaseDaoImpl implements CaseDao {
 				if(error_message.equals(""))
 				{
 					caseDetails.setCaseStatus("Open");
-					caseDetails.setCaseSubstatus("PA");
+				//	caseDetails.setCaseSubstatus("PA");
 					caseList.add(caseDetails);
 				}
 				else

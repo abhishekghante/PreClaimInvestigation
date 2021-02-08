@@ -28,9 +28,11 @@ import com.preclaim.dao.IntimationTypeDao;
 import com.preclaim.dao.InvestigationTypeDao;
 import com.preclaim.dao.LocationDao;
 import com.preclaim.dao.UserDAO;
+import com.preclaim.dao.case_movementDao;
 import com.preclaim.models.CaseDetails;
 import com.preclaim.models.ScreenDetails;
 import com.preclaim.models.UserDetails;
+import com.preclaim.models.caseMovement;
 
 @Controller
 @RequestMapping(value = "/message")
@@ -50,6 +52,9 @@ public class CaseController {
 	
 	@Autowired
 	LocationDao locationDao;
+	
+	@Autowired
+	case_movementDao caseMovementDao;
 	
     @RequestMapping(value = "/import_case", method = RequestMethod.GET)
     public String import_case(HttpSession session) {
@@ -86,10 +91,11 @@ public class CaseController {
     	details.setSub_menu2_path("../message/pending_message.jsp");
     	session.setAttribute("ScreenDetails", details);    	
     	session.setAttribute("userRole", userDao.getUserRoleList());
+    	session.setAttribute("userList", userDao.getActiveUserList());
     	session.setAttribute("investigation_list", investigationDao.getActiveInvestigationList());
     	session.setAttribute("intimation_list", intimationTypeDao.getActiveIntimationType());
     	session.setAttribute("location_list", locationDao.getActiveLocationList());
-    	
+    	System.out.println("sysout"+investigationDao.getActiveInvestigationList());
     	return "common/templatecontent";
     }
     
@@ -98,7 +104,6 @@ public class CaseController {
     	UserDetails user = (UserDetails) session.getAttribute("User_Login");
 		if(user == null)
 			return "common/login";
-		
 		session.removeAttribute("ScreenDetails");
     	ScreenDetails details=new ScreenDetails();
     	details.setScreen_name("../message/pending_message.jsp");
@@ -106,7 +111,6 @@ public class CaseController {
     	details.setMain_menu("Case Management");
     	details.setSub_menu1("RCU Pending Cases");
     	session.setAttribute("ScreenDetails", details);
-    	
     	session.setAttribute("pendingCaseList", caseDao.getPendingCaseList(user.getUsername()));
     	session.setAttribute("investigation_list", investigationDao.getActiveInvestigationList());
     	session.setAttribute("intimation_list", intimationTypeDao.getActiveIntimationType());
@@ -218,13 +222,18 @@ public class CaseController {
        	caseDetail.setIntimationType( request.getParameter("msgIntimationType"));
        	caseDetail.setClaimantCity(request.getParameter("claimantCity"));
        	caseDetail.setClaimantState(request.getParameter("claimantState"));
-       	caseDetail.setClaimantZone(request.getParameter("claimantZone"));
        	caseDetail.setNominee_name(request.getParameter("nomineeName"));
        	caseDetail.setNomineeContactNumber(request.getParameter("nomineeMob"));
        	caseDetail.setNominee_address(request.getParameter("nomineeAdd"));
        	caseDetail.setInsured_address(request.getParameter("insuredAdd"));
 		caseDetail.setCreatedBy(user.getUsername()); 
        	String message= caseDao.addcase(caseDetail);
+       	
+       	caseMovement caseMovement=new caseMovement();
+       	caseMovement.setFromId(caseDetail.getCreatedBy());
+       	caseMovement.setToId(request.getParameter("roleName"));
+       	caseMovementDao.CreatecaseMovement(caseMovement);
+       	System.out.println("caseMovement-------"+caseMovement);
        	userDao.activity_log("CASE HISTORY", caseDetail.getPolicyNumber(), "ADD CASE", user.getUsername());
    		
        	return message;
@@ -254,7 +263,7 @@ public class CaseController {
     	details.setSub_menu2("Manage Cases");
     	details.setSub_menu2_path("../message/pending_message.jsp");
     	session.setAttribute("ScreenDetails", details);    	
-    	
+    	session.setAttribute("location_list", locationDao.getActiveLocationList());
     	session.setAttribute("investigation_list", investigationDao.getActiveInvestigationList());
     	session.setAttribute("intimation_list", intimationTypeDao.getActiveIntimationType());
     	session.setAttribute("case_detail",caseDao.getCaseDetail(Integer.parseInt(request.getParameter("caseId"))));

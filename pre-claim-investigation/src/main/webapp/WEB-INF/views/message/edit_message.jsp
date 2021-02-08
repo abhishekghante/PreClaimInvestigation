@@ -1,7 +1,7 @@
 <%@page import="com.preclaim.models.CaseDetails"%>
 <%@page import = "java.util.List" %>
 <%@page import = "java.util.ArrayList" %>
-
+<%@ page import="com.preclaim.models.Location" %>
 <%@page import = "com.preclaim.models.InvestigationType"%>
 <%@page import = "com.preclaim.models.IntimationType"%>
 <%
@@ -12,6 +12,7 @@ List<IntimationType> intimationTypeList = (List<IntimationType>) session.getAttr
 session.removeAttribute("intimation_list");
 CaseDetails case_detail=(CaseDetails)session.getAttribute("case_detail");
 session.removeAttribute("case_detail");
+List<Location> locationList=(List<Location>)session.getAttribute("location_lists");
 %>
 <style type="text/css">
 .placeImg { display:none !important;}

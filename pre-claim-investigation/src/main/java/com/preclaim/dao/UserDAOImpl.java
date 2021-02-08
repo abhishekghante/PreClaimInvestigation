@@ -378,11 +378,25 @@ public class UserDAOImpl implements UserDAO{
 	
 	}
 	
+	public List<UserDetails> getActiveUserList(){
+		String query="SELECT * FROM admin_user WHERE status = 1";
+		return this.template.query(query, (ResultSet rs, int rowNum ) -> {
+			UserDetails user=new UserDetails();
+			user.setUserID(rs.getInt("user_id"));
+			user.setUsername(rs.getString("username"));
+			return user;
+		});
+			
+	}
+	
 	@Override
-	public List<String> getUserRoleList() {
+	public List<UserRole> getUserRoleList() {
 		String query = "SELECT * FROM user_role WHERE status = 1";
 		return template.query(query, (ResultSet rs, int rowNum) -> {
-			return rs.getString("role");
+			UserRole uRole=new UserRole();
+			uRole.setRoleId(rs.getInt("roleId"));
+			uRole.setRole(rs.getString("role"));
+			return uRole;
 		});
 	}
 		

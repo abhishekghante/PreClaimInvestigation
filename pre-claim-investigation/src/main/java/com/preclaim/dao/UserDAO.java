@@ -34,5 +34,7 @@ public interface UserDAO {
 	void activity_log(String moduleName,String moduleCode,String moduleAction,String username);
 	String getUserRole(String roleCode);
 	UserDetails getUserDetails(String username);
-	public List<String> getUserRoleList(); 
+	public List<UserDetails> getActiveUserList();
+	public List<UserRole> getUserRoleList(); 
+	
 }

@@ -5,6 +5,7 @@
 <%@page import = "com.preclaim.models.Location"%>
 <%@page import = "com.preclaim.models.InvestigationType"%>
 <%@page import = "com.preclaim.models.IntimationType"%>
+<%@page import ="com.preclaim.models.UserDetails" %>
 
 <%
 List<String>user_permission=(List<String>)session.getAttribute("user_permission");
@@ -15,8 +16,8 @@ session.removeAttribute("intimation_list");
 List<Location> location_list = (List<Location>) session.getAttribute("location_list");
 session.removeAttribute("location_list");
 List<UserRole> userRole =(List<UserRole>)session.getAttribute("userRole");
-System.out.println(userRole);
 session.removeAttribute("userRole");
+List<UserDetails> userList=(List<UserDetails>)session.getAttribute("userList");
 %>
 <style type="text/css">
 .placeImg { display:none !important;}
@@ -195,19 +196,32 @@ session.removeAttribute("userRole");
                   <textarea name="insuredAdd" id="insuredAdd" class="form-control" rows="6"></textarea>
                 </div>
               </div>
-              <%--  <div class="form-group selectDiv">
+              <div class="form-group selectDiv">
                 <label class="col-md-4 control-label" for="roleName">Select Role Name 
                 	<span class="text-danger">*</span></label>
                 <div class="col-md-2">
                   <select name="roleName" id="roleName" class="form-control" tabindex="-1">
                     <option value="-1" selected disabled>Select</option>
-                    <%if(userRole != null){
+                     <%if(userRole != null){
                     	for(UserRole userRoleLists: userRole){%>
                     	<option value = "<%=userRoleLists.getRole()%>"><%=userRoleLists.getRole() %></option>
-                    <%}} %>
+                    <%}} %> 
                   </select>
                 </div>
-              </div> --%>
+                
+                <label class="col-md-2 control-label" for="userRole">Select User 
+                	<span class="text-danger">*</span></label>
+                <div class="col-md-2">
+                  <select name="userRole" id="userRole" class="form-control" tabindex="-1">
+                    <option value="-1" selected disabled>Select</option>
+                   <%if(userList != null){
+                    	for(UserDetails user_lists: userList){%>
+                    	<option value = "<%=user_lists.getUsername()%>"><%=user_lists.getUsername()%></option>
+                    <%}} %> 
+                  </select>
+                </div>
+                
+              </div>
               <!-- 
               <div class="form-group">
        		  	<label class="col-md-4 control-label">Upload PDF</label>
@@ -377,7 +391,8 @@ function displayUploadImg(input, PlaceholderID, deleteID, linkID) {
     var nomineeMob     = $( '#add_message_form #nomineeMob' ).val();
     var nomineeAdd     = $( '#add_message_form #nomineeAdd' ).val();
     var insuredAdd     = $( '#add_message_form #insuredAdd' ).val();
-    
+    var roleName       = $( '#add_message_form #roleName ' ).val();
+    var userRole       = $( '#add_message_form #userRole').val();
     
     $('#policyNumber').removeClass('has-error-2');
     
@@ -453,6 +468,16 @@ function displayUploadImg(input, PlaceholderID, deleteID, linkID) {
         toastr.error('Please enter Insured Address','Error');
         errorFlag = 1;
     }
+    if(roleName == '')
+    {
+       toastr.error('Please select role name','Error') 	
+   	   errorflag = 1;
+    }
+    if(userRole == '')
+    {
+       toastr.error('Please select user role','Error') 	
+   	   errorflag = 1;
+    }
    
     
     if(errorFlag == 1)
@@ -462,8 +487,8 @@ function displayUploadImg(input, PlaceholderID, deleteID, linkID) {
 	    type: "POST",
 	    url: 'addMessage',
 	    data: {'policyNumber':policyNumber,'msgCategory':msgCategory,'insuredName':insuredName,'insuredDOD':insuredDOB,'insuredDOB':insuredDOD,
-	    	       'sumAssured':sumAssured,'msgIntimationType':msgIntimationType,'claimantCity':claimantCity,'claimantZone':claimantZone,'claimantState':claimantState,
-	    	       'nomineeName':nomineeName,'nomineeMob':nomineeMob,'nomineeAdd':nomineeAdd,'insuredAdd':insuredAdd},
+	    	       'sumAssured':sumAssured,'msgIntimationType':msgIntimationType,'claimantCity':claimantCity,'claimantState':claimantState,
+	    	       'nomineeName':nomineeName,'nomineeMob':nomineeMob,'nomineeAdd':nomineeAdd,'insuredAdd':insuredAdd, 'roleName':roleName, 'userRole':userRole},
 	    beforeSend: function() {
 	    	$("#addmessagesubmit").html('<img src="${pageContext.request.contextPath}/resources/img/input-spinner.gif"> Loading...');
 	        $("#addmessagesubmit").prop('disabled', true);

@@ -10,25 +10,24 @@ public class CaseDetails {
 	private String insuredDOB;
 	private double sumAssured;
 	private String intimationType;
-	private String claimantCity;
-	private String claimantZone;
-	private String claimantState;
+	private String locationId;
 	private String caseStatus;
-	private String caseSubstatus;
 	private String nominee_name;
 	private String nomineeContactNumber;
 	private String nominee_address;
 	private String insured_address;
-	private String supervisor;
-	private String supervisor2managerRemarks;
-	private String supervisor2investigatorRemarks;
-	private String regionalManager2supervisorRemarks;
-	private String investigator;
-	private String investigator2supervisorRemarks;
-	private String underwriter;
-	private String underwriter2regionalManagerRemarks;
-	private String talicManager;
-	private String talicManager2underwriteRemarks;
+	private String case_description;
+	private String longitude;
+	private String claimantCity;
+	private String claimantZone;
+	private String claimantState;
+	private String latitude;
+	private String pdf1FilePath;
+	private String pdf2FilePath;
+	private String pdf3FilePath;
+	private String audioFilePath;
+	private String videoFilePath;
+	private String signatureFilePath;
 	private String createdBy;
 	private String createdDate;
 	private String updatedDate;
@@ -43,25 +42,24 @@ public class CaseDetails {
 		insuredDOB = "";
 		sumAssured = 0;
 		intimationType = "";
+		locationId = "";
 		claimantCity = "";
 		claimantState = "";
 		claimantZone = "";
 		caseStatus = "";
-		caseSubstatus = "";
 		nominee_name = "";
 		nomineeContactNumber = "";
 		nominee_address = "";
 		insured_address = "";
-		supervisor = "";
-		supervisor2managerRemarks = "";
-		supervisor2investigatorRemarks = "";
-		regionalManager2supervisorRemarks = "";
-		investigator = "";
-		investigator2supervisorRemarks = "";
-		underwriter = "";
-		underwriter2regionalManagerRemarks = "";
-		talicManager = "";
-		talicManager2underwriteRemarks = "";
+		case_description = "";
+		longitude = "";
+		latitude = "";
+		pdf1FilePath = "";
+		pdf2FilePath = "";
+		pdf3FilePath = "";
+		audioFilePath = "";
+		videoFilePath = "";
+		signatureFilePath = "";
 		createdBy = "";
 		createdDate = "";
 		updatedDate = "";
@@ -133,6 +131,13 @@ public class CaseDetails {
 		this.intimationType = intimationType;
 	}
 
+	public String getCaseStatus() {
+		return caseStatus;
+	}
+
+	public void setCaseStatus(String caseStatus) {
+		this.caseStatus = caseStatus;
+	}
 	public String getClaimantCity() {
 		return claimantCity;
 	}
@@ -156,23 +161,6 @@ public class CaseDetails {
 	public void setClaimantState(String claimantState) {
 		this.claimantState = claimantState;
 	}
-
-	public String getCaseStatus() {
-		return caseStatus;
-	}
-
-	public void setCaseStatus(String caseStatus) {
-		this.caseStatus = caseStatus;
-	}
-
-	public String getCaseSubstatus() {
-		return caseSubstatus;
-	}
-
-	public void setCaseSubstatus(String caseSubstatus) {
-		this.caseSubstatus = caseSubstatus;
-	}
-
 	public String getNominee_name() {
 		return nominee_name;
 	}
@@ -203,86 +191,6 @@ public class CaseDetails {
 
 	public void setInsured_address(String insured_address) {
 		this.insured_address = insured_address;
-	}
-
-	public String getSupervisor() {
-		return supervisor;
-	}
-
-	public void setSupervisor(String supervisor) {
-		this.supervisor = supervisor;
-	}
-
-	public String getSupervisor2managerRemarks() {
-		return supervisor2managerRemarks;
-	}
-
-	public void setSupervisor2managerRemarks(String supervisor2managerRemarks) {
-		this.supervisor2managerRemarks = supervisor2managerRemarks;
-	}
-
-	public String getSupervisor2investigatorRemarks() {
-		return supervisor2investigatorRemarks;
-	}
-
-	public void setSupervisor2investigatorRemarks(String supervisor2investigatorRemarks) {
-		this.supervisor2investigatorRemarks = supervisor2investigatorRemarks;
-	}
-
-	public String getRegionalManager2supervisorRemarks() {
-		return regionalManager2supervisorRemarks;
-	}
-
-	public void setRegionalManager2supervisorRemarks(String regionalManager2supervisorRemarks) {
-		this.regionalManager2supervisorRemarks = regionalManager2supervisorRemarks;
-	}
-
-	public String getInvestigator() {
-		return investigator;
-	}
-
-	public void setInvestigator(String investigator) {
-		this.investigator = investigator;
-	}
-
-	public String getInvestigator2supervisorRemarks() {
-		return investigator2supervisorRemarks;
-	}
-
-	public void setInvestigator2supervisorRemarks(String investigator2supervisorRemarks) {
-		this.investigator2supervisorRemarks = investigator2supervisorRemarks;
-	}
-
-	public String getUnderwriter() {
-		return underwriter;
-	}
-
-	public void setUnderwriter(String underwriter) {
-		this.underwriter = underwriter;
-	}
-
-	public String getUnderwriter2regionalManagerRemarks() {
-		return underwriter2regionalManagerRemarks;
-	}
-
-	public void setUnderwriter2regionalManagerRemarks(String underwriter2regionalManagerRemarks) {
-		this.underwriter2regionalManagerRemarks = underwriter2regionalManagerRemarks;
-	}
-
-	public String getTalicManager() {
-		return talicManager;
-	}
-
-	public void setTalicManager(String talicManager) {
-		this.talicManager = talicManager;
-	}
-
-	public String getTalicManager2underwriteRemarks() {
-		return talicManager2underwriteRemarks;
-	}
-
-	public void setTalicManager2underwriteRemarks(String talicManager2underwriteRemarks) {
-		this.talicManager2underwriteRemarks = talicManager2underwriteRemarks;
 	}
 
 	public String getCreatedBy() {
@@ -317,24 +225,103 @@ public class CaseDetails {
 		this.updatedBy = updatedBy;
 	}
 
+	public String getLocationId() {
+		return locationId;
+	}
+
+	public void setLocationId(String locationId) {
+		this.locationId = locationId;
+	}
+
+	public String getCase_description() {
+		return case_description;
+	}
+
+	public void setCase_description(String case_description) {
+		this.case_description = case_description;
+	}
+
+	public String getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(String longitude) {
+		this.longitude = longitude;
+	}
+
+	public String getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(String latitude) {
+		this.latitude = latitude;
+	}
+
+	public String getPdf1FilePath() {
+		return pdf1FilePath;
+	}
+
+	public void setPdf1FilePath(String pdf1FilePath) {
+		this.pdf1FilePath = pdf1FilePath;
+	}
+
+	public String getPdf2FilePath() {
+		return pdf2FilePath;
+	}
+
+	public void setPdf2FilePath(String pdf2FilePath) {
+		this.pdf2FilePath = pdf2FilePath;
+	}
+
+	public String getPdf3FilePath() {
+		return pdf3FilePath;
+	}
+
+	public void setPdf3FilePath(String pdf3FilePath) {
+		this.pdf3FilePath = pdf3FilePath;
+	}
+
+	public String getAudioFilePath() {
+		return audioFilePath;
+	}
+
+	public void setAudioFilePath(String audioFilePath) {
+		this.audioFilePath = audioFilePath;
+	}
+
+	public String getVideoFilePath() {
+		return videoFilePath;
+	}
+
+	public void setVideoFilePath(String videoFilePath) {
+		this.videoFilePath = videoFilePath;
+	}
+
+	public String getSignatureFilePath() {
+		return signatureFilePath;
+	}
+
+	public void setSignatureFilePath(String signatureFilePath) {
+		this.signatureFilePath = signatureFilePath;
+	}
+	
+
 	@Override
 	public String toString() {
 		return "CaseDetails [caseId=" + caseId + ", policyNumber=" + policyNumber + ", investigationCategory="
 				+ investigationCategory + ", insuredName=" + insuredName + ", insuredDOD=" + insuredDOD
 				+ ", insuredDOB=" + insuredDOB + ", sumAssured=" + sumAssured + ", intimationType=" + intimationType
-				+ ", claimantCity=" + claimantCity + ", claimantZone=" + claimantZone + ", claimantState="
-				+ claimantState + ", caseStatus=" + caseStatus + ", caseSubstatus=" + caseSubstatus + ", nominee_name="
-				+ nominee_name + ", nomineeContactNumber=" + nomineeContactNumber + ", nominee_address="
-				+ nominee_address + ", insured_address=" + insured_address + ", supervisor=" + supervisor
-				+ ", supervisor2managerRemarks=" + supervisor2managerRemarks + ", supervisor2investigatorRemarks="
-				+ supervisor2investigatorRemarks + ", regionalManager2supervisorRemarks="
-				+ regionalManager2supervisorRemarks + ", investigator=" + investigator
-				+ ", investigator2supervisorRemarks=" + investigator2supervisorRemarks + ", underwriter=" + underwriter
-				+ ", underwriter2regionalManagerRemarks=" + underwriter2regionalManagerRemarks + ", talicManager="
-				+ talicManager + ", talicManager2underwriteRemarks=" + talicManager2underwriteRemarks + ", createdBy="
+				+ ", locationId=" + locationId + ", caseStatus=" + caseStatus + ", nominee_name=" + nominee_name
+				+ ", nomineeContactNumber=" + nomineeContactNumber + ", nominee_address=" + nominee_address
+				+ ", insured_address=" + insured_address + ", case_description=" + case_description + ", longitude="
+				+ longitude + ", claimantCity=" + claimantCity + ", claimantZone=" + claimantZone + ", claimantState="
+				+ claimantState + ", latitude=" + latitude + ", pdf1FilePath=" + pdf1FilePath + ", pdf2FilePath="
+				+ pdf2FilePath + ", pdf3FilePath=" + pdf3FilePath + ", audioFilePath=" + audioFilePath
+				+ ", videoFilePath=" + videoFilePath + ", signatureFilePath=" + signatureFilePath + ", createdBy="
 				+ createdBy + ", createdDate=" + createdDate + ", updatedDate=" + updatedDate + ", updatedBy="
 				+ updatedBy + "]";
 	}
-      
-	
+
+
+
 }
