@@ -29,7 +29,7 @@ public class InvestigationTypeDaoImpl implements InvestigationTypeDao {
 
 		try {
 			String sql = "INSERT INTO investigation_type(investigationType, createdBy, createdDate"
-					+ ", updatedDate, updatedBy, status) values(?, ?, now(), now(), ?, ?)";
+					+ ", updatedDate, updatedBy, status) values(?, ?, getdate(), getdate(), ?, ?)";
 			this.template.update(sql,investigationType.getInvestigationType(), userId, 0, 0);
 		} 
 		catch (Exception e) 
@@ -73,7 +73,7 @@ public class InvestigationTypeDaoImpl implements InvestigationTypeDao {
 	{
 		try 
 		{
-			String sql = "UPDATE investigation_type SET status = ?, updatedDate = now(),"
+			String sql = "UPDATE investigation_type SET status = ?, updatedDate = getdate(),"
 					+ " updatedBy = ? where investigationId = ?";
 			this.template.update(sql, status, userId, investigationId);
 		} 
@@ -104,7 +104,7 @@ public class InvestigationTypeDaoImpl implements InvestigationTypeDao {
 	{
 		try
 		{
-			String sql = "UPDATE investigation_type SET investigationType = ?, updatedDate = now(), "
+			String sql = "UPDATE investigation_type SET investigationType = ?, updatedDate = getdate(), "
 					+ "updatedBy = ? where investigationId = ?";
 			template.update(sql, investigationType, userId, investigationId);
 		}

@@ -31,8 +31,8 @@ public class LocationDaoImpl implements LocationDao {
 			if (locationCount == 0) 			 
 			{
 				String query = "INSERT INTO location_lists(city, state, zone, createdBy, createdDate, "
-						+ "updatedDate, updatedBy, status) values(?, ?, ?, ?, now(), "
-						+ "'0000-00-00 00:00:00', '', 0)";
+						+ "updatedDate, updatedBy, status) values(?, ?, ?, ?, getdate(), "
+						+ "getdate(), '', 0)";
 				template.update(query, location.getCity(), location.getState(), location.getZone(), 
 						location.getCreatedBy());
 			} 
@@ -82,13 +82,12 @@ public class LocationDaoImpl implements LocationDao {
 	}
 
 	@Override
-	public String updateLocation(Location location) {
+	public String updateLocation(int locationId, String city, String state, String zone, String updatedBy) {
 		try 
 		{
-			String sql = "UPDATE location_lists SET city = ? , state = ?, zone =  ?, updatedDate = now(), "
+			String sql = "UPDATE location_lists SET city = ? , state = ?, zone =  ?, updatedDate = getdate(), "
 					+ "updatedBy = ? WHERE locationId = ?";
-			template.update(sql, location.getCity(), location.getState(), location.getZone(),
-					location.getUpdatedBy(), location.getLocationId());
+			template.update(sql, city, state, zone, updatedBy, locationId);
 		} 
 		catch (Exception e) 
 		{
@@ -102,7 +101,7 @@ public class LocationDaoImpl implements LocationDao {
 	public String updateLocationStatus(int locationId, int status, String username) {
 		try 
 		{
-		  String query="UPDATE location_lists SET status = ?, updatedBy = ?, updatedDate = now() "
+		  String query="UPDATE location_lists SET status = ?, updatedBy = ?, updatedDate = getdate() "
 		  		+ "WHERE locationId = ?";
           this.template.update(query, status, username, locationId);	  
 		}

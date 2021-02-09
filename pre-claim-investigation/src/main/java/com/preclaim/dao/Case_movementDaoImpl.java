@@ -27,10 +27,10 @@ public class Case_movementDaoImpl implements Case_movementDao {
 	public String CreatecaseMovement(CaseMovement caseMovement) {
 		try
 		{
-		   String query="INSERT INTO case_movement(caseId, fromID, toId, caseStatus, remarks, createdDate, updatedDate) values(?, ?, ?, ?, '', now(), now()) ";
+		   String query="INSERT INTO case_movement(caseId, fromID, toId, caseStatus, remarks, createdDate, updatedDate) values(?, ?, ?, ?, '', getdate(), getdate()) ";
 		   this.template.update(query,caseMovement.getCaseId(), caseMovement.getFromId(), caseMovement.getToId(), caseMovement.getCaseStatus());
 		 
-		   query="INSERT INTO audit_case_movement(caseId, fromID, toId, caseStatus, remarks, createdDate, updatedDate) values(?, ?, ?, ?, '', now(), now()) ";
+		   query="INSERT INTO audit_case_movement(caseId, fromID, toId, caseStatus, remarks, createdDate, updatedDate) values(?, ?, ?, ?, '', getdate(), getdate()) ";
 		   this.template.update(query,caseMovement.getCaseId(), caseMovement.getFromId(), caseMovement.getToId(),caseMovement.getCaseStatus());
 			
 	    }
@@ -64,11 +64,11 @@ public class Case_movementDaoImpl implements Case_movementDao {
 		try
 		{
 		   String query="UPDATE case_movement SET fromID = ?, toId = ?, caseStatus = ?, remarks = ?, "
-		   		+ "createdDate = now(), updatedDate = now() where caseId = ?";
+		   		+ "createdDate = getdate(), updatedDate = getdate() where caseId = ?";
 		   this.template.update(query,caseMovement.getFromId(), caseMovement.getToId(), 
 				   caseMovement.getCaseStatus(),caseMovement.getRemarks(), caseMovement.getCaseId());
 		 
-		   query="INSERT INTO audit_case_movement(caseId, fromID, toId, caseStatus, remarks, createdDate, updatedDate) values(?, ?, ?, ?, '', now(), now()) ";
+		   query="INSERT INTO audit_case_movement(caseId, fromID, toId, caseStatus, remarks, createdDate, updatedDate) values(?, ?, ?, ?, '', getdate(), getdate()) ";
 		   this.template.update(query,caseMovement.getCaseId(), caseMovement.getFromId(), caseMovement.getToId(),caseMovement.getCaseStatus());
 			
 	    }

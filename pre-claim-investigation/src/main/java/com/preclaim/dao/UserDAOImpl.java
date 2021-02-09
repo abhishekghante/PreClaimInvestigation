@@ -48,7 +48,7 @@ public class UserDAOImpl implements UserDAO{
 		String sql = "INSERT INTO admin_user(full_name, role_name, username, user_email, mobile_number, "
 				+ "address1, address2, address3, password, state, city, status, user_image, createdBy ,createdon, updatedDate, "
 				+ "updatedBy)"
-				+ "VALUES(?, ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, '', now(), now(), '')";
+				+ "VALUES(?, ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, '', getdate(), getdate(), '')";
 		System.out.println(user.getPassword());
 		try 
 		{
@@ -68,7 +68,7 @@ public class UserDAOImpl implements UserDAO{
 		try
 		{
 			String sql = "INSERT INTO user_role(role, role_code, status, created_on, updated_on) "
-					+ "VALUES(?,?,?,now(),now())";
+					+ "VALUES(?,?,?,getdate(),getdate())";
 			template.update(sql, role.getRole(), role.getRole_code(), role.getStatus());
 		}
 		catch(Exception ex)
@@ -83,7 +83,7 @@ public class UserDAOImpl implements UserDAO{
 	public String delete_role(UserRole role) {
 		try
 		{
-			String sql = "UPDATE user_role SET status = ?, updated_on = now() where roleId = ?";
+			String sql = "UPDATE user_role SET status = ?, updated_on = getdate() where roleId = ?";
 			template.update(sql,role.getStatus(),role.getRoleId());
 		}
 		catch(Exception ex)
@@ -252,7 +252,7 @@ public class UserDAOImpl implements UserDAO{
 	public String updateUserRole(UserRole role) {
 		try
 		{
-			String sql = "UPDATE user_role SET role = ?, role_code = ?, updated_on = now() where roleId = ?";
+			String sql = "UPDATE user_role SET role = ?, role_code = ?, updated_on = getdate() where roleId = ?";
 			template.update(sql, role.getRole(), role.getRole_code(), role.getRoleId());
 					
 		}
@@ -290,7 +290,7 @@ public class UserDAOImpl implements UserDAO{
 			String sql = "DELETE FROM permission where role_code = ?";
 			template.update(sql,role_code);
 			sql = "INSERT INTO permission(module, role_code, status, created_on, updated_on)"
-					+ "VALUES(?, ? ,1 ,now() ,now())";
+					+ "VALUES(?, ? ,1 ,getdate() ,getdate())";
 			int batch_size = 3;
 			for (int i = 0; i < role_permission.size(); i += batch_size) {
 
@@ -361,7 +361,7 @@ public class UserDAOImpl implements UserDAO{
 		try 
 		{
 		  	String sql="INSERT INTO activity_log(moduleName, moduleCode, moduleAction, user_name, logDate) "
-		  			+ "values(?, ?, ?, ?, now())";
+		  			+ "values(?, ?, ?, ?, getdate())";
 	          this.template.update(sql, moduleName, moduleCode, moduleAction, username);	
 		}
 		catch(Exception e) 

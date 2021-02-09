@@ -11,7 +11,6 @@ public interface CaseDao {
 	String addBulkUpload(String filename, String fromId, String toId);
 	long addcase(CaseDetails casedetail);
 	String deleteCase(int caseId);
-	String assignToRM(String policyNumber, String username, String caseSubStatus);
 	CaseDetails getCaseDetail(long caseID);
 	String updateCaseDetails(CaseDetails case_details);
 	

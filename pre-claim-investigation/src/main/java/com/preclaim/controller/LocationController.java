@@ -114,13 +114,13 @@ public class LocationController{
 		if(user == null)
 			return "common/login";
 		int locationId=Integer.parseInt(request.getParameter("locationId"));		
-		Location location = new Location();
-		location.setCity(request.getParameter("city"));
-		location.setState(request.getParameter("state"));
-		location.setZone(request.getParameter("zone"));
-		location.setUpdatedBy(user.getUsername());
-		String message = locationDao.updateLocation(location);	
-		userDao.activity_log("LOCATION", String.valueOf(locationId), "UPDATE", user.getUsername());
+	    String city  = request.getParameter("city");
+        String state = request.getParameter("state");
+        String zone  = request.getParameter("zone");
+        String updatedBy=user.getUsername();
+        System.out.println(updatedBy);
+        String message=locationDao.updateLocation(locationId, city, state, zone, updatedBy);
+		//userDao.activity_log("LOCATION", String.valueOf(locationId), "UPDATE", user.getUsername());
 		return message;
 	}
 	

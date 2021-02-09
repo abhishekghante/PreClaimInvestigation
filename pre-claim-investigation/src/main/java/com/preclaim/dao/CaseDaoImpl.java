@@ -78,7 +78,7 @@ public class CaseDaoImpl implements CaseDao {
 						+ "intimationType, locationId, caseStatus, nominee_name, nominee_ContactNumber, nominee_address, "
 						+ "insured_address, case_description, longitude, latitude, pdf1FilePath , pdf2FilePath, pdf3FilePath, "
 						+ "audioFilePath, videoFilePath, signatureFilePath , capturedDate, createdBy, createdDate, updatedDate, updatedBy) "
-						+ "values(?, ?, ?, ?, ?, ?, ?, ?, 'Assigned', ?, ?, ?, ?, '', '', '', '', '', '', '', '', '', '', ?, now(), now(), '')";    
+						+ "values(?, ?, ?, ?, ?, ?, ?, ?, 'Assigned', ?, ?, ?, ?, '', '', '', '', '', '', '', '', '', '', ?, getdate(), getdate(), '')";    
 			this.template.update(query, casedetail.getPolicyNumber(), casedetail.getInvestigationId(), casedetail.getInsuredName(), 
 					casedetail.getInsuredDOD(), casedetail.getInsuredDOB(), casedetail.getSumAssured(), casedetail.getIntimationType(), 
 					casedetail.getLocationId(), casedetail.getNominee_name(), casedetail.getNomineeContactNumber(), 
@@ -148,7 +148,7 @@ public class CaseDaoImpl implements CaseDao {
 	public List<CaseDetailList> getAssignedCaseList(String username) {
 		try
 		{
-			String sql ="SELECT * FROM case_lists where caseSubStatus <> 'PA' and createdBy = '" + username + "'"; 			   
+			String sql ="SELECT * FROM case_lists where caseStatus <> 'Assigned' and createdBy = '" + username + "'"; 			   
 			List<CaseDetailList> casedetailList = template.query(sql,(ResultSet rs, int rowCount) -> {
 						CaseDetailList casedetail=new CaseDetailList();
 						casedetail.setSrNo(rowCount+1);
@@ -227,21 +227,6 @@ public class CaseDaoImpl implements CaseDao {
 		}
 	}
 
-	@Override
-	public String assignToRM(String policyNumber, String caseSubStatus, String username) {
-	try {
-		
-	      String sql="UPDATE case_lists SET caseSubStatus = ?, updatedDate = now(), updatedBy = ? "
-	      		+ "where caseSubStatus = 'PA' and policyNumber in (" + policyNumber + ")";
-		  this.template.update(sql, caseSubStatus, username);
-		  
-	   }
-	catch(Exception e) 
-	{
-		return "Error updating region status. Kindly contact system administrator";	
-    }
-	return "****";	  
-	}
 	
 	@Override
 	public String updateCaseDetails(CaseDetails casedetail) {

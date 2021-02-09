@@ -32,7 +32,7 @@ public class IntimationTypeDaoImpl implements IntimationTypeDao {
 			if (intimationTypeCount == 0) 
 			{
 				String query = "INSERT INTO intimation_type(intimationTypeName, createdBy, createdDate, updatedDate, "
-						+ "updatedBy, status) values(?, ? , now(), '0000-00-00 00:00:00', ?, ?)";
+						+ "updatedBy, status) values(?, ? , getdate(), getdate(), ?, ?)";
 				template.update(query, intimationType.getIntimationType(), intimationType.getCreatedBy(), intimationType.getUpdatedBy(),
 						intimationType.getStatus());
 			}
@@ -86,7 +86,7 @@ public class IntimationTypeDaoImpl implements IntimationTypeDao {
 			int intimationTypeCount = this.template.queryForObject(IntimationTypeCheck, Integer.class);
 			if(intimationTypeCount > 0)
 				return "Intimation Type already exits";
-			String sql = "UPDATE intimation_type SET intimationTypeName = ? , updatedDate = now(), updatedBy = ? WHERE intimationTypeId = ?";
+			String sql = "UPDATE intimation_type SET intimationTypeName = ? , updatedDate = getdate(), updatedBy = ? WHERE intimationTypeId = ?";
 			template.update(sql, intimationType, userId, intimationId);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -98,7 +98,7 @@ public class IntimationTypeDaoImpl implements IntimationTypeDao {
 	@Override
 	public String updateIntimationTypeStatus(int intimationId, int status, int userId) {
 		try {
-		String sql="UPDATE intimation_type SET status = ?, updatedDate = now(), updatedBy = ? WHERE intimationTypeId = ?";
+		String sql="UPDATE intimation_type SET status = ?, updatedDate = getdate(), updatedBy = ? WHERE intimationTypeId = ?";
 	           template.update(sql,status, userId, intimationId);	
 	           return  "****";
 		}catch(Exception e){

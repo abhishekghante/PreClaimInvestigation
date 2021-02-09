@@ -9,7 +9,7 @@ public interface LocationDao {
 	String addLocation(Location location);
 	List<Location> locationList(int status);
 	String deleteLocation(int locationId);
-	String updateLocation(Location location);
+	String updateLocation(int locationId, String city, String state, String zone, String updatedBy);
     String updateLocationStatus(int locationId, int status, String username);
     Location getLocationById(int locationId);
     List<Location> getActiveLocationList();
