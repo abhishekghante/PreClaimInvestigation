@@ -6,8 +6,8 @@
 <%
 List<String>user_permission=(List<String>)session.getAttribute("user_permission");
 boolean allow_delete = user_permission.contains("messages/delete");
-List<CaseDetailList> pendingCaseDetailList = (List<CaseDetailList>)session.getAttribute("pendingCaseList");
-session.removeAttribute("pendingCaseList");
+List<CaseDetailList> assignedCaseDetailList = (List<CaseDetailList>)session.getAttribute("assignCaseList");
+session.removeAttribute("assignCaseList");
 List<InvestigationType> investigationList = (List<InvestigationType>) session.getAttribute("investigation_list");
 session.removeAttribute("investigation_list");
 List<IntimationType> intimationTypeList = (List<IntimationType>) session.getAttribute("intimation_list");
@@ -52,7 +52,6 @@ session.removeAttribute("intimation_list");
                           <th class="head1 no-sort">Sum Assured</th>
                           <th class="head1 no-sort">Type of Intimation</th>
                           <th class="head1 no-sort">View history</th>
-                           <th class="head1 no-sort">Action</th>
                         </tr>
                       </thead>
                       <tfoot>
@@ -65,12 +64,11 @@ session.removeAttribute("intimation_list");
                           <th class="head2 no-sort"></th>
                           <th class="head2 no-sort"></th>
                           <th class="head2 no-sort"></th>
-                          <th class="head2 no-sort"></th>
                         </tr>
                       </tfoot>
                       <tbody>
-                        <%if(pendingCaseDetailList!=null){
-                        	for(CaseDetailList list_case :pendingCaseDetailList){%>                       
+                        <%if(assignedCaseDetailList!=null){
+                        	for(CaseDetailList list_case :assignedCaseDetailList){%>                       
                           
                           <tr>
                   				<td><%= list_case.getSrNo()%></td>
@@ -79,22 +77,8 @@ session.removeAttribute("intimation_list");
                   				<td><%=list_case.getInsuredName()%></td>
                   				<td><%=list_case.getInvestigationCategory()%></td>
                   				<td><%=list_case.getSumAssured()%></td>
-                                <td><%=list_case.getIntimationType()%></td>   
-                                <td>View History</td>
-                               
-                                <td>
-	                             <a href="${pageContext.request.contextPath}/message/edit?caseId=<%=list_case.getCaseId()%>" 
-	                             	data-toggle="tooltip" title="Edit" class="btn btn-primary btn-xs">
-	                             	<i class="glyphicon glyphicon-edit"></i>
-	                         	 </a>
-                         	   
-	                             <a href="#" data-toggle="tooltip" title="Delete" 
-	                             	onClick="return deleteMessage('<%=list_case.getCaseId() %>',
-	                             	<%=allow_delete%>);" class="btn btn-danger btn-xs"> 
-	                             	<i class="glyphicon glyphicon-remove"></i>
-	                           	 </a>
-                         
-                         		</td>
+                                <td><%=list_case.getIntimationType()%></td>
+                               <td ><a href="${pageContext.request.contextPath}/message/case_history?caseId=<%=list_case.getCaseId()%>">Case History</a></td>
                                 
                           </tr>                      
                        
@@ -124,7 +108,7 @@ $(document).ready(function() {
   var table = $('#pending_case_list').DataTable();
 
    $('#pending_case_list tfoot th').each( function () {
-    if( i == 1 || i == 2 || i == 3 || i == 6){
+    if( i == 1 || i == 2 || i == 3 || i == 5){
       $(this).html( '<input type="text" class="form-control" placeholder="" />' );
     }
     else if(i == 4)
@@ -140,18 +124,7 @@ $(document).ready(function() {
 		cat_selectbox += '</select>';
         $(this).html( cat_selectbox );
     }
-    else if(i == 5)
-    {
-      var cat_selectbox = '<select name="zone" id="zone" class="form-control">'
-                              +'<option value="">All</option>';
-		cat_selectbox += "<option value = North>North</option>";
-		cat_selectbox += "<option value = West>West</option>";
-		cat_selectbox += "<option value = East>East</option>";
-		cat_selectbox += "<option value = South>South</option>";
-		cat_selectbox += '</select>';
-        $(this).html( cat_selectbox );
-    }
-    else if(i == 7)
+    else if(i == 6)
     {
       var cat_selectbox = '<select name="intimation" id="intimation" class="form-control">'
                               +'<option value="">All</option>';
@@ -187,53 +160,4 @@ $(document).ready(function() {
   });
 });
 
-</script>
-<script>
-$('#chk-all').click(function(event) {
-    if(this.checked) {
-        // Iterate each checkbox
-        $(':checkbox').each(function() {
-            this.checked = true;                        
-        });
-    } else {
-        $(':checkbox').each(function() {
-            this.checked = false;                       
-        });
-    }
-});
-</script>
-<script>
-$("#assignCase").click(function(){
-	var caseList = [];
-	$("#pending_case_list td input[type=checkbox]:checked").each(function(){
-		var row = $(this).closest("tr")[0];
-		caseList.push(row.cells[2].innerHTML);
-	});
-	if(caseList == "")
-	{
-		toastr.error("No cases selected", "Error");
-		return;
-	}
- 	$.ajax({
-      type: "POST",
-      url:"assignCase",
-      data: {"caseList":caseList},
-      beforeSend: function() { 
-          $("#assignCase").html('<img src="${pageContext.request.contextPath}/resources/img/input-spinner.gif"> Loading...');
-          $("#assignCase").prop('disabled', true);
-      },
-      success: function( data ) 
-      {
-    	  $("#assignCase").html('Assign Case');
-          $("#assignCase").prop('disabled', false);
-          if(data == "****")
-          {
-	          toastr.success( 'Case Assigned successfully.','Success' );
-	          location.reload();
-          }
-          else
-          	toastr.error( data,'Error' );    
-      }
-    });
-});
 </script>

@@ -125,13 +125,15 @@ public class InvestigationTypeDaoImpl implements InvestigationTypeDao {
 	}
 	
 	@Override
-	public List<HashMap<Integer,String>> getActiveInvestigationMapping() {
+	public HashMap<Integer,String> getActiveInvestigationMapping() {
 		String query = "SELECT * FROM investigation_type WHERE status = 1";
 		return template.query(query, (ResultSet rs, int rowNum) -> {
 			HashMap<Integer,String> mapping = new HashMap<Integer,String>();
 			mapping.put(rs.getInt("investigationId"), rs.getString("investigationType"));
+			while(rs.next())
+				mapping.put(rs.getInt("investigationId"), rs.getString("investigationType"));
 			return mapping;
-		});
+		}).get(0);
 	}
 
 	@Override

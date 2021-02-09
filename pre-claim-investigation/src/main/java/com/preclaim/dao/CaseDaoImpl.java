@@ -121,19 +121,10 @@ public class CaseDaoImpl implements CaseDao {
 						return casedetail;
 					});
 			
-			List<HashMap<Integer, String>> investigationList = investigationDao.getActiveInvestigationMapping();
-			for(HashMap<Integer, String> investigation: investigationList)
-			{
-				for(CaseDetailList caseDetail: casedetailList)
-				{
-					if(investigation.get(caseDetail.getInvestigationCategoryId()) != null)
-					{
-						caseDetail.setInvestigationCategory(investigation.get(caseDetail.getInvestigationCategoryId()));
-						continue;
-					}
-						
-				}
-			}
+			HashMap<Integer, String> investigationList = investigationDao.getActiveInvestigationMapping();
+			for(CaseDetailList caseDetail: casedetailList)
+				caseDetail.setInvestigationCategory(investigationList.get(
+						Integer.valueOf(caseDetail.getInvestigationCategoryId())));
 			return casedetailList;
 		}
 		catch(Exception ex)
@@ -148,19 +139,27 @@ public class CaseDaoImpl implements CaseDao {
 	public List<CaseDetailList> getAssignedCaseList(String username) {
 		try
 		{
-			String sql ="SELECT * FROM case_lists where caseStatus <> 'Assigned' and createdBy = '" + username + "'"; 			   
-			List<CaseDetailList> casedetailList = template.query(sql,(ResultSet rs, int rowCount) -> {
-						CaseDetailList casedetail=new CaseDetailList();
+			String sql ="SELECT * FROM case_lists a, case_movement b where a.caseId = b.caseId and"
+					+ " b.toId = ?"; 			   
+			List<CaseDetailList> casedetailList = template.query(sql, new Object[] {username},
+					(ResultSet rs, int rowCount) -> 
+					{
+						CaseDetailList casedetail = new CaseDetailList();
 						casedetail.setSrNo(rowCount+1);
 						casedetail.setCaseId(rs.getInt("caseId"));
 						casedetail.setPolicyNumber(rs.getString("policyNumber"));
 						casedetail.setInsuredName(rs.getString("insuredName"));
-						casedetail.setInvestigationCategory(rs.getString("investigationCategory"));
-						casedetail.setSumAssured(rs.getInt("sumAssured"));
+						casedetail.setInvestigationCategoryId(rs.getInt("investigationId"));
+						casedetail.setSumAssured(rs.getDouble("sumAssured"));
 						casedetail.setCaseStatus(rs.getString("caseStatus"));
 						casedetail.setIntimationType(rs.getString("intimationType"));	
 						return casedetail;
 					});
+			
+			HashMap<Integer, String> investigationList = investigationDao.getActiveInvestigationMapping();
+			for(CaseDetailList caseDetail: casedetailList)
+				caseDetail.setInvestigationCategory(investigationList.get(
+						Integer.valueOf(caseDetail.getInvestigationCategoryId())));
 			return casedetailList;
 		}
 		catch(Exception ex)

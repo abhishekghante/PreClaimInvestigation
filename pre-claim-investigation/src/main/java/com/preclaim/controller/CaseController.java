@@ -132,26 +132,6 @@ public class CaseController {
     	details.setMain_menu("Case Management");
     	details.setSub_menu1("RCU Active Cases");
     	session.setAttribute("ScreenDetails", details);
-    	session.setAttribute("activeCaseList", caseDao.getAssignedCaseList(user.getUsername()));
-    	session.setAttribute("investigation_list", investigationDao.getActiveInvestigationList());
-    	session.setAttribute("intimation_list", intimationTypeDao.getActiveIntimationType());
-    	
-    	return "common/templatecontent";
-    }
-    
-    @RequestMapping(value = "/assigned_message", method = RequestMethod.GET)
-    public String assigned_message(HttpSession session) {
-    	UserDetails user = (UserDetails) session.getAttribute("User_Login");
-		if(user == null)
-			return "common/login";
-		
-		session.removeAttribute("ScreenDetails");
-    	ScreenDetails details=new ScreenDetails();
-    	details.setScreen_name("../message/assigned_message.jsp");
-    	details.setScreen_title("Assigned Cases Lists");
-    	details.setMain_menu("Case Management");
-    	details.setSub_menu1("RCU Assigned Cases");
-    	session.setAttribute("ScreenDetails", details);  
     	session.setAttribute("assignCaseList", caseDao.getAssignedCaseList(user.getUsername()));
     	session.setAttribute("investigation_list", investigationDao.getActiveInvestigationList());
     	session.setAttribute("intimation_list", intimationTypeDao.getActiveIntimationType());

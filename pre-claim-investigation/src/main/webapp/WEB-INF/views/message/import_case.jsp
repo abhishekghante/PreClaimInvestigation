@@ -42,7 +42,7 @@ ScreenDetails details = (ScreenDetails) session.getAttribute("ScreenDetails");
                 <label class="col-md-4 padding-left-5 col-xs-4 control-label">Import Data</label>
                 <div class="col-md-6 padding-left-0 col-xs-6">
                   <input type="file" name="userfile" id="userfile" class="form-control" required>
-                  <note>Kindly upload .xls/.xlsx file only</note>
+                  <note>Kindly upload .xlsx file only</note>
                 </div>
                 <div class="col-md-2 padding-left-0 col-xs-2">
                   <button type="submit" class="btn btn-info btn-sm" name="importfile" id = "importfile">
@@ -57,7 +57,7 @@ ScreenDetails details = (ScreenDetails) session.getAttribute("ScreenDetails");
                 <label class="col-md-4 control-label" for="roleName">Select Role Name 
                 	<span class="text-danger">*</span></label>
                 <div class="col-md-2">
-                  <select name="roleName" id="roleName" class="form-control" tabindex="-1">
+                  <select name="roleName" id="roleName" class="form-control" tabindex="-1" required>
                     <option value="-1" selected disabled>Select</option>
                      <%if(userRole != null){
                     	for(UserRole userRoleLists: userRole){%>
@@ -69,7 +69,7 @@ ScreenDetails details = (ScreenDetails) session.getAttribute("ScreenDetails");
                 <label class="col-md-2 control-label" for="assigneeId">Select User 
                 	<span class="text-danger">*</span></label>
                 <div class="col-md-2">
-                  <select name="assigneeId" id="assigneeId" class="form-control">
+                  <select name="assigneeId" id="assigneeId" class="form-control" required>
                   	<option value = '-1' selected disabled>Select</option>
                   </select>
                 </div>
@@ -84,38 +84,38 @@ ScreenDetails details = (ScreenDetails) session.getAttribute("ScreenDetails");
 </div>
 <script>
 $(document).ready(function(){
-	
+	//window.history.replaceState( null, null, window.location.href );
 	<%if(!details.getSuccess_message1().equals("")){%>
 		location.href = "${pageContext.request.contextPath}/message/downloadErrorReport";
 	<%}%>
 });
-function importData(e)
+function importData()
 {
 	$("#importfile").html('<img src="${pageContext.request.contextPath}/resources/img/input-spinner.gif"> Loading...');
-	$("#importfile").prop("disabled","true");
+	$("#importfile").prop("disabled",true);
 	
 	var roleName = $("#roleName").val();
 	var userId = $("#assigneeId").val();
 	
 	var validFlag = 0;
-	if(roleName == -1 || roleName == null)
+	if(roleName == null)
 		{
 			toastr.error("Kindly select Assignee Role","Error");
 			validFlag = 1;
 		}
-	if(userId == -1 || userId == null)
+	if(userId == null)
 	{
 		toastr.error("Kindly select Assignee","Error");
 		validFlag = 1;
 	}
-	if(validFlag == 0)
+	if(validFlag == 1)
 		{
-			return true;
+			return false;
 		}
 	$("#importfile").html('Import');
 	$("#importfile").prop("disabled",false);
 	
-	return false;
+	return true;
 }
 
 </script>

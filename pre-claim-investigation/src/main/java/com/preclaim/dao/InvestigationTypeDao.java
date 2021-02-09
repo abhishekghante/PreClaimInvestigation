@@ -15,7 +15,7 @@ public interface InvestigationTypeDao {
     String deleteInvestigationType(int investigationId);
     List<InvestigationType> getActiveInvestigationList();
     List<String> getActiveInvestigationStringList();
-	List<HashMap<Integer, String>> getActiveInvestigationMapping();
+	HashMap<Integer, String> getActiveInvestigationMapping();
 	String getInvestigationById(int investigationId);
     
 }

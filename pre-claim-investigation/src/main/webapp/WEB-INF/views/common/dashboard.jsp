@@ -49,7 +49,7 @@ String date = LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
                 <div class="desc"> New Cases </div>
             </div>
             <a class="more" href="javascript:;"> 
-                <a href="${pageContext.request.contextPath}/messages/pending_message" 
+                <a href="${pageContext.request.contextPath}/message/pending_message" 
                 	class="btn btn-info">View more</a>
             </a>
         </div>
@@ -69,7 +69,7 @@ String date = LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
                 <div class="desc"> Assigned Cases </div>
             </div>
             <a class="more" href="javascript:;"> 
-                <a href="${pageContext.request.contextPath}/messages/active_message" 
+                <a href="${pageContext.request.contextPath}/message/active_message" 
                 	class="btn btn-info">View more</a>
             </a>
         </div>
@@ -134,7 +134,7 @@ String date = LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
             <a class="more" href="javascript:;"> 
                 <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo7">View more</button>
                 <div id="demo7" class="collapse">
-                    <p>14-06-2020&nbsp;&nbsp;&nbsp;&nbsp;<%= dashboard.get("CDP")%>&nbsp;&nbsp;&nbsp;&nbsp;Active</p>
+                    <p><%=date %>&nbsp;&nbsp;&nbsp;&nbsp;<%= dashboard.get("CDP")%>&nbsp;&nbsp;&nbsp;&nbsp;Active</p>
                 </div>
             </a>
         </div>
@@ -153,9 +153,9 @@ String date = LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
                 <div class="desc"> Investigation Billing Cases </div>
             </div>
             <a class="more" href="javascript:;"> 
-                <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo7">View more</button>
-                <div id="demo7" class="collapse">
-                    <p>14-06-2020&nbsp;&nbsp;&nbsp;&nbsp;43&nbsp;&nbsp;&nbsp;&nbsp;Active</p>
+                <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo8">View more</button>
+                <div id="demo8" class="collapse">
+                    <p><%=date %>&nbsp;&nbsp;&nbsp;&nbsp;43&nbsp;&nbsp;&nbsp;&nbsp;Active</p>
                 </div>
             </a>
         </div>
