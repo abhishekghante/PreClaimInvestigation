@@ -26,7 +26,6 @@ import com.preclaim.dao.MailConfigDao;
 import com.preclaim.dao.UserDAO;
 import com.preclaim.models.Login;
 import com.preclaim.models.MailConfig;
-import com.preclaim.models.ScreenDetails;
 import com.preclaim.models.UserDetails;
 
 @Controller
@@ -79,16 +78,6 @@ public class LoginController {
     	}
     	else
     		return "Invalid Username or Password";
-    }
-    
-    @RequestMapping(value = "/dashboard", method = RequestMethod.GET)
-    public String dashboard(HttpSession session) {
-    	ScreenDetails details = new ScreenDetails();
-    	details.setScreen_name("dashboard.jsp");
-    	details.setScreen_title("Dashboard");
-    	details.setMain_menu("Dashboard");
-    	session.setAttribute("ScreenDetails", details);
-    	return "common/templatecontent";
     } 
     
     @RequestMapping(value = "/forgotpass", method = RequestMethod.GET)

@@ -1,5 +1,11 @@
+<%@page import="java.time.LocalDate" %>
+<%@page import="java.time.format.DateTimeFormatter" %>
+<%@page import="java.util.HashMap" %>
 <%@page import="com.preclaim.config.Config" %>
-
+<%
+HashMap<String, Integer> dashboard = (HashMap<String, Integer>) session.getAttribute("Dashboard Count");
+String date = LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+%>
 <div class="row">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <h3 class="page-title">Dashboard
@@ -14,14 +20,16 @@
             </div>
             <div class="details">
                 <div class="number">
-                    <span data-counter="counterup" data-value="1349">47</span>
+                    <span data-counter="counterup" data-value="1349">
+                    	<%= dashboard.get("Claim Investigation")%>
+                   	</span>
                 </div>
-                <div class="desc"> Claim investigation </div>
+                <div class="desc"> Claim Investigation </div>
             </div>
             <a class="more" href="javascript:;"> 
                 <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo2">View more</button>
                 <div id="demo2" class="collapse">
-                    <p>14-06-2020&nbsp;&nbsp;&nbsp;&nbsp;43&nbsp;&nbsp;&nbsp;&nbsp;Active</p>
+                    <p><%=date %>&nbsp;&nbsp;&nbsp;&nbsp;<%= dashboard.get("Claim Investigation")%>&nbsp;&nbsp;&nbsp;&nbsp;Active</p>
                 </div>
             </a>
         </div>
@@ -34,11 +42,14 @@
             </div>
             <div class="details">
                 <div class="number">
-                    <span data-counter="counterup" data-value="12,5">1</span></div>
+                    <span data-counter="counterup" data-value="12,5">
+                    	<%= dashboard.get("New Cases")%>
+                    </span>
+                </div>
                 <div class="desc"> New Cases </div>
             </div>
             <a class="more" href="javascript:;"> 
-                <a href="${pageContext.request.contextPath}/category/activelist" 
+                <a href="${pageContext.request.contextPath}/messages/pending_message" 
                 	class="btn btn-info">View more</a>
             </a>
         </div>
@@ -51,12 +62,15 @@
             </div>
             <div class="details">
                 <div class="number">
-                    <span data-counter="counterup" data-value="549">2486</span>
+                    <span data-counter="counterup" data-value="549">
+                    	<%= dashboard.get("Assigned Cases")%>
+                    </span>
                 </div>
                 <div class="desc"> Assigned Cases </div>
             </div>
             <a class="more" href="javascript:;"> 
-                <a href="${pageContext.request.contextPath}/category/pendinglist" class="btn btn-info">View more</a>
+                <a href="${pageContext.request.contextPath}/messages/active_message" 
+                	class="btn btn-info">View more</a>
             </a>
         </div>
     </div>
@@ -68,13 +82,16 @@
             </div>
             <div class="details">
                 <div class="number">
-                    <span data-counter="counterup" data-value="89">5</span></div>
-                <div class="desc"> Assigned investigation </div>
+                    <span data-counter="counterup" data-value="89">
+                    	<%= dashboard.get("Assigned Investigation")%>
+                    </span>
+                </div>
+                <div class="desc"> Assigned Investigation </div>
             </div>
             <a class="more" href="javascript:;"> 
                 <button onClick="return showAssignGraph();" type="button" class="btn btn-info">View more</button>
                 <div id="demo5" class="collapse">
-                    <p>14-06-2020&nbsp;&nbsp;&nbsp;&nbsp;43&nbsp;&nbsp;&nbsp;&nbsp;Active</p>
+                    <p><%=date %>&nbsp;&nbsp;&nbsp;&nbsp;<%= dashboard.get("Assigned Investigation")%>&nbsp;&nbsp;&nbsp;&nbsp;Active</p>
                 </div>
             </a>
         </div>
@@ -87,13 +104,16 @@
             </div>
             <div class="details">
                 <div class="number">
-                    <span data-counter="counterup" data-value="12,5">1</span></div>
+                    <span data-counter="counterup" data-value="12,5">
+                    	<%= dashboard.get("PIV/PIRV/LIVE Pending")%>
+                   	</span>
+                </div>
                 <div class="desc"> PIV/PIRV/LIVE Pending </div>
             </div>
             <a class="more" href="javascript:;"> 
                 <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo6">View more</button>
                 <div id="demo6" class="collapse">
-                    <p>14-06-2020&nbsp;&nbsp;&nbsp;&nbsp;43&nbsp;&nbsp;&nbsp;&nbsp;Active</p>
+                    <p><%=date %>&nbsp;&nbsp;&nbsp;&nbsp;<%= dashboard.get("PIV/PIRV/LIVE Pending")%>&nbsp;&nbsp;&nbsp;&nbsp;Active</p>
                 </div>
             </a>
         </div>
@@ -105,8 +125,32 @@
             </div>
             <div class="details">
                 <div class="number">
-                    <span data-counter="counterup" data-value="12,5">1</span></div>
-                <div class="desc"> Claim Document pickup/ Claim Investigation pending cases </div>
+                    <span data-counter="counterup" data-value="12,5">
+                    	<%= dashboard.get("CDP")%>
+                    </span>
+                </div>
+                <div class="desc"> Claim Document Pickup Cases </div>
+            </div>
+            <a class="more" href="javascript:;"> 
+                <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo7">View more</button>
+                <div id="demo7" class="collapse">
+                    <p>14-06-2020&nbsp;&nbsp;&nbsp;&nbsp;<%= dashboard.get("CDP")%>&nbsp;&nbsp;&nbsp;&nbsp;Active</p>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <div class="dashboard-stat purple">
+            <div class="visual">
+                <i class="fa fa-comments"></i>
+            </div>
+            <div class="details">
+                <div class="number">
+                    <span data-counter="counterup" data-value="12,5">
+                    	0
+                    </span>
+                </div>
+                <div class="desc"> Investigation Billing Cases </div>
             </div>
             <a class="more" href="javascript:;"> 
                 <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo7">View more</button>
