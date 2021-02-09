@@ -80,7 +80,7 @@ session.removeAttribute("intimation_list");
                   				<td><%=list_case.getInvestigationCategory()%></td>
                   				<td><%=list_case.getSumAssured()%></td>
                                 <td><%=list_case.getIntimationType()%></td>
-                                <td>Case History</td>
+                               <td ><a href="${pageContext.request.contextPath}/message/case_history?caseId=<%=list_case.getCaseId()%>">Case History</a></td>
                                 <td>
 	                             <a href="${pageContext.request.contextPath}/message/edit?caseId=<%=list_case.getCaseId()%>" 
 	                             	data-toggle="tooltip" title="Edit" class="btn btn-primary btn-xs">

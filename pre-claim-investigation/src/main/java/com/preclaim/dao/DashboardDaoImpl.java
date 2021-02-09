@@ -34,21 +34,21 @@ public class DashboardDaoImpl implements DashboardDao {
 		template.queryForObject(sql, Integer.class);
 		dashboardCount.put("New Cases", count);
 		
-		sql = "SELECT count(*) from case_movement where fromId = '" + username + "'";
+		sql = "SELECT count(*) from audit_case_movement where fromId = '" + username + "'";
 		template.queryForObject(sql, Integer.class);
 		dashboardCount.put("Assigned Cases", count);
 		
-		sql = "SELECT count(*) from case_movement a, admin_user b where a.toId = b.username and "
+		sql = "SELECT count(*) from audit_case_movement a, admin_user b where a.toId = b.username and "
 				+ "b.role_name IN ('INV','AGNSUP') and a.fromId = '" + username + "'";
 		template.queryForObject(sql, Integer.class);
 		dashboardCount.put("Assigned Investigation", count);
 		
-		sql = "SELECT count(*) from case_movement a, case_lists b where b.intimationType IN ('PIV', "
+		sql = "SELECT count(*) from audit_case_movement a, case_lists b where b.intimationType IN ('PIV', "
 				+ "'PIRV', 'LIVE') and a.toId = '" + username + "'";
 		template.queryForObject(sql, Integer.class);
 		dashboardCount.put("PIV/PIRV/LIVE Pending", count);
 		
-		sql = "SELECT count(*) from case_movement a, case_lists b where b.intimationType = 'CDP' "
+		sql = "SELECT count(*) from audit_case_movement a, case_lists b where b.intimationType = 'CDP' "
 				+ "and a.toId = '" + username + "'";
 		template.queryForObject(sql, Integer.class);
 		dashboardCount.put("CDP", count);

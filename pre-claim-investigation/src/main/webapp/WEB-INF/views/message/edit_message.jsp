@@ -466,7 +466,7 @@ $("#assignmessagesubmit").click(function()
 	    	if(message == "****")
 	    		{
 		    		toastr.success("Case assigned successfully", "Success");
-		    		location.href = "${pageContext.request.contextPath}/pending/message";
+		    		location.href = "${pageContext.request.contextPath}/message/pending_message";
 		    		return;
 	    		}
 	    	else

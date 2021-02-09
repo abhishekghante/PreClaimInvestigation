@@ -150,8 +150,7 @@ public class CaseController {
     	details.setScreen_title("Assigned Cases Lists");
     	details.setMain_menu("Case Management");
     	details.setSub_menu1("RCU Assigned Cases");
-    	session.setAttribute("ScreenDetails", details);
-        
+    	session.setAttribute("ScreenDetails", details);  
     	session.setAttribute("assignCaseList", caseDao.getAssignedCaseList(user.getUsername()));
     	session.setAttribute("investigation_list", investigationDao.getActiveInvestigationList());
     	session.setAttribute("intimation_list", intimationTypeDao.getActiveIntimationType());
@@ -362,5 +361,26 @@ public class CaseController {
     	return caseDao.getUserListByRole(role_code);
 		
     }
+    
+    
+    @RequestMapping(value = "/case_history",method = RequestMethod.GET)
+    public String timeline(HttpServletRequest request,HttpSession session) 
+    {			
+    	UserDetails user = (UserDetails) session.getAttribute("User_Login");
+		if(user == null)
+			return "common/login";
+		
+		session.removeAttribute("ScreenDetails"); 	
+		ScreenDetails details=new ScreenDetails();
+    	details.setScreen_name("../message/timeline.jsp");
+    	details.setScreen_title("Case History");
+    	details.setMain_menu("Case Management");
+    	details.setSub_menu1("Pending Case");
+    	details.setSub_menu2("Case Timeline");
+    	details.setSub_menu2_path("../message/pending_message.jsp");
+    	session.setAttribute("ScreenDetails", details); 
+    	return "common/templatecontent";
+   	}
+    
     
 }
