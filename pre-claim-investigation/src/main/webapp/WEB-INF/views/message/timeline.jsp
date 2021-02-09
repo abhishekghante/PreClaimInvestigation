@@ -1,61 +1,14 @@
-<%@page import = "java.util.List" %>
 <%@page import = "java.util.ArrayList" %>
-<%@page import = "com.preclaim.models.CaseDetailList"%>
-<%@page import = "com.preclaim.models.IntimationType" %>
-<%@page import = "com.preclaim.models.InvestigationType" %>
+<%@page import = "com.preclaim.models.CaseHistory"%>
 <%
-List<String>user_permission=(List<String>)session.getAttribute("user_permission");
-boolean allow_delete = user_permission.contains("messages/delete");
-List<CaseDetailList> pendingCaseDetailList = (List<CaseDetailList>)session.getAttribute("pendingCaseList");
-session.removeAttribute("pendingCaseList");
-List<InvestigationType> investigationList = (List<InvestigationType>) session.getAttribute("investigation_list");
-session.removeAttribute("investigation_list");
-List<IntimationType> intimationTypeList = (List<IntimationType>) session.getAttribute("intimation_list");
-session.removeAttribute("intimation_list");
+ArrayList<CaseHistory> case_history = (ArrayList<CaseHistory>) session.getAttribute("case_history");
+session.removeAttribute("case_history");
 %>
 <link href="${pageContext.request.contextPath}/resources/global/plugins/datatables/datatables.min.css" rel="stylesheet" type="text/css" />
 <link href="${pageContext.request.contextPath}/resources/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css" rel="stylesheet" type="text/css" />
 <script src="${pageContext.request.contextPath}/resources/global/plugins/datatables/datatables.min.js" type="text/javascript"></script>
 <script src="${pageContext.request.contextPath}/resources/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js" type="text/javascript"></script>
-<div class="row">
-  <div class="col-xs-12 col-sm-12">
-    <div class="portlet box">
-      <div class="portlet-title">
-        <div class="caption">
-            <i class="icon-users font-green-sharp"></i>
-            <span class="caption-subject font-green-sharp sbold">Case History</span>
-        </div>
-        
-     
-       
-
-           <div class="timeline">
-             <div class="container right">
-						<div class="content">
-							<h2>2017</h2>
-							<p>Lorem ipsum dolor sit amet, quo ei simul congue exerci, ad
-								nec admodum perfecto mnesarchum, vim ea mazim fierent detracto.
-								Ea quis iuvaret expetendis his, te elit voluptua dignissim per,
-								habeo iusto primis ea eam.</p>
-						</div>
-					</div>
-          </div>
-
-
-    
-        
-
-
-
-
-        
-        </div>
-      </div>
-    </div>
-</div>
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
+<style>
 <style>
 * {
   box-sizing: border-box;
@@ -70,7 +23,6 @@ body {
 /* The actual timeline (the vertical ruler) */
 .timeline {
   position: relative;
-  max-width: 1000px;
   margin: 50px auto;
   border: 1px solid Red;
 }
@@ -162,6 +114,7 @@ body {
   position: relative;
   border-radius: 6px;
   border: 1px solid Black;
+  color:green;
 }
 
 /* Media queries - Responsive timeline on screens less than 600px wide */
@@ -197,3 +150,57 @@ body {
   }
 }
 </style>
+
+<div class="row">
+  <div class="col-xs-12 col-sm-12">
+    <div class="portlet box">
+      <div class="portlet-title">
+        <div class="caption">
+            <i class="icon-users font-green-sharp"></i>
+            <span class="caption-subject font-green-sharp sbold">Case History</span>
+        </div>
+        <div class="actions">
+            <div class="btn-group">
+              <a href="${pageContext.request.contextPath}/resources/messages/add" data-toggle="tooltip" title="Add" class="btn green-haze btn-outline btn-xs pull-right" data-toggle="tooltip" title="" style="margin-right: 5px;" data-original-title="Add New">
+                <i class="fa fa-plus"></i>
+              </a>
+            </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="box box-primary">
+      <div class="box-body">
+          <div class="row">
+            <div class="col-md-12 table-container">
+                <div class="box-body no-padding">
+		          <div class="timeline">
+		          <%for(CaseHistory list: case_history) {%>
+		             <div class="container right">
+						<div class="content">
+							<div class = "row">
+								<div class = "col-md-6">Name :- <%=list.getFromUserName() %></div>
+								<div class = "col-md-6">Received Date :- <%=list.getCreatedDate() %></div>
+							</div>
+							<div class = "row">
+								<div class = "col-md-12">Role :- <%=list.getRole() %></div>
+							</div>
+							<div class = "row">
+								<div class = "col-md-12">Status :- <%=list.getCaseStatus() %></div>
+							</div>
+							<div class = "row">
+								<div class = "col-md-12">Remarks :- <%=list.getRemarks() %></div>
+							</div>
+						</div>
+					</div>
+					<%} %>
+		          </div>           
+                </div>
+              <div class="clearfix"></div>
+            </div>
+          </div>
+        <div class="clearfix"></div>
+      </div><!-- panel body -->
+    </div>
+  </div><!-- content -->
+</div>

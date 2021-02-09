@@ -1,12 +1,14 @@
 package com.preclaim.dao;
 
 import java.sql.ResultSet;
+import java.util.List;
 
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import com.preclaim.models.CaseHistory;
 import com.preclaim.models.CaseMovement;
 
 public class Case_movementDaoImpl implements Case_movementDao {
@@ -77,6 +79,40 @@ public class Case_movementDaoImpl implements Case_movementDao {
 			
 		}		
 		return "****";
+	}
+
+	@Override
+	public List<CaseHistory> getCaseMovementHistory(long caseId) {
+		String sql = "SELECT * FROM audit_case_movement where caseId = ?";	
+		List<CaseHistory> case_details = template.query(sql, new Object[] {caseId}, 
+				(ResultSet rs, int rowNum) -> 
+		{
+			CaseHistory case_history = new CaseHistory();
+			case_history.setCaseId(caseId);
+			case_history.setFromId(rs.getString("fromId"));
+			case_history.setToId(rs.getString("toId"));
+			case_history.setCaseStatus(rs.getString("caseStatus"));
+			case_history.setRemarks(rs.getString("Remarks"));
+			case_history.setCreatedDate(rs.getString("createdDate"));
+			case_history.setUpdatedDate(rs.getString("updatedDate"));
+			return case_history;
+		});
+		
+		for(int i = 0; i < case_details.size(); i++)
+		{
+			sql = "SELECT full_name from admin_user where username = '" + case_details.get(i).getFromId() 
+					+ "'";
+			case_details.get(i).setFromUserName(template.queryForObject(sql, String.class));
+		}
+		
+		for(int i = 0; i < case_details.size(); i++)
+		{
+			sql = "SELECT role from admin_user a, user_role b where a.role_name = b.role_code and "
+					+ "a.username = '" + case_details.get(i).getFromId() + "'";
+			case_details.get(i).setRole(template.queryForObject(sql, String.class));
+		}
+		
+		return case_details;
 	}
 
 

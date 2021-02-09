@@ -55,13 +55,14 @@ ArrayList<String> user_permission = (ArrayList<String>)session.getAttribute("use
                   <span class="arrow "></span>
               </a>
               <ul class="sub-menu">
-                
+                <%if(user_permission.contains("messages/add")){ %>
                 <li class="nav-item <%if(details.getSub_menu1().equals("Bulk case uploads")){%>active<%}%>">
                   <a href="${pageContext.request.contextPath}/message/import_case" 
                   	class="nav-link nav-toggle">
                     <i class="icon-plus"></i> Bulk case uploads
                   </a>
                 </li>
+                <%} %>
                 <%if(user_permission.contains("messages/add")){ %>
                 <li class="nav-item <%if(details.getSub_menu1().equals("Create Case")){%>active<%}%>">
                   <a href="${pageContext.request.contextPath}/message/add_message" 

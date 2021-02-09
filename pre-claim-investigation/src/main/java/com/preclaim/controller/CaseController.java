@@ -72,7 +72,8 @@ public class CaseController {
     	details.setSub_menu2("App Users");
     	details.setSub_menu2_path("/app_user/app_user");
     	session.setAttribute("ScreenDetails", details);
- 
+    	session.setAttribute("userRole", userDao.getAssigneeRole());
+    	
     	return "common/templatecontent";
     }
     
@@ -180,13 +181,14 @@ public class CaseController {
 		{
 			try 
 			{
+				String toId = request.getParameter("assigneeId");
 	    		byte[] temp = userfile.getBytes();
 	    		String filename = userfile.getOriginalFilename();
 	    		filename = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH-mm-SS")) + "_" + filename;
 	    		Path path = Paths.get(Config.upload_directory + filename);
 	    		System.out.println("Entered");
 				Files.write(path, temp);
-				String message = caseDao.addBulkUpload(filename, user.getUsername());
+				String message = caseDao.addBulkUpload(filename, user.getUsername(), toId);
 				if(message.equals("****"))
 					details.setSuccess_message1("File uploaded successfully");		
 				else
@@ -220,7 +222,7 @@ public class CaseController {
        	caseDetail.setIntimationType( request.getParameter("msgIntimationType"));
        	caseDetail.setLocationId(Integer.parseInt(request.getParameter("claimantCity")));
        	caseDetail.setNominee_name(request.getParameter("nomineeName"));
-       	caseDetail.setNomineeContactNumber(request.getParameter("nomineeMob"));
+       	caseDetail.setNomineeContactNumber(Integer.parseInt(request.getParameter("nomineeMob")));
        	caseDetail.setNominee_address(request.getParameter("nomineeAdd"));
        	caseDetail.setInsured_address(request.getParameter("insuredAdd"));
 		caseDetail.setCreatedBy(user.getUsername()); 
@@ -292,7 +294,7 @@ public class CaseController {
        	caseDetail.setClaimantState(request.getParameter("claimantState"));
        	caseDetail.setClaimantZone(request.getParameter("claimantZone"));
        	caseDetail.setNominee_name(request.getParameter("nomineeName"));
-       	caseDetail.setNomineeContactNumber(request.getParameter("nomineeMob"));
+       	caseDetail.setNomineeContactNumber(Integer.parseInt(request.getParameter("nomineeMob")));
        	caseDetail.setNominee_address(request.getParameter("nomineeAdd"));
        	caseDetail.setInsured_address(request.getParameter("insuredAdd"));
 		caseDetail.setCreatedBy(user.getUsername()); 
@@ -370,6 +372,8 @@ public class CaseController {
 		if(user == null)
 			return "common/login";
 		
+		long caseId = Long.parseLong(request.getParameter("caseId"));
+		
 		session.removeAttribute("ScreenDetails"); 	
 		ScreenDetails details=new ScreenDetails();
     	details.setScreen_name("../message/timeline.jsp");
@@ -378,7 +382,9 @@ public class CaseController {
     	details.setSub_menu1("Pending Case");
     	details.setSub_menu2("Case Timeline");
     	details.setSub_menu2_path("../message/pending_message.jsp");
-    	session.setAttribute("ScreenDetails", details); 
+    	session.setAttribute("ScreenDetails", details);
+    	session.setAttribute("case_history", caseMovementDao.getCaseMovementHistory(caseId));
+    
     	return "common/templatecontent";
    	}
     

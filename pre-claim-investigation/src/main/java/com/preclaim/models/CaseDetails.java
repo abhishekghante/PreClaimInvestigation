@@ -17,7 +17,7 @@ public class CaseDetails {
 	private String claimantState;
 	private String caseStatus;
 	private String nominee_name;
-	private String nomineeContactNumber;
+	private int nomineeContactNumber;
 	private String nominee_address;
 	private String insured_address;
 	private String case_description;
@@ -55,7 +55,7 @@ public class CaseDetails {
 		claimantZone = "";
 		caseStatus = "";
 		nominee_name = "";
-		nomineeContactNumber = "";
+		nomineeContactNumber = 0;
 		nominee_address = "";
 		insured_address = "";
 		case_description = "";
@@ -198,11 +198,11 @@ public class CaseDetails {
 		this.nominee_name = nominee_name;
 	}
 
-	public String getNomineeContactNumber() {
+	public int getNomineeContactNumber() {
 		return nomineeContactNumber;
 	}
 
-	public void setNomineeContactNumber(String nomineeContactNumber) {
+	public void setNomineeContactNumber(int nomineeContactNumber) {
 		this.nomineeContactNumber = nomineeContactNumber;
 	}
 

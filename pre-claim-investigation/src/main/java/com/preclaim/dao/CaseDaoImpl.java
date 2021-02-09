@@ -4,9 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.sql.Date;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,7 +20,6 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.ParameterizedPreparedStatementSetter;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
@@ -31,6 +28,7 @@ import com.preclaim.config.CustomMethods;
 import com.preclaim.models.CaseDetailList;
 import com.preclaim.models.CaseDetails;
 import com.preclaim.models.CaseMovement;
+import com.preclaim.models.InvestigationType;
 import com.preclaim.models.Location;
 import com.preclaim.models.UserDetails;
 
@@ -62,12 +60,12 @@ public class CaseDaoImpl implements CaseDao {
 	}
 
 	@Override
-	public String addBulkUpload(String filename, String username) {
+	public String addBulkUpload(String filename, String fromId, String toId) {
 		
 		String extension = StringUtils.getFilenameExtension(filename).toLowerCase();
 		String error ="";
 		if(extension.equals("xlsx"))
-			error = readCaseXlsx(filename, username);
+			error = readCaseXlsx(filename, fromId, toId);
 		return error;
 	}
 	
@@ -192,7 +190,7 @@ public class CaseDaoImpl implements CaseDao {
 						detail.setIntimationType(rs.getString("intimationType"));
 						detail.setLocationId(rs.getInt("locationId"));
 						detail.setNominee_name(rs.getString("nominee_name"));
-						detail.setNomineeContactNumber(rs.getString("nominee_ContactNumber"));
+						detail.setNomineeContactNumber(rs.getInt("nominee_ContactNumber"));
 						detail.setNominee_address(rs.getString("nominee_address"));
 						detail.setInsured_address(rs.getString("insured_address"));
 						detail.setCase_description(rs.getString("case_description"));
@@ -267,14 +265,13 @@ public class CaseDaoImpl implements CaseDao {
 	}
 	
 	@Transactional
-	public String readCaseXlsx(String filename, String username) {
+	public String readCaseXlsx(String filename, String fromId, String toId) {
 		try {
 			File error_file = new File(Config.upload_directory + "error_log.xlsx");
 			if(error_file.exists())
 				error_file.delete();
 			File file = new File(Config.upload_directory + filename);
 			//File not found error won't occur
-			List<CaseDetails> caseList = new ArrayList<CaseDetails>();
 			FileInputStream fis = new FileInputStream(file);
 			XSSFWorkbook wb = new XSSFWorkbook(fis);   
 			XSSFSheet sheet = wb.getSheetAt(0);
@@ -286,7 +283,7 @@ public class CaseDaoImpl implements CaseDao {
 				wb.close();
 				return error_message;
 			}
-			List<String> investigation_list = investigationDao.getActiveInvestigationStringList();
+			List<InvestigationType> investigation_list = investigationDao.getActiveInvestigationList();
 			List<String> intimation_list = intimationTypeDao.getActiveIntimationTypeStringList();
 			List<Location> location_list = locationDao.getActiveLocationList();
 			Map<CaseDetails, String> error_case = new HashMap<CaseDetails, String>();
@@ -302,16 +299,26 @@ public class CaseDaoImpl implements CaseDao {
 				{
 					cell = cellIterator.next();
 					caseDetails.setPolicyNumber(readCellStringValue(cell).toUpperCase());
-					if(!caseDetails.getPolicyNumber().startsWith("C") || 
-							caseDetails.getPolicyNumber().startsWith("U"))
+					if(!(caseDetails.getPolicyNumber().startsWith("C") || 
+							caseDetails.getPolicyNumber().startsWith("U")))
 						error_message += "Invalid Policy Number, ";
 				}
 				if(cellIterator.hasNext())
 				{
 					cell = cellIterator.next();
-					caseDetails.setInvestigationCategory(readCellStringValue(cell));
-					if(!investigation_list.contains(caseDetails.getInvestigationCategory()))
+					String investigationCategory = readCellStringValue(cell);
+					caseDetails.setInvestigationCategory(investigationCategory);
+					for(InvestigationType investigation: investigation_list)
+					{
+						if(investigation.getInvestigationType().equals(investigationCategory))
+						{
+							caseDetails.setInvestigationId(investigation.getInvestigationId());
+							break;
+						}
+					}
+					if(caseDetails.getInvestigationId() == 0)
 						error_message += "Invalid Investigation Type, ";
+						
 				}
 				if(cellIterator.hasNext())
 				{
@@ -382,6 +389,7 @@ public class CaseDaoImpl implements CaseDao {
 					{
 						if(caseDetails.getClaimantCity().equalsIgnoreCase(list.getCity()))
 						{
+							caseDetails.setLocationId(list.getLocationId());
 							caseDetails.setClaimantState(list.getState());
 							caseDetails.setClaimantZone(list.getZone());
 							break;
@@ -407,7 +415,7 @@ public class CaseDaoImpl implements CaseDao {
 					cell = cellIterator.next();
 					try
 					{
-						caseDetails.setNomineeContactNumber(String.valueOf(readCellIntValue(cell)));
+						caseDetails.setNomineeContactNumber(readCellIntValue(cell));
 					}
 					catch(Exception e) {}
 				}
@@ -436,9 +444,16 @@ public class CaseDaoImpl implements CaseDao {
 				}
 				if(error_message.equals(""))
 				{
-					caseDetails.setCaseStatus("Open");
-				//	caseDetails.setCaseSubstatus("PA");
-					caseList.add(caseDetails);
+					caseDetails.setCaseStatus("Assigned");
+					long caseId = addcase(caseDetails);
+					CaseMovement caseMovement = new CaseMovement();
+			       	caseMovement.setCaseId(caseId);
+			       	caseMovement.setFromId(fromId);
+			       	caseMovement.setToId(toId);
+			       	case_movementDao.CreatecaseMovement(caseMovement);
+			       	
+			       	userDao.activity_log("CASE HISTORY", caseDetails.getPolicyNumber(), 
+			       			"ADD CASE", fromId);
 				}
 				else
 				{
@@ -449,37 +464,6 @@ public class CaseDaoImpl implements CaseDao {
 			wb.close();
 			//Error File
 			writeErrorCase(error_case);
-			
-			String sql = "INSERT INTO case_lists(policyNumber, investigationId, insuredName, insuredDOD, insuredDOB, "
-					+ "sumAssured, intimationType, claimantCity, claimantZone, claimantState, caseStatus, "
-					+ "nominee_name, nomineeContactNumber, nominee_address, insured_address, "
-					+ "createdBy, createdDate, updatedDate, updatedBy) "
-					+ "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '', '', '', '', '', '', '', '', '', '', ?, now(), "
-					+ "'0000-00-00 00:00:00', 0)";
-			
-			template.batchUpdate(sql,caseList,5,
-	                new ParameterizedPreparedStatementSetter<CaseDetails>() {
-	                    public void setValues(PreparedStatement ps, CaseDetails caseDetails) throws SQLException          
-	                    {
-	                    	ps.setString(1, caseDetails.getPolicyNumber());
-	                    	ps.setInt(2, caseDetails.getInvestigationId());
-	                    	ps.setString(3, caseDetails.getInsuredName());
-	                    	ps.setString(4, caseDetails.getInsuredDOD());
-	                    	ps.setString(5, caseDetails.getInsuredDOB());
-	                    	ps.setInt(6, (int)caseDetails.getSumAssured());
-	                    	ps.setString(7, caseDetails.getIntimationType());
-	                    	ps.setString(8,caseDetails.getClaimantCity());
-	                    	ps.setString(9, caseDetails.getClaimantState());
-	                    	ps.setString(10, caseDetails.getClaimantZone());
-	                    	ps.setString(11, "Open");
-	                    	ps.setString(12,"PA");
-	                    	ps.setString(13, caseDetails.getNominee_name());
-	                    	ps.setString(14, caseDetails.getNomineeContactNumber());
-	                    	ps.setString(15,  caseDetails.getNominee_address());
-	                    	ps.setString(16, caseDetails.getInsured_address());
-	                    	ps.setString(17, username);
-	                    }
-	                });
 			return "****";
 		}
 		catch(Exception e)

@@ -37,7 +37,7 @@ ScreenDetails details = (ScreenDetails) session.getAttribute("ScreenDetails");
         <div class="row">
           <div class="col-md-12">
           <form id="import_user_form" class="form-horizontal" method = "POST" action = "importData" 
-          	enctype="multipart/form-data" onsubmit = "importData()">
+          	enctype="multipart/form-data" onsubmit = "return importData()">
               <div class="form-group">
                 <label class="col-md-4 padding-left-5 col-xs-4 control-label">Import Data</label>
                 <div class="col-md-6 padding-left-0 col-xs-6">
@@ -66,7 +66,7 @@ ScreenDetails details = (ScreenDetails) session.getAttribute("ScreenDetails");
                   </select>
                 </div>
                 
-                <label class="col-md-2 control-label" for="userRole">Select User 
+                <label class="col-md-2 control-label" for="assigneeId">Select User 
                 	<span class="text-danger">*</span></label>
                 <div class="col-md-2">
                   <select name="assigneeId" id="assigneeId" class="form-control">
@@ -89,11 +89,36 @@ $(document).ready(function(){
 		location.href = "${pageContext.request.contextPath}/message/downloadErrorReport";
 	<%}%>
 });
-function importData()
+function importData(e)
 {
 	$("#importfile").html('<img src="${pageContext.request.contextPath}/resources/img/input-spinner.gif"> Loading...');
 	$("#importfile").prop("disabled","true");
-	return true;
+	
+	var roleName = $("#roleName").val();
+	var userId = $("#assigneeId").val();
+	
+	var validFlag = 0;
+	if(roleName == -1 || roleName == null)
+		{
+			toastr.error("Kindly select Assignee Role","Error");
+			validFlag = 1;
+		}
+	if(userId == -1 || userId == null)
+	{
+		toastr.error("Kindly select Assignee","Error");
+		validFlag = 1;
+	}
+	if(validFlag == 0)
+		{
+			return true;
+		}
+	else
+		{
+		$("#importfile").html('Import');
+		$("#importfile").prop("disabled","false");
+		
+		}
+	return false;
 }
 
 </script>
