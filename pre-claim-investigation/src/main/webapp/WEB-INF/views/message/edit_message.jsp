@@ -460,8 +460,7 @@ $("#assignmessagesubmit").click(function()
     $.ajax({
 	    type: "POST",
 	    url: 'assignCase',
-	    data:{"toId" : toId, "approveStatus" : toStatus, "toRemarks" : 
-	    	toRemarks, "caseId": caseId},
+	    data:{"toId" : toId, "toStatus" : toStatus, "toRemarks" : toRemarks, "caseId": caseId},
 	    success:function(message)
 	    {
 	    	if(message == "****")

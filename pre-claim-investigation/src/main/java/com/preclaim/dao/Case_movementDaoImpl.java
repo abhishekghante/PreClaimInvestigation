@@ -63,7 +63,7 @@ public class Case_movementDaoImpl implements Case_movementDao {
 		{
 		   String query="UPDATE case_movement SET fromID = ?, toId = ?, caseStatus = ?, remarks = ?, "
 		   		+ "createdDate = now(), updatedDate = now() where caseId = ?";
-		   this.template.update(caseMovement.getFromId(), caseMovement.getToId(), 
+		   this.template.update(query,caseMovement.getFromId(), caseMovement.getToId(), 
 				   caseMovement.getCaseStatus(),caseMovement.getRemarks(), caseMovement.getCaseId());
 		 
 		   query="INSERT INTO audit_case_movement(caseId, fromID, toId, caseStatus, remarks, createdDate, updatedDate) values(?, ?, ?, ?, '', now(), now()) ";
