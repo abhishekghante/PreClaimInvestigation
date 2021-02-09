@@ -210,9 +210,9 @@ public class CaseDaoImpl implements CaseDao {
 					);
 			   
 			     //Assigner Details
-			     sql = "SELECT * FROM case_movement where caseId = " + caseID;
 			     CaseMovement case_movement = case_movementDao.getCaseById(caseID);
 			     UserDetails user = userDao.getUserDetails(case_movement.getFromId());
+			     caseDetail.get(0).setAssignerName(user.getFull_name());
 			     caseDetail.get(0).setApprovedStatus(case_movement.getCaseStatus());
 			     caseDetail.get(0).setAssignerRemarks(case_movement.getRemarks());
 			     

@@ -266,6 +266,7 @@ public class CaseController {
     	details.setSub_menu2("Manage Cases");
     	details.setSub_menu2_path("../message/pending_message.jsp");
     	session.setAttribute("ScreenDetails", details);    	
+    	session.setAttribute("userRole", userDao.getAssigneeRole());
     	session.setAttribute("location_list", locationDao.getActiveLocationList());
     	session.setAttribute("investigation_list", investigationDao.getActiveInvestigationList());
     	session.setAttribute("intimation_list", intimationTypeDao.getActiveIntimationType());
@@ -306,12 +307,12 @@ public class CaseController {
     {
     	UserDetails user = (UserDetails) session.getAttribute("User_Login");
     	long caseId = Integer.parseInt(request.getParameter("caseId"));
-		String assigneeId = request.getParameter("assigneeId");
-		String assignerId = user.getUsername();
-		String assignerStatus = request.getParameter("assignerStatus");
-		String assignerRemarks = request.getParameter("assignerRemarks");
-    	CaseMovement case_movement = new CaseMovement(caseId, assignerId, assigneeId, assignerStatus, 
-    			assignerRemarks);
+		String toId = request.getParameter("toId");
+		String fromId = user.getUsername();
+		String toStatus = request.getParameter("toStatus");
+		String toRemarks = request.getParameter("toRemarks");
+    	CaseMovement case_movement = new CaseMovement(caseId, fromId, toId, toStatus, 
+    			toRemarks);
     	String message = caseMovementDao.updateCaseMovement(case_movement);
     	userDao.activity_log("CASE HISTORY","", "ASSIGN CASE", user.getUsername());
 		return message;
