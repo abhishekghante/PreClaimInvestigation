@@ -71,6 +71,14 @@ public class Case_movementDaoImpl implements Case_movementDao {
 		   query="INSERT INTO audit_case_movement(caseId, fromID, toId, caseStatus, remarks, createdDate, updatedDate) values(?, ?, ?, ?, '', getdate(), getdate()) ";
 		   this.template.update(query,caseMovement.getCaseId(), caseMovement.getFromId(), caseMovement.getToId(),caseMovement.getCaseStatus());
 			
+		   if(caseMovement.getCaseStatus() == "Closed")
+		   {
+			   query = "UPDATE case_lists SET caseStatus = ?, updatedBy = ?, updatedDate = getDate() where"
+			   		+ "caseId = ?";
+			   template.update(query,caseMovement.getCaseStatus(), caseMovement.getFromId(), 
+					   caseMovement.getCaseId());
+		   }
+		   
 	    }
 		catch(Exception e) {
 			

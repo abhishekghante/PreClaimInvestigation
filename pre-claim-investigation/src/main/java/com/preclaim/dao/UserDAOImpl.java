@@ -231,14 +231,15 @@ public class UserDAOImpl implements UserDAO{
 	public String updateUserDetails(UserDetails user_details) {
 		try
 		{
-			String sql = "UPDATE admin_user SET full_name = ?, role_name = ?, username = ?,"
-					+ "user_email = ?, password = ?, status = ?, user_image = ?, city = ?, state = ?, "
-					+ "zone = ? where user_id = ?";
+			String sql = "UPDATE admin_user SET full_name = ?, role_name = ?, user_email = ?, "
+					+ "password = ?, status = ?, user_image = ?, city = ?, state = ?, mobile_number = ?, "
+					+ "address1 = ?, address2 = ?, address3 = ?, updatedDate = getDate(), updatedBy = ? "
+					+ "where user_id = ?";
 			template.update(sql, user_details.getFull_name(), user_details.getAccount_type(),
-					user_details.getUsername(), user_details.getUser_email(), user_details.getPassword(),
-					user_details.getStatus(), user_details.getUserimage(), user_details.getCity(),
-					user_details.getState(), user_details.getUserID());
-					
+					user_details.getUser_email(), user_details.getPassword(), user_details.getStatus(),
+					user_details.getUserimage(), user_details.getCity(),user_details.getState(), 
+					user_details.getContactNumber(), user_details.getAddress1(), user_details.getAddress2(), 
+					user_details.getAddress3(), user_details.getUpdatedBy(), user_details.getUserID());
 		}
 		catch(Exception e)
 		{

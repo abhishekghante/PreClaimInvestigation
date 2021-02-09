@@ -412,7 +412,10 @@ function clearForm(){
 $("#roleName").change(function(){
 	console.log($("#roleName option:selected").val());
 	var roleCode = $(this).val();
-	$("#assigneeId option").remove();
+	$("#assigneeId option").each(function(){
+		if($(this).val() != '-1')
+			$(this).remove();
+	});
 	$.ajax({
 	    type: "POST",
 	    url: 'getUserByRole',
@@ -420,7 +423,7 @@ $("#roleName").change(function(){
 	    success: function(userList)
 	    {
 	    	console.log(userList);
-	  		var options = "<option value = -1 selected disabled>Select</option>";
+	  		var options = "";
 	    	for(i = 0; i < userList.length ; i++)
 	  			{
 	  				options += "<option value ='" + userList[i].username + "'>" + userList[i].full_name + "</option>";  

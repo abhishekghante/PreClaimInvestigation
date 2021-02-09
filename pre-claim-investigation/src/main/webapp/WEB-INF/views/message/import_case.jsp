@@ -112,12 +112,9 @@ function importData(e)
 		{
 			return true;
 		}
-	else
-		{
-		$("#importfile").html('Import');
-		$("#importfile").prop("disabled","false");
-		
-		}
+	$("#importfile").html('Import');
+	$("#importfile").prop("disabled",false);
+	
 	return false;
 }
 
@@ -126,6 +123,10 @@ function importData(e)
 $("#roleName").change(function(){
 	console.log($("#roleName option:selected").val());
 	var roleCode = $(this).val();
+	$("#assigneeId option").each(function(){
+		if($(this).val() != '-1')
+			$(this).remove();
+	});
 	$.ajax({
 	    type: "POST",
 	    url: 'getUserByRole',

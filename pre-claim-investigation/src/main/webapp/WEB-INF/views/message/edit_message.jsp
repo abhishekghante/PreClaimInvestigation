@@ -20,6 +20,7 @@ List<UserRole> userRole =(List<UserRole>)session.getAttribute("userRole");
 session.removeAttribute("userRole");
 boolean allow_edit = user_permission.contains("messages/add");
 boolean allow_assign = user_permission.contains("messages/assign");
+boolean allow_closure = user_permission.contains("messages/close");
 %>
 <style type="text/css">
 .placeImg { display:none !important;}
@@ -335,7 +336,7 @@ boolean allow_assign = user_permission.contains("messages/assign");
 	               	  </textarea>
 	                </div>
               	 </div>
-		         <div class="form-group selectDiv">
+		         <div class="form-group selectDiv" id = "case-closure">
 		                <label class="col-md-4 control-label" for="toRole">Select Role Name 
 		                	<span class="text-danger">*</span></label>
 		                <div class="col-md-2">
@@ -366,6 +367,9 @@ boolean allow_assign = user_permission.contains("messages/assign");
 	                    <option value="-1" disabled>Select</option>
 	                    <option value = "Approved">Approved</option>
 	                    <option value = "Rejected">Rejected</option>
+	                    <%if(allow_closure) {%>
+	                    <option value = "Closed">Closure</option>
+	                    <%} %> 
 	                  </select>
 	                </div>
 	              </div>
@@ -417,30 +421,48 @@ $("document").ready(function(){
 	});
 	
 	$("#claimantCity").trigger("change");
+	
+	$("#toStatus").change(function(){
+		if($(this).val() == "Closed")
+		{
+			$("#case-closure").hide();
+		}
+		else
+		{
+			$("#case-closure").show();
+		}
+		
+	});
 });
 </script>
 
 <script>
 $("#assignmessagesubmit").click(function()
 {
+	//Validation for Case Closure
 	var caseId = $( '#edit_message_form #caseId' ).val();
-    var toId = $( '#edit_message_form #toId' ).val();
-    var toRole = $( '#edit_message_form #toRole' ).val();
-    var toStatus = $( '#edit_message_form #toStatus' ).val();
-    var toRemarks = $( '#edit_message_form #toRemarks' ).val();
+	var toStatus = $( '#edit_message_form #toStatus' ).val();
+    var toRemarks = $( '#edit_message_form #toRemarks').val().trim();
+    var toId = "";
+    var toRole = "";
     var validFlag = 1;
     
-    if(toId == "-1" || toId == null)
+    if(toStatus != "Closed")
+   	{
+	    toId = $( '#edit_message_form #toId' ).val();
+	    toRole = $( '#edit_message_form #toRole' ).val();
+   	}
+    if(toId == null)
    	{
    		toastr.error("Kindly select user", "Error");
    		validFlag = 0;
    	}
-    if(toStatus == "-1" || toStatus == null)
+    if(toStatus == null)
    	{
    		toastr.error("Kindly select status", "Error");
    		validFlag = 0;
    	}
-    if(toRole == "-1" || toRole == null)
+    if(toRole == null)
    	{
    		toastr.error("Kindly select User Role", "Error");
    		validFlag = 0;
@@ -448,7 +470,7 @@ $("#assignmessagesubmit").click(function()
     
     if(toStatus == "Rejected" && toRemarks == "")
    	{
-   		toastr.error("Kindly enter rejection reason");
+   		toastr.error("Kindly enter Rejection reason");
    		validFlag = 0;
    	}
     
@@ -647,7 +669,10 @@ function clearForm(){
 $("#roleName").change(function(){
 	console.log($("#roleName option:selected").val());
 	var roleCode = $(this).val();
-	$("#assigneeId option").remove();
+	$("#assigneeId option").each(function(){
+		if($(this).val() != '-1')
+			$(this).remove();
+	});
 	$.ajax({
 	    type: "POST",
 	    url: 'getUserByRole',
@@ -655,7 +680,7 @@ $("#roleName").change(function(){
 	    success: function(userList)
 	    {
 	    	console.log(userList);
-	  		var options = "<option value = -1 selected disabled>Select</option>";
+	  		var options = "";
 	    	for(i = 0; i < userList.length ; i++)
 	  			{
 	  				options += "<option value ='" + userList[i].username + "'>" + userList[i].full_name + "</option>";  
@@ -671,7 +696,10 @@ $("#roleName").change(function(){
 $("#toRole").change(function(){
 	console.log($("#toRole option:selected").val());
 	var roleCode = $(this).val();
-	$("#toId option").remove();
+	$("#toId option").each(function(){
+		if($(this).val() != '-1')
+			$(this).remove();
+	});
 	$.ajax({
 	    type: "POST",
 	    url: 'getUserByRole',
@@ -679,7 +707,7 @@ $("#toRole").change(function(){
 	    success: function(userList)
 	    {
 	    	console.log(userList);
-	  		var options = "<option value = -1 selected disabled>Select</option>";
+	  		var options = "";
 	    	for(i = 0; i < userList.length ; i++)
 	  			{
 	  				options += "<option value ='" + userList[i].username + "'>" + userList[i].full_name + "</option>";  

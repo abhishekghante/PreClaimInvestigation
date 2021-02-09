@@ -312,8 +312,7 @@ public class CaseController {
 		String fromId = user.getUsername();
 		String toStatus = request.getParameter("toStatus");
 		String toRemarks = request.getParameter("toRemarks");
-    	CaseMovement case_movement = new CaseMovement(caseId, fromId, toId, toStatus, 
-    			toRemarks);
+    	CaseMovement case_movement = new CaseMovement(caseId, fromId, toId, toStatus, toRemarks);
     	String message = caseMovementDao.updateCaseMovement(case_movement);
     	userDao.activity_log("CASE HISTORY","", "ASSIGN CASE", user.getUsername());
 		return message;

@@ -258,9 +258,9 @@ function updateAccountValidate() {
     var contactNumber = $.trim($('#edit_account_form #contactNumber').val());
     var state        = $.trim($('#edit_account_form #state').val());
     var city         = $.trim($('#edit_account_form #city').val());
-    var address1     = $.trim($('#add_account_form #address1').val());
-    var address2     = $.trim($('#add_account_form #address2').val());
-    var address3     = $.trim($('#add_account_form #address3').val());
+    var address1     = $.trim($('#edit_account_form #address1').val());
+    var address2     = $.trim($('#edit_account_form #address2').val());
+    var address3     = $.trim($('#edit_account_form #address3').val());
     
     $('#full_name').removeClass('has-error-2');
     $('#username').removeClass('has-error-2');
@@ -287,12 +287,6 @@ function updateAccountValidate() {
         $('#state').focus();
         validflag = 0;
         toastr.error("Kindly enter your State Name","Error");
-    }
-    if( address1 == "" ){
-        $('#address1').addClass('has-error-2');
-        $('#address1').focus();
-        validflag = 0;
-        toastr.error("Kindly enter your address 1","Error");
     }
     if( city == "" ){
         $('#city').addClass('has-error-2');
@@ -350,36 +344,6 @@ function updateAccountValidate() {
         toastr.error("Email-ID cannot be blank");
         validflag = 0;
    	}
-//     if( username == "" ){
-//         $('#username').addClass('has-error-2');
-//         $('#username').focus();
-//         validflag = 0;
-//         toastr.error("Kindly enter Username","Error");
-//     }
-//     else
-//    	{
-//     	console.log("Entered");
-// 	    $.ajax({
-// 	        type    : 'POST',
-// 	        url     : '${pageContext.request.contextPath}/user/accountValidate',
-// 	        data    : {'username':username},
-// 	        beforeSend: function() { 
-// 	            $("#editaccountsubmit").html('<img src="${pageContext.request.contextPath}/resources/img/input-spinner.gif"> Loading...');
-// 	            $("#editaccountsubmit").prop('disabled', true);
-// 	        },
-// 	        success : function( msg ) {
-// 	            $("#editaccountsubmit").html('Update');
-// 	            $("#editaccountsubmit").prop('disabled', false);
-// 	            if( msg != "****" ) 
-// 	            {
-// 	                toastr.error(msg,'Error');
-// 	                $('#username').addClass('has-error-2');
-// 	                $('#username').focus();	            
-// 	                validflag = 0;
-// 	            }
-// 	        }
-// 	    });
-//    	}
     
     if( full_name == "" )
     {
@@ -396,7 +360,8 @@ function updateAccountValidate() {
     $("#editaccountsubmit").prop('disabled', true);
     var formdata = {"full_name":full_name, "username":username, "user_email":user_email,
         "password":password, "account_type":account_type, "user_id":user_id, "account_img":account_img,
-        "status":status, "city":city, "state":state, "address1":address1, "contactNumber":contactNumber}
+        "status":status, "city":city, "state":state, "address1":address1, "address2":address2,
+        "address3":address3,"contactNumber":contactNumber}
     
     $.ajax({
         type    : 'POST',

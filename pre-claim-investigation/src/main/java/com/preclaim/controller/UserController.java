@@ -228,6 +228,11 @@ public class UserController {
 		user_details.setUserimage(request.getParameter("account_img"));	
 		user_details.setCity(request.getParameter("city"));
 		user_details.setState(request.getParameter("state"));
+		user_details.setAddress1(request.getParameter("address1"));
+		user_details.setAddress2(request.getParameter("address2"));
+		user_details.setAddress3(request.getParameter("address3"));
+		user_details.setContactNumber(request.getParameter("contactNumber"));
+		user_details.setUpdatedBy(user.getUsername());
 		System.out.println(user_details.toString());
 		dao.activity_log("USER",user_details.getUsername(), "UPDATE", user_details.getUsername());
 		return dao.updateUserDetails(user_details);
