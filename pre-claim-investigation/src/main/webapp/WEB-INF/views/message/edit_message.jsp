@@ -331,9 +331,7 @@ boolean allow_closure = user_permission.contains("messages/close");
 	                <label class="col-md-4 control-label" for="fromRemarks">Remarks</label>
 	                <div class="col-md-8">
 	                  <textarea name="fromRemarks" id="fromRemarks" class="form-control" rows="6"
-	                  	disabled readonly>
-	               	  	<%=case_detail.getAssignerRemarks() %>
-	               	  </textarea>
+	                  	disabled readonly><%=case_detail.getAssignerRemarks() %></textarea>
 	                </div>
               	 </div>
 		         <div class="form-group selectDiv" id = "case-closure">
@@ -381,7 +379,7 @@ boolean allow_closure = user_permission.contains("messages/close");
               	</div>
               </div>
               <!--  Footer -->
-              <%if(allow_assign) {%>
+              <%if(allow_assign && !allow_edit) {%>
               <div class="box-footer">
                 <div class="row">
                   <div class="col-md-offset-4 col-md-8">

@@ -161,8 +161,8 @@ body {
         </div>
         <div class="actions">
             <div class="btn-group">
-              <a href="${pageContext.request.contextPath}/resources/messages/add" data-toggle="tooltip" title="Add" class="btn green-haze btn-outline btn-xs pull-right" data-toggle="tooltip" title="" style="margin-right: 5px;" data-original-title="Add New">
-                <i class="fa fa-plus"></i>
+              <a href="${pageContext.request.contextPath}/message/pending_message" class="btn green-haze btn-outline btn-xs pull-right" data-toggle="tooltip" data-toggle="tooltip" title="Back" style="margin-right: 5px;" data-original-title="Back">
+                <i class="fa fa-reply"></i>
               </a>
             </div>
         </div>

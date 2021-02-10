@@ -139,8 +139,10 @@ public class CaseDaoImpl implements CaseDao {
 	public List<CaseDetailList> getAssignedCaseList(String username) {
 		try
 		{
-			String sql ="SELECT * FROM case_lists a, case_movement b where a.caseId = b.caseId and"
-					+ " b.toId = ?"; 			   
+			String sql ="SELECT a.caseId, a.policyNumber, a.insuredName, a.investigationId, "
+					+ "a.sumAssured, a.caseStatus, a.intimationType "
+					+ "FROM case_lists a, audit_case_movement b where a.caseId = b.caseId and"
+					+ " b.fromId = ? "; 			   
 			List<CaseDetailList> casedetailList = template.query(sql, new Object[] {username},
 					(ResultSet rs, int rowCount) -> 
 					{
