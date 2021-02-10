@@ -257,7 +257,7 @@ public class CaseController {
    	}
     
     @RequestMapping(value = "/updateMessageDetails",method = RequestMethod.POST)
-    public String updateMessageDetails(HttpSession session, HttpServletRequest request) {
+    public @ResponseBody String updateMessageDetails(HttpSession session, HttpServletRequest request) {
     	UserDetails user = (UserDetails) session.getAttribute("User_Login");
 		if(user == null)
 			return "common/login";
@@ -270,16 +270,18 @@ public class CaseController {
        	caseDetail.setInsuredDOB(request.getParameter("insuredDOB"));
        	caseDetail.setSumAssured(Double.parseDouble(request.getParameter("sumAssured")));
        	caseDetail.setIntimationType( request.getParameter("msgIntimationType"));
-    	caseDetail.setLocationId(Integer.parseInt(request.getParameter("claimantCity")));
+    	caseDetail.setLocationId(Integer.parseInt(request.getParameter("locationId")));
        	caseDetail.setNominee_name(request.getParameter("nomineeName"));
        	caseDetail.setNomineeContactNumber(request.getParameter("nomineeMob"));
        	caseDetail.setNominee_address(request.getParameter("nomineeAdd"));
        	caseDetail.setInsured_address(request.getParameter("insuredAdd"));
-		caseDetail.setUpdatedBy(user.getUsername()); 
-       	String update = caseDao.updateCaseDetails(caseDetail);
+		caseDetail.setUpdatedBy(user.getUsername());
+		caseDetail.setCaseId(Long.parseLong(request.getParameter("caseId")));
+       	System.out.println(caseDetail.toString());
+		String update = caseDao.updateCaseDetails(caseDetail);
        	if(update.equals(""))
        		return update;
-       	long caseId = Integer.parseInt(request.getParameter("caseId"));
+       	long caseId = caseDetail.getCaseId();
 		String toId = request.getParameter("toId");
 		String fromId = user.getUsername();
 		String toStatus = request.getParameter("toStatus");

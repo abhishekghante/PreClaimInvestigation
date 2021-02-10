@@ -61,7 +61,7 @@ boolean allow_closure = user_permission.contains("messages/close");
                	</label>
                 <div class="col-md-8">
                   <input type="text" value="<%=case_detail.getCaseId()%>" placeholder="Case ID" 
-                  	name="caseId" id="caseId" class="form-control" readonly>
+                  	name="caseId" id="caseId" class="form-control" disabled>
                 </div>
               </div>
               <div class="form-group">
@@ -394,7 +394,7 @@ boolean allow_closure = user_permission.contains("messages/close");
               <div class="box-footer">
                 <div class="row">
                   <div class="col-md-offset-4 col-md-8">
-                    <button class="btn btn-info" id="editmessagesubmit" type="submit">
+                    <button class="btn btn-info" id="editmessagesubmit" type="button">
                     	Update Case
                    	</button>
                     <button class="btn btn-danger" onClick="return clearForm();" type="button">Clear</button>
@@ -502,17 +502,16 @@ $("#assignmessagesubmit").click(function()
 </script>
 
 <script type="text/javascript">
-  $("#edit_message_form").on('submit', function(e){
-    e.preventDefault();
-   
-    var policyNumber   = $( '#edit_message_form #policyNumber' ).val();
+  $("#editmessagesubmit").click(function(){
+    
+	var policyNumber   = $( '#edit_message_form #policyNumber' ).val();
     var msgCategory    = $( '#edit_message_form #msgCategory' ).val();
     var insuredName    = $( '#edit_message_form #insuredName' ).val();
     var insuredDOD     = $( '#edit_message_form #insuredDOD' ).val();
     var insuredDOB     = $( '#edit_message_form #insuredDOB' ).val();
     var sumAssured     = $( '#edit_message_form #sumAssured' ).val();
     var msgIntimationType  = $( '#edit_message_form #msgIntimationType' ).val();    
-    var claimantCity   = $( '#edit_message_form #claimantCity' ).val();
+    var locationId     = $( '#edit_message_form #claimantCity' ).val();
     var claimantZone   = $( '#edit_message_form #claimantZone' ).val();
     var claimantState  = $( '#edit_message_form #claimantState' ).val();
     var subStatus      = $( '#edit_message_form #subStatus' ).val();
@@ -565,7 +564,7 @@ $("#assignmessagesubmit").click(function()
         toastr.error('Please select Intimation Type','Error');
         errorFlag = 1;
     }
-    if(claimantCity == null)
+    if(locationId == null)
     {
 	      toastr.error('Claimant City cannot be empty','Error');
 	      errorFlag = 1;
@@ -619,30 +618,31 @@ $("#assignmessagesubmit").click(function()
     if(errorFlag == 1)
     	return false;
         
+    $("#editmessagesubmit").html('<img src="${pageContext.request.contextPath}/resources/img/input-spinner.gif"> Loading...');
+    $("#editmessagesubmit").prop('disabled', true);
+    $('#editmessagesubmit').css("opacity",".5");
+    
     $.ajax({
 	    type: "POST",
-	    url: 'updateMessageDetails',
-	    data: {'policyNumber':policyNumber,'msgCategory':msgCategory,'insuredName':insuredName,'insuredDOD':insuredDOB,'insuredDOB':insuredDOD,   
-	    		'sumAssured':sumAssured,'msgIntimationType':msgIntimationType,'claimantCity':claimantCity,'nomineeName':nomineeName,
-	    		'nomineeMob':nomineeMob,'nomineeAdd':nomineeAdd, 'insuredAdd':insuredAdd,"toId" : toId, "toStatus" : toStatus, "toRemarks" : toRemarks, 
+	    url: '${pageContext.request.contextPath}/message/updateMessageDetails',
+	    data: {'policyNumber':policyNumber,'msgCategory':msgCategory,'insuredName':insuredName,
+	    		'insuredDOD':insuredDOB,'insuredDOB':insuredDOD, 'sumAssured':sumAssured,   
+	    		'msgIntimationType':msgIntimationType,'locationId':locationId,
+	    		'nomineeName':nomineeName,'nomineeMob':nomineeMob,'nomineeAdd':nomineeAdd,
+	    		'insuredAdd':insuredAdd,"toId" : toId, "toStatus" : toStatus, "toRemarks" : toRemarks, 
 	    		"caseId": caseId},
-	    beforeSend: function() {
-	    	$("#editmessagesubmit").html('<img src="${pageContext.request.contextPath}/resources/img/input-spinner.gif"> Loading...');
-	        $("#editmessagesubmit").prop('disabled', true);
-	        $('#editmessagesubmit').css("opacity",".5");
-	    },
 	    success: function( data )
 	    {
 	        $("#editmessagesubmit").html('Update Case');
 	        $("#editmessagesubmit").prop('disabled',false );
+	        $('#editmessagesubmit').css("opacity","");
 	  	  if(data == "****")
 	  	  {
-	         toastr.success( 'Case Updated successfully.','Success' );
-	         $("form#editmessagesubmit").trigger("reset");            
+	         toastr.success( 'Case Updated successfully.','Success');
+	         location.href = "${pageContext.request.contextPath}/message/pending_message";
 	  	  }
 	  	  else
 	         toastr.error( data,'Error' );
-	      $('#editmessagesubmit').css("opacity","");
 	    }
 	  });
   });

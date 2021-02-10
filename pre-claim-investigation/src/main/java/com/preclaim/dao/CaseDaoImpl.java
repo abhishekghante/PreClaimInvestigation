@@ -5,7 +5,9 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.sql.Date;
 import java.sql.ResultSet;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -74,19 +76,27 @@ public class CaseDaoImpl implements CaseDao {
 	{
 		try 
 		{
-			String query = "INSERT INTO case_lists (policyNumber, investigationId, insuredName, insuredDOD, insuredDOB, sumAssured, "
-						+ "intimationType, locationId, caseStatus, nominee_name, nominee_ContactNumber, nominee_address, "
-						+ "insured_address, case_description, longitude, latitude, pdf1FilePath , pdf2FilePath, pdf3FilePath, "
-						+ "audioFilePath, videoFilePath, signatureFilePath , capturedDate, createdBy, createdDate, updatedDate, updatedBy) "
-						+ "values(?, ?, ?, ?, ?, ?, ?, ?, 'Assigned', ?, ?, ?, ?, '', '', '', '', '', '', '', '', '', '', ?, getdate(), getdate(), '')";    
-			this.template.update(query, casedetail.getPolicyNumber(), casedetail.getInvestigationId(), casedetail.getInsuredName(), 
-					casedetail.getInsuredDOD(), casedetail.getInsuredDOB(), casedetail.getSumAssured(), casedetail.getIntimationType(), 
-					casedetail.getLocationId(), casedetail.getNominee_name(), casedetail.getNomineeContactNumber(), 
+			String current_date = LocalDateTime.now().format(
+					DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+			String query = "INSERT INTO case_lists (policyNumber, investigationId, insuredName, "
+					+ "insuredDOD, insuredDOB, sumAssured, intimationType, locationId, caseStatus, "	
+					+ "nominee_name, nominee_ContactNumber, nominee_address, insured_address,"
+					+ "case_description, longitude, latitude, pdf1FilePath , pdf2FilePath, pdf3FilePath, "
+					+ "audioFilePath, videoFilePath, signatureFilePath , capturedDate, createdBy, "
+					+ "createdDate, updatedDate, updatedBy) "
+					+ "values(?, ?, ?, ?, ?, ?, ?, ?, 'Assigned', ?, ?, ?, ?, '', '', '', '', '', '', "
+					+ "'', '', '', '', ?, ?, getdate(), '')";    
+			this.template.update(query, casedetail.getPolicyNumber(), casedetail.getInvestigationId(), 
+					casedetail.getInsuredName(), casedetail.getInsuredDOD(), casedetail.getInsuredDOB(), 
+					casedetail.getSumAssured(), casedetail.getIntimationType(), casedetail.getLocationId(), 
+					casedetail.getNominee_name(), casedetail.getNomineeContactNumber(), 
 					casedetail.getNominee_address(), casedetail.getInsured_address(), 
-					casedetail.getCreatedBy());				    	
+					casedetail.getCreatedBy(), current_date);				    	
 			
-			query = "SELECT caseId FROM case_lists where policyNumber = ? and createdBy = ? and updatedBy = ''";
-			return template.query(query, new Object[] {casedetail.getPolicyNumber(), casedetail.getCreatedBy()}, 
+			query = "SELECT caseId FROM case_lists where policyNumber = ? and createdBy = ? and "
+					+ "createdDate = ? and updatedBy = ''";
+			return template.query(query, new Object[] {casedetail.getPolicyNumber(), 
+					casedetail.getCreatedBy(), current_date}, 
 					(ResultSet rs, int rowcount) ->
 					{
 						return rs.getLong("caseId");
@@ -236,10 +246,12 @@ public class CaseDaoImpl implements CaseDao {
 			String sql = "UPDATE case_lists SET policyNumber = ?, investigationId = ?, insuredName = ?, insuredDOD = ?, insuredDOB = ?, sumAssured = ?, "
 					+ "intimationType = ?, locationId = ?, nominee_Name = ?, nominee_ContactNumber = ?, nominee_address = ?, "
 					+ "insured_address = ?, updatedDate = getdate(), updatedBy = ?  where caseId = ?";
-			template.update(sql, casedetail.getPolicyNumber(), casedetail.getInvestigationId(), casedetail.getInsuredName(), casedetail.getInsuredDOD(),
-					casedetail.getInsuredDOB(), casedetail.getSumAssured(), casedetail.getIntimationType(), casedetail.getLocationId(), casedetail.getNominee_name(), 
-					casedetail.getNomineeContactNumber(), casedetail.getNominee_address(), casedetail.getInsured_address(), casedetail.getUpdatedBy(), 
-					casedetail.getCaseId());
+			template.update(sql, casedetail.getPolicyNumber(), casedetail.getInvestigationId(), 
+					casedetail.getInsuredName(), casedetail.getInsuredDOD(), casedetail.getInsuredDOB(),
+					casedetail.getSumAssured(), casedetail.getIntimationType(), casedetail.getLocationId(), 
+					casedetail.getNominee_name(), casedetail.getNomineeContactNumber(), 
+					casedetail.getNominee_address(), casedetail.getInsured_address(), 
+					casedetail.getUpdatedBy(), casedetail.getCaseId());
 					
 		}
 		catch(Exception e)
