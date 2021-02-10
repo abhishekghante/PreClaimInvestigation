@@ -262,24 +262,32 @@ public class CaseController {
 		if(user == null)
 			return "common/login";
        	
-		CaseDetails caseDetail=new CaseDetails();
+		CaseDetails caseDetail = new CaseDetails();
        	caseDetail.setPolicyNumber(request.getParameter("policyNumber"));
        	caseDetail.setInvestigationId(Integer.parseInt(request.getParameter("msgCategory")));
-       	caseDetail.setInsuredName( request.getParameter("insuredName"));
+       	caseDetail.setInsuredName(request.getParameter("insuredName"));
        	caseDetail.setInsuredDOD(request.getParameter("insuredDOD"));
        	caseDetail.setInsuredDOB(request.getParameter("insuredDOB"));
-       	caseDetail.setSumAssured(Integer.parseInt(request.getParameter("sumAssured")));
+       	caseDetail.setSumAssured(Double.parseDouble(request.getParameter("sumAssured")));
        	caseDetail.setIntimationType( request.getParameter("msgIntimationType"));
-       	caseDetail.setClaimantCity(request.getParameter("claimantCity"));
-       	caseDetail.setClaimantState(request.getParameter("claimantState"));
-       	caseDetail.setClaimantZone(request.getParameter("claimantZone"));
+    	caseDetail.setLocationId(Integer.parseInt(request.getParameter("claimantCity")));
        	caseDetail.setNominee_name(request.getParameter("nomineeName"));
        	caseDetail.setNomineeContactNumber(request.getParameter("nomineeMob"));
        	caseDetail.setNominee_address(request.getParameter("nomineeAdd"));
        	caseDetail.setInsured_address(request.getParameter("insuredAdd"));
-		caseDetail.setCreatedBy(user.getUsername()); 
-       	String message= caseDao.updateCaseDetails(caseDetail);
-     	userDao.activity_log("CASE HISTORY", caseDetail.getPolicyNumber(), "EDIT CASE", user.getUsername());
+		caseDetail.setUpdatedBy(user.getUsername()); 
+       	String update = caseDao.updateCaseDetails(caseDetail);
+       	if(update.equals(""))
+       		return update;
+       	long caseId = Integer.parseInt(request.getParameter("caseId"));
+		String toId = request.getParameter("toId");
+		String fromId = user.getUsername();
+		String toStatus = request.getParameter("toStatus");
+		String toRemarks = request.getParameter("toRemarks");
+    	CaseMovement case_movement = new CaseMovement(caseId, fromId, toId, toStatus, toRemarks);
+    	String message = caseMovementDao.updateCaseMovement(case_movement);
+    	
+    	userDao.activity_log("CASE HISTORY", caseDetail.getPolicyNumber(), "EDIT CASE", user.getUsername());
    		return message;
     }
     

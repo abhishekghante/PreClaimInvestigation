@@ -624,12 +624,10 @@ $("#assignmessagesubmit").click(function()
     $.ajax({
 	    type: "POST",
 	    url: 'updateMessageDetails',
-	    data: {'policyNumber':policyNumber,'msgCategory':msgCategory,'insuredName':insuredName,
-	    		'insuredDOD':insuredDOB,'insuredDOB':insuredDOD,   
-	    		'sumAssured':sumAssured,'msgIntimationType':msgIntimationType,
-	    		'claimantCity':claimantCity,'claimantZone':claimantZone,'claimantState':claimantState,
-	    		'nomineeName':nomineeName,'nomineeMob':nomineeMob,'nomineeAdd':nomineeAdd,
-	    		'insuredAdd':insuredAdd},
+	    data: {'policyNumber':policyNumber,'msgCategory':msgCategory,'insuredName':insuredName,'insuredDOD':insuredDOB,'insuredDOB':insuredDOD,   
+	    		'sumAssured':sumAssured,'msgIntimationType':msgIntimationType,'claimantCity':claimantCity,'nomineeName':nomineeName,
+	    		'nomineeMob':nomineeMob,'nomineeAdd':nomineeAdd, 'insuredAdd':insuredAdd,"toId" : toId, "toStatus" : toStatus, "toRemarks" : toRemarks, 
+	    		"caseId": caseId},
 	    beforeSend: function() {
 	    	$("#editmessagesubmit").html('<img src="${pageContext.request.contextPath}/resources/img/input-spinner.gif"> Loading...');
 	        $("#editmessagesubmit").prop('disabled', true);

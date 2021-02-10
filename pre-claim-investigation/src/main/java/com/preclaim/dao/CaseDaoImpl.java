@@ -231,13 +231,13 @@ public class CaseDaoImpl implements CaseDao {
 	public String updateCaseDetails(CaseDetails casedetail) {
 		try
 		{
-			String sql = "UPDATE case_lists SET policyNumber = ?, investigationId = ?, insuredName = ?, insuredDOD = ?, insuredDOB = ?, sumAssured = ?, intimationType = ?, claimantCity = ?,"
-					+ "claimantZone = ?, claimantState = ?,nominee_name = ?, nomineeContactNumber = ?, nominee_address = ?, "
-					+ "insured_address = ?";
+			String sql = "UPDATE case_lists SET policyNumber = ?, investigationId = ?, insuredName = ?, insuredDOD = ?, insuredDOB = ?, sumAssured = ?, "
+					+ "intimationType = ?, locationId = ?, nominee_Name = ?, nominee_ContactNumber = ?, nominee_address = ?, "
+					+ "insured_address = ?, updatedDate = getdate(), updatedBy = ?  where caseId = ?";
 			template.update(sql, casedetail.getPolicyNumber(), casedetail.getInvestigationId(), casedetail.getInsuredName(), casedetail.getInsuredDOD(),
-					casedetail.getInsuredDOB(), casedetail.getSumAssured(), casedetail.getIntimationType(), casedetail.getClaimantCity(), casedetail.getClaimantZone(), 
-					casedetail.getClaimantState(), casedetail.getNominee_name(), casedetail.getNomineeContactNumber(), casedetail.getNominee_address(),
-					casedetail.getInsured_address());
+					casedetail.getInsuredDOB(), casedetail.getSumAssured(), casedetail.getIntimationType(), casedetail.getLocationId(), casedetail.getNominee_name(), 
+					casedetail.getNomineeContactNumber(), casedetail.getNominee_address(), casedetail.getInsured_address(), casedetail.getUpdatedBy(), 
+					casedetail.getCaseId());
 					
 		}
 		catch(Exception e)
