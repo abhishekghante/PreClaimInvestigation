@@ -202,7 +202,7 @@ public class CaseController {
        	caseDetail.setIntimationType( request.getParameter("msgIntimationType"));
        	caseDetail.setLocationId(Integer.parseInt(request.getParameter("claimantCity")));
        	caseDetail.setNominee_name(request.getParameter("nomineeName"));
-       	caseDetail.setNomineeContactNumber(Integer.parseInt(request.getParameter("nomineeMob")));
+       	caseDetail.setNomineeContactNumber(request.getParameter("nomineeMob"));
        	caseDetail.setNominee_address(request.getParameter("nomineeAdd"));
        	caseDetail.setInsured_address(request.getParameter("insuredAdd"));
 		caseDetail.setCreatedBy(user.getUsername()); 
@@ -274,7 +274,7 @@ public class CaseController {
        	caseDetail.setClaimantState(request.getParameter("claimantState"));
        	caseDetail.setClaimantZone(request.getParameter("claimantZone"));
        	caseDetail.setNominee_name(request.getParameter("nomineeName"));
-       	caseDetail.setNomineeContactNumber(Integer.parseInt(request.getParameter("nomineeMob")));
+       	caseDetail.setNomineeContactNumber(request.getParameter("nomineeMob"));
        	caseDetail.setNominee_address(request.getParameter("nomineeAdd"));
        	caseDetail.setInsured_address(request.getParameter("insuredAdd"));
 		caseDetail.setCreatedBy(user.getUsername()); 

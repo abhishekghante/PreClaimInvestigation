@@ -189,7 +189,7 @@ public class CaseDaoImpl implements CaseDao {
 						detail.setIntimationType(rs.getString("intimationType"));
 						detail.setLocationId(rs.getInt("locationId"));
 						detail.setNominee_name(rs.getString("nominee_name"));
-						detail.setNomineeContactNumber(rs.getInt("nominee_ContactNumber"));
+						detail.setNomineeContactNumber(rs.getString("nominee_ContactNumber"));
 						detail.setNominee_address(rs.getString("nominee_address"));
 						detail.setInsured_address(rs.getString("insured_address"));
 						detail.setCase_description(rs.getString("case_description"));
@@ -399,7 +399,7 @@ public class CaseDaoImpl implements CaseDao {
 					cell = cellIterator.next();
 					try
 					{
-						caseDetails.setNomineeContactNumber(readCellIntValue(cell));
+						caseDetails.setNomineeContactNumber(String.valueOf(readCellIntValue(cell)));
 					}
 					catch(Exception e) {}
 				}

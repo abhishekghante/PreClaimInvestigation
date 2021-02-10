@@ -319,7 +319,7 @@ function displayUploadImg(input, PlaceholderID, deleteID, linkID) {
         toastr.error('Please select Intimation Type','Error');
         errorFlag = 1;
     }
-    if(claimantCity == '')
+    if(claimantCity == null)
     {
 	      toastr.error('Claimant City cannot be empty','Error');
 	      errorFlag = 1;
@@ -354,14 +354,14 @@ function displayUploadImg(input, PlaceholderID, deleteID, linkID) {
         toastr.error('Please enter Insured Address','Error');
         errorFlag = 1;
     }
-    if(roleName == '')
+    if(roleName == null)
     {
         toastr.error('Role Name cannot be empty','Error');
         errorFlag = 1;
     }
-    if(assigneeId == '')
+    if(assigneeId == null)
     {
-        toastr.error('please select user type','Error');
+        toastr.error('Please select User','Error');
         errorFlag = 1;
     }
    
