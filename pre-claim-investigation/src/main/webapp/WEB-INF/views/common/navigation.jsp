@@ -72,13 +72,13 @@ ArrayList<String> user_permission = (ArrayList<String>)session.getAttribute("use
                 </li>
                   <%} %>
                   
-                <li class="nav-item <%if(details.getSub_menu1().equals("RCU Pending Cases")){%>active<%}%>">
+                <li class="nav-item <%if(details.getSub_menu1().equals("Pending Cases")){%>active<%}%>">
                   <a href="${pageContext.request.contextPath}/message/pending_message" 
                   	class="nav-link nav-toggle">
                     <i class="icon-clock"></i> Pending Cases
                   </a>
                 </li>
-                <li class="nav-item <%if(details.getSub_menu1().equals("RCU Active Cases")){%>active<%}%>">
+                <li class="nav-item <%if(details.getSub_menu1().equals("Case Lists")){%>active<%}%>">
                   <a href="${pageContext.request.contextPath}/message/active_message" 
                   	class="nav-link nav-toggle">
                     <i class="icon-check"></i> Case Lists

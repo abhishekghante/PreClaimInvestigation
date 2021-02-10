@@ -111,7 +111,7 @@ public class CaseController {
     	details.setScreen_name("../message/pending_message.jsp");
     	details.setScreen_title("Pending Cases Lists");
     	details.setMain_menu("Case Management");
-    	details.setSub_menu1("RCU Pending Cases");
+    	details.setSub_menu1("Pending Cases");
     	session.setAttribute("ScreenDetails", details);
     	session.setAttribute("pendingCaseList", caseDao.getPendingCaseList(user.getUsername()));
     	session.setAttribute("investigation_list", investigationDao.getActiveInvestigationList());
@@ -130,7 +130,7 @@ public class CaseController {
     	details.setScreen_name("../message/active_message.jsp");
     	details.setScreen_title("Active Cases Lists");
     	details.setMain_menu("Case Management");
-    	details.setSub_menu1("RCU Active Cases");
+    	details.setSub_menu1("Case Lists");
     	session.setAttribute("ScreenDetails", details);
     	session.setAttribute("assignCaseList", caseDao.getAssignedCaseList(user.getUsername()));
     	session.setAttribute("investigation_list", investigationDao.getActiveInvestigationList());
@@ -358,7 +358,7 @@ public class CaseController {
     	details.setScreen_name("../message/timeline.jsp");
     	details.setScreen_title("Case History");
     	details.setMain_menu("Case Management");
-    	details.setSub_menu1("Pending Case");
+    	details.setSub_menu1("Pending Cases");
     	details.setSub_menu2("");
     	details.setSub_menu2_path("../message/pending_message.jsp");
     	session.setAttribute("ScreenDetails", details);
