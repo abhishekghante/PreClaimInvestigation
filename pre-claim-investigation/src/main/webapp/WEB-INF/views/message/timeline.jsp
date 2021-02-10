@@ -10,15 +10,6 @@ session.removeAttribute("case_history");
 <script src="${pageContext.request.contextPath}/resources/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js" type="text/javascript"></script>
 <style>
 <style>
-* {
-  box-sizing: border-box;
-}
-
-body {
-  background-color: #474e5d;
-  font-family: Helvetica, sans-serif;
-   
-}
 
 /* The actual timeline (the vertical ruler) */
 .timeline {
