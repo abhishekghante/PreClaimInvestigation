@@ -84,16 +84,16 @@ ScreenDetails details = (ScreenDetails) session.getAttribute("ScreenDetails");
 </div>
 <script>
 $(document).ready(function(){
-	//window.history.replaceState( null, null, window.location.href );
 	<%if(!details.getSuccess_message1().equals("")){%>
-		location.href = "${pageContext.request.contextPath}/message/downloadErrorReport";
+		$.ajax({
+			url:"${pageContext.request.contextPath}/message/downloadErrorReport",
+			type:"GET",
+			data:{}
+		});
 	<%}%>
 });
 function importData()
 {
-	$("#importfile").html('<img src="${pageContext.request.contextPath}/resources/img/input-spinner.gif"> Loading...');
-	$("#importfile").prop("disabled",true);
-	
 	var roleName = $("#roleName").val();
 	var userId = $("#assigneeId").val();
 	
@@ -109,11 +109,11 @@ function importData()
 		validFlag = 1;
 	}
 	if(validFlag == 1)
-		{
-			return false;
-		}
-	$("#importfile").html('Import');
-	$("#importfile").prop("disabled",false);
+	{
+		return false;
+	}
+	$("#importfile").html('<img src="${pageContext.request.contextPath}/resources/img/input-spinner.gif"> Loading...');
+	$("#importfile").prop("disabled",true);
 	
 	return true;
 }

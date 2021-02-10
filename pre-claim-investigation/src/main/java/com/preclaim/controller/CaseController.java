@@ -359,7 +359,7 @@ public class CaseController {
     	details.setScreen_title("Case History");
     	details.setMain_menu("Case Management");
     	details.setSub_menu1("Pending Case");
-    	details.setSub_menu2("Case Timeline");
+    	details.setSub_menu2("");
     	details.setSub_menu2_path("../message/pending_message.jsp");
     	session.setAttribute("ScreenDetails", details);
     	session.setAttribute("case_history", caseMovementDao.getCaseMovementHistory(caseId));

@@ -447,7 +447,8 @@ public class CaseDaoImpl implements CaseDao {
 			}
 			wb.close();
 			//Error File
-			writeErrorCase(error_case);
+			if(!error_message.equals(""))
+				writeErrorCase(error_case);
 			return "****";
 		}
 		catch(Exception e)

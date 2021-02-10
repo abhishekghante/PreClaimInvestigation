@@ -568,7 +568,7 @@ $("#assignmessagesubmit").click(function()
         toastr.error('Please select Intimation Type','Error');
         errorFlag = 1;
     }
-    if(claimantCity == '')
+    if(claimantCity == null)
     {
 	      toastr.error('Claimant City cannot be empty','Error');
 	      errorFlag = 1;
@@ -603,17 +603,17 @@ $("#assignmessagesubmit").click(function()
         toastr.error('Please enter Insured Address','Error');
         errorFlag = 1;
     }
-    if(toId == "-1")
+    if(toId == null)
    	{
    		toastr.error("Kindly select user", "Error");
    		errorFlag = 1;
    	}
-    if(toStatus == "-1")
+    if(toStatus == null)
    	{
    		toastr.error("Kindly select status", "Error");
    		errorFlag = 1;
    	}
-    if(toRole == "-1")
+    if(toRole == null)
    	{
    		toastr.error("Kindly select User Role", "Error");
    		errorFlag = 1;
