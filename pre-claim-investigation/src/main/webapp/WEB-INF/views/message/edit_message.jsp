@@ -376,8 +376,7 @@ boolean allow_closure = user_permission.contains("messages/close");
 	              <div class="form-group">
 	                <label class="col-md-4 control-label" for="toRemarks">Remarks</label>
 	                <div class="col-md-8">
-	                  <textarea name="toRemarks" id="toRemarks" class="form-control" rows="6">
-	               	  </textarea>
+	                  <textarea name="toRemarks" id="toRemarks" class="form-control" rows="6"></textarea>
 	                </div>
               	</div>
               </div>

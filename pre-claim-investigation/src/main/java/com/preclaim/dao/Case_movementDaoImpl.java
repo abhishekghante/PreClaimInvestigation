@@ -74,7 +74,7 @@ public class Case_movementDaoImpl implements Case_movementDao {
 		   if(caseMovement.getCaseStatus().equals("Closed"))
 		   {
 			   query = "UPDATE case_lists SET caseStatus = ?, updatedBy = ?, updatedDate = getDate() where"
-			   		+ "caseId = ?";
+			   		+ " caseId = ?";
 			   template.update(query,caseMovement.getCaseStatus(), caseMovement.getFromId(), 
 					   caseMovement.getCaseId());
 		   }
