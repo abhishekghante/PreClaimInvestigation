@@ -27,21 +27,22 @@ public class Case_movementDaoImpl implements Case_movementDao {
 	public String CreatecaseMovement(CaseMovement caseMovement) {
 		try
 		{
-		   String query="INSERT INTO case_movement(caseId, fromID, toId, caseStatus, remarks, createdDate, updatedDate) values(?, ?, ?, ?, '', getdate(), getdate()) ";
-		   this.template.update(query,caseMovement.getCaseId(), caseMovement.getFromId(), caseMovement.getToId(), caseMovement.getCaseStatus());
+		   String query="INSERT INTO case_movement(caseId, fromID, toId, caseStatus, remarks, "
+		   		+ "createdDate, updatedDate) values(?, ?, ?, ?, ?, getdate(), getdate()) ";
+		   this.template.update(query,caseMovement.getCaseId(), caseMovement.getFromId(), 
+				   caseMovement.getToId(), caseMovement.getCaseStatus(), caseMovement.getRemarks());
 		 
-		   query="INSERT INTO audit_case_movement(caseId, fromID, toId, caseStatus, remarks, createdDate, updatedDate) values(?, ?, ?, ?, '', getdate(), getdate()) ";
-		   this.template.update(query,caseMovement.getCaseId(), caseMovement.getFromId(), caseMovement.getToId(),caseMovement.getCaseStatus());
+		   query="INSERT INTO audit_case_movement(caseId, fromID, toId, caseStatus, remarks, "
+		   		+ "createdDate, updatedDate) values(?, ?, ?, ?, ?, getdate(), getdate()) ";
+		   this.template.update(query,caseMovement.getCaseId(), caseMovement.getFromId(), 
+				   caseMovement.getToId(),caseMovement.getCaseStatus(), caseMovement.getRemarks());
 			
 	    }
-		catch(Exception e) {
-			
+		catch(Exception e) 
+		{	
 			e.printStackTrace();
-			return "Error adding createCaseMovement";
-			
+			return e.getMessage();	
 		}
-		
-		
 		return "****";
 	}
 
@@ -64,27 +65,29 @@ public class Case_movementDaoImpl implements Case_movementDao {
 		try
 		{
 		   String query="UPDATE case_movement SET fromID = ?, toId = ?, caseStatus = ?, remarks = ?, "
-		   		+ "createdDate = getdate(), updatedDate = getdate() where caseId = ?";
+		   		+ "updatedDate = getdate() where caseId = ?";
 		   this.template.update(query,caseMovement.getFromId(), caseMovement.getToId(), 
 				   caseMovement.getCaseStatus(),caseMovement.getRemarks(), caseMovement.getCaseId());
 		 
-		   query="INSERT INTO audit_case_movement(caseId, fromID, toId, caseStatus, remarks, createdDate, updatedDate) values(?, ?, ?, ?, '', getdate(), getdate()) ";
-		   this.template.update(query,caseMovement.getCaseId(), caseMovement.getFromId(), caseMovement.getToId(),caseMovement.getCaseStatus());
+		   query = "INSERT INTO audit_case_movement(caseId, fromID, toId, caseStatus, remarks, "
+		   		+ "createdBy, createdDate, updatedDate) "
+		   		+ "values(?, ?, ?, ?, ?, getdate(), getdate()) ";
+		   this.template.update(query, caseMovement.getCaseId(), caseMovement.getFromId(), 
+				   caseMovement.getToId(), caseMovement.getCaseStatus(), caseMovement.getRemarks());
 			
 		   if(caseMovement.getCaseStatus().equals("Closed"))
 		   {
-			   query = "UPDATE case_lists SET caseStatus = ?, updatedBy = ?, updatedDate = getDate() where"
-			   		+ " caseId = ?";
+			   query = "UPDATE case_lists SET caseStatus = ?, updatedBy = ?, updatedDate = getDate() "
+			   		+ "where caseId = ?";
 			   template.update(query,caseMovement.getCaseStatus(), caseMovement.getFromId(), 
 					   caseMovement.getCaseId());
 		   }
 		   
 	    }
-		catch(Exception e) {
-			
+		catch(Exception e) 
+		{	
 			e.printStackTrace();
-			return e.getMessage();
-			
+			return e.getMessage();	
 		}		
 		return "****";
 	}

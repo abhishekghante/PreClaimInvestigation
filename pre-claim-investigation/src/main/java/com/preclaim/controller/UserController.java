@@ -57,7 +57,7 @@ public class UserController {
 			HttpSession session, HttpServletRequest request)
 	{
 		UserDetails userlogin = (UserDetails) session.getAttribute("User_Login");
-		System.out.println(user.toString());
+		user.setCreatedBy(userlogin.getUsername());
 		String message = dao.create_user(user);
 		System.out.println(user.toString());
 		session.removeAttribute("ScreenDetails");    	
@@ -126,7 +126,8 @@ public class UserController {
 		role.setRole_code(request.getParameter("role_code"));
 		role.setStatus(1);
 		String message = dao.create_role(role);
-		dao.activity_log("ROLE", role.getRole_code(), "ADD", user.getUsername());
+		if(message.equals("****"))
+			dao.activity_log("ROLE", role.getRole_code(), "ADD", user.getUsername());
 		return message;
 	}
 	
@@ -141,7 +142,8 @@ public class UserController {
 		role.setStatus(0);
 		System.out.println(role.toString());
 		String message = dao.delete_role(role);
-		dao.activity_log("ROLE",String.valueOf(role.getRoleId()), "DELETE", user.getUsername());
+		if(message.equals("****"))
+			dao.activity_log("ROLE", String.valueOf(role.getRoleId()), "DELETE", user.getUsername());
 		return message;
 	}
 	
@@ -157,7 +159,8 @@ public class UserController {
 		role.setRole(request.getParameter("edit_role"));
 		System.out.println(role.toString());
 		String message = dao.updateUserRole(role);
-		dao.activity_log("ROLE",role.getRole_code(), "UPDATE", user.getUsername());
+		if(message.equals("****"))
+			dao.activity_log("ROLE", role.getRole_code(), "UPDATE", user.getUsername());
 		return message;
 	}
 	@RequestMapping(value = "/updateUserStatus", method = RequestMethod.POST)
@@ -169,8 +172,10 @@ public class UserController {
 		int user_id = Integer.parseInt(request.getParameter("user_id"));
 		int user_status = Integer.parseInt(request.getParameter("status"));
 		System.out.println("User ID:" + user_id + " User_Status:" + user_status);
-		String message = dao.updateUserStatus(user_id, user_status);
-		dao.activity_log("USER",String.valueOf(user_id), user_status == 1 ? "ACTIVE" : "DEACTIVE", user.getUsername());
+		String message = dao.updateUserStatus(user_id, user_status, user.getUsername());
+		if(message.equals("****"))
+			dao.activity_log("USER",String.valueOf(user_id), user_status == 1 ? "ACTIVE" : "DEACTIVE", 
+					user.getUsername());
 		return message;
 	}
 	
@@ -233,9 +238,10 @@ public class UserController {
 		user_details.setAddress3(request.getParameter("address3"));
 		user_details.setContactNumber(request.getParameter("contactNumber"));
 		user_details.setUpdatedBy(user.getUsername());
-		System.out.println(user_details.toString());
-		dao.activity_log("USER",user_details.getUsername(), "UPDATE", user_details.getUsername());
-		return dao.updateUserDetails(user_details);
+		String message = dao.updateUserDetails(user_details);
+		if(message.equals("****"))
+			dao.activity_log("USER",user_details.getUsername(), "UPDATE", user_details.getUsername());
+		return message;
 	}
 	
 	@RequestMapping(value = "/permission/{roleCode}", method = RequestMethod.GET)
@@ -276,9 +282,10 @@ public class UserController {
 			}
 		}
 		role_permission.remove(role_permission.size() - 1);
-		dao.addPermission(role_permission, role_code);
-		dao.activity_log("PERMISSION",role_code, "ADD", user.getUsername());
-		return "****";
+		String message = dao.addPermission(role_permission, role_code);
+		if(message.equals("****"))
+			dao.activity_log("PERMISSION",role_code, "ADD", user.getUsername());
+		return message;
 	}
 	
 	@RequestMapping(value = "/accountValidate", method = RequestMethod.POST)

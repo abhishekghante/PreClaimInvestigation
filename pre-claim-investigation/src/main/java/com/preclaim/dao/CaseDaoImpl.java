@@ -257,7 +257,7 @@ public class CaseDaoImpl implements CaseDao {
 		catch(Exception e)
 		{
 			e.printStackTrace();
-			return "Failed updating Case ID. Kindly contact system administrator";
+			return e.getMessage();
 		}
 		return "****";
 	}
@@ -523,13 +523,17 @@ public class CaseDaoImpl implements CaseDao {
 		try
 		
 		 {
-			String sql="DELETE FROM case_lists where caseId=?";	
-			this.template.update(sql,caseId);	
+			String sql = "DELETE FROM case_lists where caseId = ?";	
+			this.template.update(sql,caseId);
+			sql = "DELETE FROM case_movement where caseId = ?";
+			this.template.update(sql,caseId);
+			sql = "DELETE FROM audit_case_movement where caseId = ?";
+			this.template.update(sql,caseId);
 		 }
 		catch(Exception e) 
 		 {
 			e.printStackTrace();
-			return "Error Deleting User";
+			return e.getMessage();
 			
 		 }
 	

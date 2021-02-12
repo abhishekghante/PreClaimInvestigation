@@ -6,6 +6,7 @@
 <%
 List<String>user_permission=(List<String>)session.getAttribute("user_permission");
 boolean allow_delete = user_permission.contains("messages/delete");
+boolean allow_add = user_permission.contains("messages/add");
 List<CaseDetailList> pendingCaseDetailList = (List<CaseDetailList>)session.getAttribute("pendingCaseList");
 session.removeAttribute("pendingCaseList");
 List<InvestigationType> investigationList = (List<InvestigationType>) session.getAttribute("investigation_list");
@@ -25,13 +26,15 @@ session.removeAttribute("intimation_list");
             <i class="icon-users font-green-sharp"></i>
             <span class="caption-subject font-green-sharp sbold">Case Lists</span>
         </div>
+        <%if(allow_add){ %>
         <div class="actions">
             <div class="btn-group">
-              <a href="${pageContext.request.contextPath}/resources/messages/add" data-toggle="tooltip" title="Add" class="btn green-haze btn-outline btn-xs pull-right" data-toggle="tooltip" title="" style="margin-right: 5px;" data-original-title="Add New">
+              <a href="${pageContext.request.contextPath}/message/add_message" data-toggle="tooltip" title="Add" class="btn green-haze btn-outline btn-xs pull-right" data-toggle="tooltip" title="" style="margin-right: 5px;" data-original-title="Add New">
                 <i class="fa fa-plus"></i>
               </a>
             </div>
         </div>
+        <%} %>
       </div>
     </div>
 

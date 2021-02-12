@@ -30,6 +30,9 @@ public class InvestigationTypeController {
 
 	@RequestMapping(value = "/addInvestigationType", method = RequestMethod.GET)
 	public String addInvestigationType(HttpSession session) {
+		UserDetails user = (UserDetails) session.getAttribute("User_Login");
+		if(user == null)
+			return "common/login";
 		session.removeAttribute("ScreenDetails");
 		ScreenDetails details = new ScreenDetails();
 		details.setScreen_name("../investigationType/addInvestigationType.jsp");
@@ -44,6 +47,9 @@ public class InvestigationTypeController {
 
 	@RequestMapping(value = "/pendingInvestigationType", method = RequestMethod.GET)
 	public String pendingInvestigationType(HttpSession session,HttpServletRequest request) {
+		UserDetails user = (UserDetails) session.getAttribute("User_Login");
+		if(user == null)
+			return "common/login";
 		session.removeAttribute("ScreenDetails");
 		ScreenDetails details = new ScreenDetails();
 		details.setScreen_name("../investigationType/pendingInvestigationType.jsp");
@@ -67,6 +73,9 @@ public class InvestigationTypeController {
 
 	@RequestMapping(value = "/activeInvestigationType", method = RequestMethod.GET)
 	public String activeInvestigationType(HttpSession session) {
+		UserDetails user = (UserDetails) session.getAttribute("User_Login");
+		if(user == null)
+			return "common/login";
 		session.removeAttribute("ScreenDetails");
 		ScreenDetails details = new ScreenDetails();
 		details.setScreen_name("../investigationType/activeInvestigationType.jsp");
@@ -81,12 +90,14 @@ public class InvestigationTypeController {
 
 	@RequestMapping(value = "/addInvestigation", method = RequestMethod.POST)
 	public @ResponseBody String addInvestigation(HttpSession session, HttpServletRequest request) {
+		UserDetails user = (UserDetails) session.getAttribute("User_Login");
 		InvestigationType investigationType = new InvestigationType();
 		investigationType.setInvestigationType(request.getParameter("investigationType"));
-		UserDetails user = (UserDetails) session.getAttribute("User_Login");
-		String error = investigationTypedao.addInvestigationType(investigationType, user.getUserID());
-		userDao.activity_log("INVESTIGATION TYPE",investigationType.getInvestigationType(), "ADD", user.getUsername());
-		return error;
+		investigationType.setCreatedBy(user.getUsername());
+		String message = investigationTypedao.addInvestigationType(investigationType);
+		if(message.equals("****"))
+			userDao.activity_log("INVESTIGATION TYPE",investigationType.getInvestigationType(), "ADD", user.getUsername());
+		return message;
 	}
 	
 	@RequestMapping(value ="/updateInvestigation",method = RequestMethod.POST )
@@ -94,19 +105,22 @@ public class InvestigationTypeController {
 	 int investigationId = Integer.parseInt(request.getParameter("investigationId"));
 	 String investigationType = request.getParameter("investigationType");
 	 UserDetails user = (UserDetails) session.getAttribute("User_Login");
-	 String error = investigationTypedao.updateInvestigationType(investigationType, investigationId, 
+	 String message = investigationTypedao.updateInvestigationType(investigationType, user.getUsername(), 
 			 investigationId);
-	 userDao.activity_log("INVESTIGATION TYPE", investigationType, "UPDATE", user.getUsername());
-	 return error;
+	 if(message.equals("****"))
+		 userDao.activity_log("INVESTIGATION TYPE", investigationType, "UPDATE", user.getUsername());
+	 return message;
 	}
 	
 	@RequestMapping(value ="/deleteInvestigation",method = RequestMethod.POST )
     public @ResponseBody String deleteInvestigation(HttpSession session, HttpServletRequest request) {
 	 int investigationId = Integer.parseInt(request.getParameter("investigationId"));	
-     String error_message = investigationTypedao.deleteInvestigationType(investigationId);	
+     String message = investigationTypedao.deleteInvestigationType(investigationId);	
      UserDetails user = (UserDetails) session.getAttribute("User_Login");
-	 userDao.activity_log("INVESTIGATION TYPE",String.valueOf(investigationId), "DELETE", user.getUsername());
-	 return error_message;
+     if(message.equals("****"))
+    	 userDao.activity_log("INVESTIGATION TYPE",String.valueOf(investigationId), "DELETE", 
+    			 user.getUsername());
+	 return message;
 	}
 	
 	@RequestMapping(value = "/updateInvestigationStatus",method = RequestMethod.POST)
@@ -114,11 +128,12 @@ public class InvestigationTypeController {
 		int status = Integer.parseInt(request.getParameter("status"));
 		int investigationId = Integer.parseInt(request.getParameter("investigationId"));
 		UserDetails user = (UserDetails) session.getAttribute("User_Login");		 
-		String error_message = investigationTypedao.updateInvestigationTypeStatus(investigationId, user.getUserID(), 
-				status);
-		userDao.activity_log("INVESTIGATION TYPE", String.valueOf(investigationId), status == 1 ? "ACTIVE" : "DEACTIVE", 
+		String message = investigationTypedao.updateInvestigationTypeStatus(investigationId, 
+				user.getUsername(), status);
+		if(message.equals("****"))
+			userDao.activity_log("INVESTIGATION TYPE", String.valueOf(investigationId), status == 1 ? "ACTIVE" : "DEACTIVE", 
 				user.getUsername());
-		return error_message;
+		return message;
 	}
 	  
    

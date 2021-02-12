@@ -15,7 +15,7 @@ public interface UserDAO {
 	List<UserRole> role_lists();
 	String updateUserRole(UserRole role);	
 	String delete_role(UserRole role);
-	String updateUserStatus(int user_id, int user_status);
+	String updateUserStatus(int user_id, int user_status, String username);
 	UserDetails getUserDetails(int user_id);
 	String updateUserDetails(UserDetails user_details);
 	List<String> retrievePermission(String role_code);

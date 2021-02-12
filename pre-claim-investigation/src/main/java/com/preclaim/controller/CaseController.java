@@ -178,7 +178,7 @@ public class CaseController {
 			catch (Exception e) 
 			{
 				e.printStackTrace();
-				details.setError_message1("File Uploading failed");
+				details.setError_message1(e.getMessage());
 			}    	
 		}
 	  
@@ -279,7 +279,7 @@ public class CaseController {
 		caseDetail.setCaseId(Long.parseLong(request.getParameter("caseId")));
        	System.out.println(caseDetail.toString());
 		String update = caseDao.updateCaseDetails(caseDetail);
-       	if(update.equals(""))
+       	if(!update.equals("****"))
        		return update;
        	long caseId = caseDetail.getCaseId();
 		String toId = request.getParameter("toId");

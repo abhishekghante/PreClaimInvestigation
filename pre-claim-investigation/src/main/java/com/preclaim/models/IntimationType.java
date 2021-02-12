@@ -3,15 +3,15 @@ package com.preclaim.models;
 public class IntimationType {
 
 	private String intimationType;
-	private int createdBy;
-	private int updatedBy;
+	private String createdBy;
+	private String updatedBy;
 	private int status;
 	private int intimationId;
 
 	public IntimationType() {
 		this.intimationType = "";
-		this.createdBy = 0;
-		this.updatedBy = 0;
+		this.createdBy = "";
+		this.updatedBy = "";
 		this.status = 0;
 		this.intimationId = 0;
 
@@ -33,19 +33,19 @@ public class IntimationType {
 		this.intimationId = intimationId;
 	}
 
-	public int getCreatedBy() {
+	public String getCreatedBy() {
 		return createdBy;
 	}
 
-	public void setCreatedBy(int createdBy) {
+	public void setCreatedBy(String createdBy) {
 		this.createdBy = createdBy;
 	}
 
-	public int getUpdatedBy() {
+	public String getUpdatedBy() {
 		return updatedBy;
 	}
 
-	public void setUpdatedBy(int updatedBy) {
+	public void setUpdatedBy(String updatedBy) {
 		this.updatedBy = updatedBy;
 	}
 

@@ -101,7 +101,8 @@ public class MailConfigController{
 		
 		int mailConfigId = Integer.parseInt(request.getParameter("mailConfigId"));
 		String message = mailConfigDao.delete(mailConfigId);
-		userDao.activity_log("MAIL", String.valueOf(mailConfigId), "DELETE", user.getUsername());
+		if(message.equals("****"))
+			userDao.activity_log("MAIL", String.valueOf(mailConfigId), "DELETE", user.getUsername());
 		return message;
 	}
 	
@@ -138,7 +139,8 @@ public class MailConfigController{
 		mailConfig.setEncryptionType(request.getParameter("encryptionType"));
 		mailConfig.setUpdatedBy(user.getUsername());
 		String message = mailConfigDao.update(mailConfig);	
-		userDao.activity_log("MAIL", String.valueOf(mailConfig.getMailConfigId()), "UPDATE", user.getUsername());
+		if(message.equals("****"))
+			userDao.activity_log("MAIL", String.valueOf(mailConfig.getMailConfigId()), "UPDATE", user.getUsername());
 		return message;
 	}
 	
@@ -151,7 +153,8 @@ public class MailConfigController{
 		int mailConfigId = Integer.parseInt(request.getParameter("mailConfigId"));
 		int mailConfigStatus = Integer.parseInt(request.getParameter("status"));
 	    String message = mailConfigDao.updateStatus(mailConfigId, mailConfigStatus , user.getUsername()); 
-	    userDao.activity_log("MAIl", String.valueOf(mailConfigId), mailConfigStatus == 1 ? "ACTIVE" : "DEACTIVE", 
+	    if(message.equals("****"))
+	    	userDao.activity_log("MAIL", String.valueOf(mailConfigId), mailConfigStatus == 1 ? "ACTIVE" : "DEACTIVE", 
 	    		user.getUsername());
 		return message;
     }

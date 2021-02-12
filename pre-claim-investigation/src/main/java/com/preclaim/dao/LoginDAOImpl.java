@@ -79,12 +79,13 @@ public class LoginDAOImpl implements LoginDAO {
 	public String updatePassword(String username, String password) {
 		try
 		{
-			String sql = "UPDATE admin_user SET password = ? WHERE username = ?";
-			template.update(sql, password, username);
+			String sql = "UPDATE admin_user SET password = ?, updatedBy = ?, updatedDate = getdate() "
+					+ "WHERE username = ?";
+			template.update(sql, password, username, username);
 		}
 		catch(Exception ex)
 		{
-			return "Error updating Password. Kindly contact system administrator";
+			return ex.getMessage();
 		}
 		return "****";
 	}

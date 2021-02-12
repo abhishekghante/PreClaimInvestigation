@@ -30,21 +30,29 @@ public class IntimationTypeController {
 
     @RequestMapping(value = "/add", method = RequestMethod.GET)
     public String add(HttpSession session) {
-    	session.removeAttribute("ScreenDetails");
+    	UserDetails user = (UserDetails) session.getAttribute("User_Login");
+		if(user == null)
+			return "common/login";
+		
+		session.removeAttribute("ScreenDetails");
     	ScreenDetails details = new ScreenDetails();
     	details.setScreen_name("../intimationType/addIntimationType.jsp");
     	details.setScreen_title("Add Intimation Type");
     	details.setMain_menu("Intimation Type");
     	details.setSub_menu1("Add Intimation Type");
     	details.setSub_menu2("Manage Intimation");
-    	details.setSub_menu2_path("/intimationType/pendingIntimationType.jsp");
+    	details.setSub_menu2_path("/intimationType/pending");
     	session.setAttribute("ScreenDetails", details);
     	return "common/templatecontent";
     }
    
     @RequestMapping(value = "/pending",method = RequestMethod.GET)
     public String pending(HttpSession session, HttpServletRequest request) {
-    	session.removeAttribute("ScreenDetails");
+    	UserDetails user = (UserDetails) session.getAttribute("User_Login");
+		if(user == null)
+			return "common/login";
+		
+		session.removeAttribute("ScreenDetails");
     	ScreenDetails details=new ScreenDetails();
     	details.setScreen_name("../intimationType/pendingIntimationType.jsp");
     	details.setScreen_title("Pending Intimation Type List");
@@ -66,7 +74,11 @@ public class IntimationTypeController {
     
     @RequestMapping(value="/active",method = RequestMethod.GET)
     public String active(HttpSession session) {
-    	session.removeAttribute("ScreenDetails");
+    	UserDetails user = (UserDetails) session.getAttribute("User_Login");
+		if(user == null)
+			return "common/login";
+		
+		session.removeAttribute("ScreenDetails");
     	ScreenDetails details=new ScreenDetails();
     	details.setScreen_name("../intimationType/activeIntimationType.jsp");;
     	details.setScreen_title("Active Intimation");
@@ -84,7 +96,9 @@ public class IntimationTypeController {
 		int IntimationId = Integer.parseInt(request.getParameter("IntimationId"));
 		UserDetails user = (UserDetails) session.getAttribute("User_Login");
 		String message = intimationTypeDao.deleteIntimationType(IntimationId);
-		userDao.activity_log("IntimationType", String.valueOf(IntimationId), "DELETE", user.getUsername());
+		if(message.equals("****"))
+			userDao.activity_log("IntimationType", String.valueOf(IntimationId), "DELETE", 
+					user.getUsername());
 		return message;
 	}
     
@@ -95,21 +109,24 @@ public class IntimationTypeController {
 		String IntimationtypeName = request.getParameter("intimationtypeName");
 		IntimationType intimationType = new IntimationType();
 		intimationType.setIntimationType(IntimationtypeName);
-		intimationType.setCreatedBy(user.getUserID());
+		intimationType.setCreatedBy(user.getUsername());
 		String message = intimationTypeDao.add_intimationType(intimationType);
-		userDao.activity_log("IntimationType", IntimationtypeName, "ADD", user.getUsername());
+		if(message.equals("****"))
+			userDao.activity_log("IntimationType", IntimationtypeName, "ADD", user.getUsername());
 		return message;
 	}
 	
 	@RequestMapping(value = "/updateIntimationType",method = RequestMethod.POST)
 	public @ResponseBody String updateGroup(HttpSession session, HttpServletRequest request) 
 	{	
-		int IntimationId=Integer.parseInt(request.getParameter("intimationId"));		
+		int IntimationId = Integer.parseInt(request.getParameter("intimationId"));		
 		String IntimationType = request.getParameter("intimationtypeName");
 		System.out.println("IntimationId : "+ IntimationId);
 		UserDetails user = (UserDetails) session.getAttribute("User_Login");
-		String message = intimationTypeDao.updateIntimationType(IntimationId, IntimationType, user.getUserID());
-		userDao.activity_log("IntimationType", IntimationType, "UPDATE", user.getUsername());
+		String message = intimationTypeDao.updateIntimationType(IntimationId, IntimationType, 
+				user.getUsername());
+		if(message.equals("****"))
+			userDao.activity_log("IntimationType", IntimationType, "UPDATE", user.getUsername());
 		return message;
 	}
 	
@@ -119,8 +136,10 @@ public class IntimationTypeController {
 		int IntimationId=Integer.parseInt(request.getParameter("IntimationId"));	
 		int status=Integer.parseInt(request.getParameter("status"));
 		UserDetails user = (UserDetails) session.getAttribute("User_Login");
-		String message = intimationTypeDao.updateIntimationTypeStatus(IntimationId, status, user.getUserID());
-		userDao.activity_log("IntimationType", String.valueOf(IntimationId), status == 1 ? "ACTIVE" : "DEACTIVE", user.getUsername());
+		String message = intimationTypeDao.updateIntimationTypeStatus(IntimationId, status, user.getUsername());
+		if(message.equals("****"))
+			userDao.activity_log("IntimationType", String.valueOf(IntimationId), 
+					status == 1 ? "ACTIVE" : "DEACTIVE", user.getUsername());
 		return message;
 	}
 	

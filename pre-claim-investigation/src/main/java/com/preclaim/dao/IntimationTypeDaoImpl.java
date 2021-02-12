@@ -26,7 +26,8 @@ public class IntimationTypeDaoImpl implements IntimationTypeDao {
 	public String add_intimationType(IntimationType intimationType) {
 		try 
 		{
-			String IntimationTypeCheck = "select count(*) from intimation_type where intimationTypeName='" + intimationType.getIntimationType() + "'";
+			String IntimationTypeCheck = "select count(*) from intimation_type where intimationTypeName='" 
+					+ intimationType.getIntimationType() + "'";
 			int intimationTypeCount = this.template.queryForObject(IntimationTypeCheck, Integer.class);
 			System.out.println(intimationType.toString());
 			if (intimationTypeCount == 0) 
@@ -41,9 +42,8 @@ public class IntimationTypeDaoImpl implements IntimationTypeDao {
 		}
 		catch (Exception e) 
 		{
-			System.out.println(e.getMessage());
 			e.printStackTrace();
-			return "Error adding Intimation Type. Kimdly contact system administrator";
+			return e.getMessage();
 		}
 		return "****";
 	}
@@ -68,41 +68,50 @@ public class IntimationTypeDaoImpl implements IntimationTypeDao {
 
 	@Override
 	public String deleteIntimationType(int intimationId) {
-		try {
+		try 
+		{
 			String query = "DELETE FROM intimation_type WHERE intimationTypeId = ?";
 			template.update(query, intimationId);
-		} catch (Exception e) {
-			System.out.println("Error in deleteGroup() method" + e.getMessage());
+		} 
+		catch (Exception e) 
+		{
 			e.printStackTrace();
-			return "Error deleting Intimation Type. Kindly contact system administrator";
+			return e.getMessage();
 		}
 		return "****";
 	}
 
 	@Override
-	public String updateIntimationType(int intimationId, String intimationType, int userId) {
+	public String updateIntimationType(int intimationId, String intimationType, String username) {
 		try {
 			String IntimationTypeCheck = "select count(*) from intimation_type where intimationTypeName='" + intimationType + "'";
 			int intimationTypeCount = this.template.queryForObject(IntimationTypeCheck, Integer.class);
 			if(intimationTypeCount > 0)
-				return "Intimation Type already exits";
-			String sql = "UPDATE intimation_type SET intimationTypeName = ? , updatedDate = getdate(), updatedBy = ? WHERE intimationTypeId = ?";
-			template.update(sql, intimationType, userId, intimationId);
-		} catch (Exception e) {
+				return "Intimation Type already exists";
+			String sql = "UPDATE intimation_type SET intimationTypeName = ? , updatedDate = getdate(), "
+					+ "updatedBy = ? WHERE intimationTypeId = ?";
+			template.update(sql, intimationType, username, intimationId);
+		} 
+		catch (Exception e) 
+		{
 			e.printStackTrace();
-			return "Error updating Intimation Type. Kindly contact system administrator";
+			return e.getMessage();
 		}
 		return "****";
 	}
 
 	@Override
-	public String updateIntimationTypeStatus(int intimationId, int status, int userId) {
-		try {
-		String sql="UPDATE intimation_type SET status = ?, updatedDate = getdate(), updatedBy = ? WHERE intimationTypeId = ?";
-	           template.update(sql,status, userId, intimationId);	
-	           return  "****";
-		}catch(Exception e){
-			return "Error updating Intimation Type status. Kindly contact system administrator";
+	public String updateIntimationTypeStatus(int intimationId, int status, String username) {
+		try 
+		{
+			String sql="UPDATE intimation_type SET status = ?, updatedDate = getdate(), updatedBy = ? "
+					+ "WHERE intimationTypeId = ?";       
+			template.update(sql, status, username, intimationId);	
+           return  "****";
+		}
+		catch(Exception e)
+		{
+			return e.getMessage();
 		}
 	}
 		
@@ -125,12 +134,8 @@ public class IntimationTypeDaoImpl implements IntimationTypeDao {
 	@Override
 	public List<String> getActiveIntimationTypeStringList() {
 		String sql = "SELECT * FROM intimation_type where status = 1";
-		return template.query(sql,
-				(ResultSet rs, int rowNum) ->
-				{				
-					return rs.getString("intimationTypeName");
-				}
-				);
+		return template.query(sql, (ResultSet rs, int rowNum) ->
+				{return rs.getString("intimationTypeName");});
 	}
 	
 

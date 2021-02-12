@@ -41,9 +41,10 @@ public class MailConfigDaoImpl implements MailConfigDao {
 		{
 			String sql = "INSERT INTO mail_config(username, password, outgoingServer, outgoingPort, "
 					+ "encryptionType, status, createdBy, created_on, updatedBy, updated_on)"
-					+ "VALUES(?, ?, ?, ? ,? , 0, ?, now(), '', '0000-00-00 00:00:00')";
-			template.update(sql, mailConfig.getUsername(), mailConfig.getPassword(), mailConfig.getOutgoingServer(), 
-					mailConfig.getOutgoingPort(), mailConfig.getEncryptionType(), mailConfig.getCreatedBy());
+					+ "VALUES(?, ?, ?, ? ,? , 0, ?, getDate(), '', getDate())";
+			template.update(sql, mailConfig.getUsername(), mailConfig.getPassword(), 
+					mailConfig.getOutgoingServer(), mailConfig.getOutgoingPort(), 
+					mailConfig.getEncryptionType(), mailConfig.getCreatedBy());
 			return "****";
 		}
 		catch(Exception e)
@@ -93,7 +94,7 @@ public class MailConfigDaoImpl implements MailConfigDao {
 		catch(Exception e)
 		{
 			e.printStackTrace();
-			return "Error deleting configuration. Kindly contact system administrator";
+			return e.getMessage();
 		}
 	}
 
@@ -102,11 +103,12 @@ public class MailConfigDaoImpl implements MailConfigDao {
 		try
 		{
 			String sql = "UPDATE mail_config SET username = ?, password = ?, outgoingServer = ?, "
-					+ "outgoingPort = ?, encryptionType = ?, updatedBy = ?, updated_on = now() where "
+					+ "outgoingPort = ?, encryptionType = ?, updatedBy = ?, updated_on = getDate() where "
 					+ "mailConfigId = ?";
 			template.update(sql, mailConfig.getUsername(), mailConfig.getPassword(), 
-					mailConfig.getOutgoingServer(), mailConfig.getOutgoingPort(), mailConfig.getEncryptionType(),
-					mailConfig.getUpdatedBy(), mailConfig.getMailConfigId());
+					mailConfig.getOutgoingServer(), mailConfig.getOutgoingPort(), 
+					mailConfig.getEncryptionType(), mailConfig.getUpdatedBy(), 
+					mailConfig.getMailConfigId());
 			return "****";
 		}
 		catch(Exception e)
@@ -127,15 +129,15 @@ public class MailConfigDaoImpl implements MailConfigDao {
 				if(activeCount > 0)
 					return "Only one mail configuration can be active at a time";
 			}
-			String sql = "UPDATE mail_config SET status = ?, updatedBy = ?, updated_on = now() where"
+			String sql = "UPDATE mail_config SET status = ?, updatedBy = ?, updated_on = getDate() where"
 					+ " mailConfigId = ?";
-			template.update(sql,status, username, mailConfigId);
+			template.update(sql, status, username, mailConfigId);
 			return "****";
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
-			return "Error updating configuration status. Kindly contact system administrator";
+			return e.getMessage();
 		}
 	}
 

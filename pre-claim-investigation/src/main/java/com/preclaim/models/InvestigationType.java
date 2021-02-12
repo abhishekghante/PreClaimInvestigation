@@ -3,16 +3,16 @@ package com.preclaim.models;
 public class InvestigationType {
 	private int investigationId;
 	private String investigationType;
-	private int createdBy;
-	private int updatedBy;
+	private String createdBy;
+	private String updatedBy;
 	private int status;
 	
 	public InvestigationType() {
 	
 		investigationId = 0;
 		investigationType = "";
-		createdBy = 0;
-		updatedBy = 0;
+		createdBy = "";
+		updatedBy = "";
 		status = 0;
 	}
 	
@@ -20,8 +20,8 @@ public class InvestigationType {
 		
 		this.investigationId = investigationId;
 		this.investigationType = investigationType;
-		createdBy = 0;
-		updatedBy = 0;
+		createdBy = "";
+		updatedBy = "";
 		status = 0;
 	}
 
@@ -41,19 +41,19 @@ public class InvestigationType {
 		this.investigationType = investigationType;
 	}
 
-	public int getCreatedBy() {
+	public String getCreatedBy() {
 		return createdBy;
 	}
 
-	public void setCreatedBy(int createdBy) {
+	public void setCreatedBy(String createdBy) {
 		this.createdBy = createdBy;
 	}
 
-	public int getUpdatedBy() {
+	public String getUpdatedBy() {
 		return updatedBy;
 	}
 
-	public void setUpdatedBy(int updatedBy) {
+	public void setUpdatedBy(String updatedBy) {
 		this.updatedBy = updatedBy;
 	}
 

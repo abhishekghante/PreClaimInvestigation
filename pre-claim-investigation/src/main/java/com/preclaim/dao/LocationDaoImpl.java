@@ -26,7 +26,8 @@ public class LocationDaoImpl implements LocationDao {
 	{
 		try 
 		{		
-			String locationCheck = "SELECT count(*) FROM location_lists WHERE city='" + location.getCity() + "'";
+			String locationCheck = "SELECT count(*) FROM location_lists WHERE city='" 
+					+ location.getCity() + "'";
 			int locationCount = this.template.queryForObject(locationCheck, Integer.class);
 			if (locationCount == 0) 			 
 			{
@@ -41,15 +42,15 @@ public class LocationDaoImpl implements LocationDao {
 		} 
 		catch (Exception e)       
 		{
-		    System.out.println(e.getMessage());
 		    e.printStackTrace();
-	        return "Error adding location. Kindly contact system administrator";	      
+	        return e.getMessage();	      
 		}
 		return "****";
 	}
 
 	@Override
-	public List<Location> locationList(int status) {
+	public List<Location> locationList(int status) 
+	{
 		String query="";
 		if(status==0) 
 	      query = "SELECT * FROM location_lists WHERE status = " + status;
@@ -76,7 +77,7 @@ public class LocationDaoImpl implements LocationDao {
 		catch (Exception e) 
 		{
 			e.printStackTrace();
-			return "Error deleting location. Kindly contact system administrator";
+			return e.getMessage();
 		}
 		return "****";
 	}
@@ -85,14 +86,14 @@ public class LocationDaoImpl implements LocationDao {
 	public String updateLocation(int locationId, String city, String state, String zone, String updatedBy) {
 		try 
 		{
-			String sql = "UPDATE location_lists SET city = ? , state = ?, zone =  ?, updatedDate = getdate(), "
-					+ "updatedBy = ? WHERE locationId = ?";
+			String sql = "UPDATE location_lists SET city = ? , state = ?, zone =  ?, "
+					+ "updatedDate = getdate(), updatedBy = ? WHERE locationId = ?";
 			template.update(sql, city, state, zone, updatedBy, locationId);
 		} 
 		catch (Exception e) 
 		{
 			e.printStackTrace();
-			return "Error updating location. Kindly contact system administrator";
+			return e.getMessage();
 		}
 		return "****";
 	}
@@ -101,14 +102,14 @@ public class LocationDaoImpl implements LocationDao {
 	public String updateLocationStatus(int locationId, int status, String username) {
 		try 
 		{
-		  String query="UPDATE location_lists SET status = ?, updatedBy = ?, updatedDate = getdate() "
+		  String query = "UPDATE location_lists SET status = ?, updatedBy = ?, updatedDate = getdate() "
 		  		+ "WHERE locationId = ?";
           this.template.update(query, status, username, locationId);	  
 		}
 	    catch(Exception e) 
 		{
 	    	e.printStackTrace();
-		     return "Error updating location status. Kindly contact system administrator";
+		     return e.getMessage();
 	    }
 		return "****";
 	}

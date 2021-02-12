@@ -25,17 +25,18 @@ public class InvestigationTypeDaoImpl implements InvestigationTypeDao {
 	}
 
 	@Override
-	public String addInvestigationType(InvestigationType investigationType, int userId) {
+	public String addInvestigationType(InvestigationType investigationType) {
 
 		try {
 			String sql = "INSERT INTO investigation_type(investigationType, createdBy, createdDate"
-					+ ", updatedDate, updatedBy, status) values(?, ?, getdate(), getdate(), ?, ?)";
-			this.template.update(sql,investigationType.getInvestigationType(), userId, 0, 0);
+					+ ", updatedDate, updatedBy, status) values(?, ?, getdate(), getdate(), '', ?)";
+			this.template.update(sql,investigationType.getInvestigationType(), 
+					investigationType.getCreatedBy(), 0);
 		} 
 		catch (Exception e) 
 		{
 			e.printStackTrace();
-			return "Error adding investigation. Kindly contact system administrator";
+			return e.getMessage();
 		}
 
 		return "****";
@@ -69,18 +70,18 @@ public class InvestigationTypeDaoImpl implements InvestigationTypeDao {
 		});
 	}
 
-	public String updateInvestigationTypeStatus(int investigationId, int userId, int status) 
+	public String updateInvestigationTypeStatus(int investigationId, String username, int status) 
 	{
 		try 
 		{
 			String sql = "UPDATE investigation_type SET status = ?, updatedDate = getdate(),"
 					+ " updatedBy = ? where investigationId = ?";
-			this.template.update(sql, status, userId, investigationId);
+			this.template.update(sql, status, username, investigationId);
 		} 
 		catch (Exception e) 
 		{
 			e.printStackTrace();
-            System.out.println("Error updating Investigation status. Kindly contact system administrator");
+            return e.getMessage();
 	    }
 		return "****";
 	}
@@ -92,26 +93,27 @@ public class InvestigationTypeDaoImpl implements InvestigationTypeDao {
 			String sql = "DELETE FROM investigation_type WHERE investigationId = ?";
 			this.template.update(sql,investigationId);
 		}
-		catch(Exception e) {
+		catch(Exception e) 
+		{
 			e.printStackTrace();
-			return "Error deleting Investigation Type. Kindly contact system administrator";	
+			return e.getMessage();	
 		}
 		return "****";	
-		}
+	}
 	
 	@Override
-	public String updateInvestigationType(String investigationType, int userId, int investigationId) 
+	public String updateInvestigationType(String investigationType, String username, int investigationId) 
 	{
 		try
 		{
 			String sql = "UPDATE investigation_type SET investigationType = ?, updatedDate = getdate(), "
 					+ "updatedBy = ? where investigationId = ?";
-			template.update(sql, investigationType, userId, investigationId);
+			template.update(sql, investigationType, username, investigationId);
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
-			return "Error updating Investigation Type. Kindly contact system administrator";
+			return e.getMessage();
 		}
 		return "****";
 	}

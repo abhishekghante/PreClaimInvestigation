@@ -46,20 +46,20 @@ public class UserDAOImpl implements UserDAO{
 	@Override
 	public String create_user(UserDetails user) {
 		String sql = "INSERT INTO admin_user(full_name, role_name, username, user_email, mobile_number, "
-				+ "address1, address2, address3, password, state, city, status, user_image, createdBy ,createdon, updatedDate, "
-				+ "updatedBy)"
-				+ "VALUES(?, ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, '', getdate(), getdate(), '')";
+				+ "address1, address2, address3, password, state, city, status, user_image, createdBy ,"
+				+ "createdon, updatedDate, updatedBy)"
+				+ "VALUES(?, ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, getdate(), getdate(), '')";
 		System.out.println(user.getPassword());
 		try 
 		{
 			template.update(sql, user.getFull_name(), user.getAccount_type(), user.getUsername(),
 					user.getUser_email(),user.getContactNumber(), user.getAddress1(),user.getAddress2(),user.getAddress3(), user.getPassword(), user.getState(),
-					user.getCity(), user.getStatus(), user.getUserimage());
+					user.getCity(), user.getStatus(), user.getUserimage(), user.getCreatedBy());
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
-			return "Error in adding user. Kindly contact system administrator";
+			return e.getMessage();
 		}
 		return "****";
 	}
@@ -68,13 +68,13 @@ public class UserDAOImpl implements UserDAO{
 		try
 		{
 			String sql = "INSERT INTO user_role(role, role_code, status, created_on, updated_on) "
-					+ "VALUES(?,?,?,getdate(),getdate())";
+					+ "VALUES(?, ?, ?, getdate(), getdate())";
 			template.update(sql, role.getRole(), role.getRole_code(), role.getStatus());
 		}
 		catch(Exception ex)
 		{
 			ex.printStackTrace();
-			return "Error adding role. Kindly contact system administrator";
+			return ex.getMessage();
 		}
 		return "****";
 	}
@@ -89,7 +89,7 @@ public class UserDAOImpl implements UserDAO{
 		catch(Exception ex)
 		{
 			ex.printStackTrace();
-			return "Error deleting role. Kindly contact system administrator";
+			return ex.getMessage();
 		}
 		return "****";
 	}
@@ -131,25 +131,23 @@ public class UserDAOImpl implements UserDAO{
 		}
 		catch(Exception e)
 		{
-			System.out.println("Error in deleteAdminUser() method" + e.getMessage());
 			e.printStackTrace();
-			return "Error deleting user. Kindly contact system administrator";
+			return e.getMessage();
 		}
 		return "****";
 	}
 
 	@Override
-	public String updateUserStatus(int user_id, int user_status) {
+	public String updateUserStatus(int user_id, int user_status, String username) {
 		try
 		{
-			String sql = "UPDATE admin_user SET status = ? where user_id = ?";
-			this.template.update(sql, user_status,user_id);
+			String sql = "UPDATE admin_user SET status = ?, updatedBy = ? where user_id = ?";
+			this.template.update(sql, user_status, username, user_id);
 		}
 		catch(Exception e)
 		{
-			System.out.println("Error in updateUserStatus() method" + e.getMessage());
 			e.printStackTrace();
-			return "Error updating user status. Kindly contact system administrator";
+			return e.getMessage();
 		}
 		return "****";
 	}
@@ -244,7 +242,7 @@ public class UserDAOImpl implements UserDAO{
 		catch(Exception e)
 		{
 			e.printStackTrace();
-			return "Failed updating user ID. Kindly contact system administrator";
+			return e.getMessage();
 		}
 		return "****";
 	}
@@ -253,14 +251,15 @@ public class UserDAOImpl implements UserDAO{
 	public String updateUserRole(UserRole role) {
 		try
 		{
-			String sql = "UPDATE user_role SET role = ?, role_code = ?, updated_on = getdate() where roleId = ?";
+			String sql = "UPDATE user_role SET role = ?, role_code = ?, updated_on = getdate() "
+					+ "where roleId = ?";
 			template.update(sql, role.getRole(), role.getRole_code(), role.getRoleId());
 					
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
-			return "Failed updating user ID. Kindly contact system administrator";
+			return e.getMessage();
 		}
 		return "****";
 	}
@@ -316,7 +315,7 @@ public class UserDAOImpl implements UserDAO{
 		catch(Exception ex)
 		{
 			ex.printStackTrace();
-			return "Error adding permission";
+			return ex.getMessage();
 		}
 		
 		return "****";
@@ -343,16 +342,17 @@ public class UserDAOImpl implements UserDAO{
 	public String updateProfile(UserDetails user_details) {
 		try
 		{
-			String sql = "UPDATE admin_user SET full_name = ?, username = ?,"
-					+ "user_email = ?, password = ?, user_image = ? where user_id = ?";
+			String sql = "UPDATE admin_user SET full_name = ?, username = ?, user_email = ?,"
+					+ " password = ?, user_image = ?, updatedDate = getDate, updatedBy = ? "
+					+ "where user_id = ?";
 			template.update(sql, user_details.getFull_name(), user_details.getUsername(), 
 					user_details.getUser_email(), user_details.getPassword(),user_details.getUserimage(), 
-					user_details.getUserID());				
+					user_details.getUpdatedBy(), user_details.getUserID());				
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
-			return "Failed updating user ID. Kindly contact system administrator";
+			return e.getMessage();
 		}
 		return "****";
 	}
