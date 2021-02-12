@@ -1,5 +1,5 @@
-<%@page import="com.preclaim.models.Location"%>
-<%@page import="java.util.List"%>
+<%@page import = "java.util.List"%>
+<%@page import = "com.preclaim.models.Location"%>
 <%
 List<Location> activeList = (List<Location>) session.getAttribute("active_location");
 session.removeAttribute("active_location");

@@ -1,10 +1,10 @@
+<%@page import="java.util.List" %>
+<%@page import="java.util.ArrayList" %>
+<%@page import="com.preclaim.models.Location"%>
+<%@page import="com.preclaim.models.InvestigationType"%>
+<%@page import="com.preclaim.models.IntimationType"%>
+<%@page import="com.preclaim.models.UserDetails" %>
 <%@page import="com.preclaim.models.UserRole"%>
-<%@page import = "java.util.List" %>
-<%@page import = "java.util.ArrayList" %>
-<%@page import = "com.preclaim.models.Location"%>
-<%@page import = "com.preclaim.models.InvestigationType"%>
-<%@page import = "com.preclaim.models.IntimationType"%>
-<%@page import ="com.preclaim.models.UserDetails" %>
 
 <%
 List<String>user_permission=(List<String>)session.getAttribute("user_permission");
@@ -262,109 +262,149 @@ function displayUploadImg(input, PlaceholderID, deleteID, linkID) {
 }
   $("#add_message_form").on('submit', function(e){
     e.preventDefault();
-    var policyNumber   = $( '#add_message_form #policyNumber' ).val();
-    var msgCategory    = $( '#add_message_form #msgCategory' ).val();
-    var insuredName    = $( '#add_message_form #insuredName' ).val();
-    var insuredDOD     = $( '#add_message_form #insuredDOD' ).val();
-    var insuredDOB     = $( '#add_message_form #insuredDOB' ).val();
-    var sumAssured     = $( '#add_message_form #sumAssured' ).val();
-    var msgIntimationType  = $( '#add_message_form #msgIntimationType' ).val();    
-    var claimantCity   = $( '#add_message_form #claimantCity option:selected' ).val();
-    var claimantZone   = $( '#add_message_form #claimantZone' ).val();
-    var claimantState  = $( '#add_message_form #claimantState' ).val();
-    var subStatus      = $( '#add_message_form #subStatus' ).val();
-    var nomineeName    = $( '#add_message_form #nomineeName' ).val();
-    var nomineeMob     = $( '#add_message_form #nomineeMob' ).val();
-    var nomineeAdd     = $( '#add_message_form #nomineeAdd' ).val();
-    var insuredAdd     = $( '#add_message_form #insuredAdd' ).val();
-    var roleName       = $( '#add_message_form #roleName ' ).val();
+    var policyNumber   = $( '#add_message_form #policyNumber').val();
+    var msgCategory    = $( '#add_message_form #msgCategory').val();
+    var insuredName    = $( '#add_message_form #insuredName').val();
+    var insuredDOD     = $( '#add_message_form #insuredDOD').val();
+    var insuredDOB     = $( '#add_message_form #insuredDOB').val();
+    var sumAssured     = $( '#add_message_form #sumAssured').val();
+    var msgIntimationType  = $( '#add_message_form #msgIntimationType').val();    
+    var claimantCity   = $( '#add_message_form #claimantCity option:selected').val();
+    var claimantZone   = $( '#add_message_form #claimantZone').val();
+    var claimantState  = $( '#add_message_form #claimantState').val();
+    var nomineeName    = $( '#add_message_form #nomineeName').val();
+    var nomineeMob     = $( '#add_message_form #nomineeMob').val();
+    var nomineeAdd     = $( '#add_message_form #nomineeAdd').val();
+    var insuredAdd     = $( '#add_message_form #insuredAdd').val();
+    var roleName       = $( '#add_message_form #roleName').val();
     var assigneeId       = $( '#add_message_form #assigneeId').val();
     
     $('#policyNumber').removeClass('has-error-2');
+    $("#msgCategory").removeClass('has-error-2');
+    $("#insuredName").removeClass('has-error-2');
+    $("#insuredDOD").removeClass('has-error-2');
+    $("#insuredDOB").removeClass('has-error-2');
+    $("#sumAssured").removeClass('has-error-2');
+    $("#msgIntimationType").removeClass('has-error-2');
+    $("#claimantCity").removeClass('has-error-2');
+    $("#claimantZone").removeClass('has-error-2');
+    $("#claimantState").removeClass('has-error-2');
+    $("#nomineeName").removeClass('has-error-2');
+    $("#nomineeAdd").removeClass('has-error-2');
+    $("#insuredAdd").removeClass('has-error-2');
+    $("#roleName").removeClass('has-error-2');
+    $("#assigneeId").removeClass('has-error-2');
     
     var errorFlag = 0;
-    if(policyNumber == '')
+    
+    if(assigneeId == null)
     {
-    	$('#policyNumber').addClass('has-error-2');
-    	toastr.error('Policy Number cannot be empty','Error');
-    	errorFlag = 1;
-    }
-    if(msgCategory == '')
-    {
-        toastr.error('Investigation Category cannot be empty','Error');
-        errorFlag = 1;
-    }
-    if(insuredName == '')
-    {
-      	toastr.error('Please enter Insured Name','Error');
-      	errorFlag = 1;
-    }
-    if(insuredDOD == '')
-    {
-      	toastr.error('Insured Date of Death cannot be empty','Error');
-      	errorFlag = 1;
-    }
-    if(insuredDOB == '')
-    {
-      	toastr.error('Insured Date of Birth cannot be empty','Error');
-      	errorFlag = 1;
-    }
-    if(sumAssured == '')
-    {
-        toastr.error('Sum Assured cannot be empty','Error');
-        errorFlag = 1;
-    }
-    if(msgIntimationType == '')
-    {
-        toastr.error('Please select Intimation Type','Error');
-        errorFlag = 1;
-    }
-    if(claimantCity == null)
-    {
-	      toastr.error('Claimant City cannot be empty','Error');
-	      errorFlag = 1;
-    }
-    if(claimantZone == '')
-    {
-      toastr.error('Claimaint Zone Cannot be empty','Error');
-      errorFlag = 1;
-    }
-    if(claimantState == '')
-    {
-      toastr.error('Claimant State cannot be empty','Error');
-      errorFlag = 1;
-    }
-    if(nomineeName == '')
-    {
-        toastr.error('Please enter Nominee Name','Error');
-        errorFlag = 1;
-    }
-    if(nomineeMob == '')
-    {
-        toastr.error('Please enter Nominee Contact Number','Error');
-        errorFlag = 1;
-    }
-    if(nomineeAdd == '')
-    {
-        toastr.error('Please enter Nominee Address','Error');
-        errorFlag = 1;
-    }
-    if(insuredAdd == '')
-    {
-        toastr.error('Please enter Insured Address','Error');
+        toastr.error('Please select User','Error');
+        $("#assigneeId").addClass('has-error-2');
+        $("#assigneeId").focus();
         errorFlag = 1;
     }
     if(roleName == null)
     {
         toastr.error('Role Name cannot be empty','Error');
+        $("#roleName").addClass('has-error-2');
+        $("#roleName").focus();
         errorFlag = 1;
     }
-    if(assigneeId == null)
+    if(insuredAdd == '')
     {
-        toastr.error('Please select User','Error');
+        toastr.error('Please enter Insured Address','Error');
+        $("#insuredAdd").addClass('has-error-2');
+        $("#insuredAdd").focus();
         errorFlag = 1;
     }
-   
+    if(!(msgIntimationType == "PIV" || msgIntimationType == "PIRV" || msgIntimationType == "LIVE"))
+   	{
+	    if(nomineeAdd == '')
+	    {
+	        toastr.error('Please enter Nominee Address','Error');
+	        $("#nomineeAdd").addClass('has-error-2');
+	        $("#nomineeAdd").focus();
+	        errorFlag = 1;
+	    }
+	    if(nomineeName == '')
+	    {
+	        toastr.error('Please enter Nominee Name','Error');
+	        $("#nomineeName").addClass('has-error-2');
+	        $("#nomineeName").focus();
+	        errorFlag = 1;
+	    }
+	    if(insuredDOD == '')
+	    {
+	      	toastr.error('Insured Date of Death cannot be empty','Error');
+	      	$("#insuredDOD").addClass('has-error-2');
+	      	$("#insuredDOD").focus();
+	      	errorFlag = 1;
+	    }
+   	}
+    if(claimantState == '')
+    {
+      toastr.error('Claimant State cannot be empty','Error');
+      $("#claimantState").addClass('has-error-2');
+      $("#claimantState").focus();
+      errorFlag = 1;
+    }
+    if(claimantZone == '')
+    {
+      toastr.error('Claimaint Zone Cannot be empty','Error');
+      $("#claimantZone").addClass('has-error-2');
+      $("#claimantZone").focus();
+      errorFlag = 1;
+    }
+    if(claimantCity == null)
+    {
+		toastr.error('Claimant City cannot be empty','Error');
+		$("#claimantCity").addClass('has-error-2');
+		$("#claimantCity").focus();
+		errorFlag = 1;
+    }
+    if(msgIntimationType == '')
+    {
+        toastr.error('Please select Intimation Type','Error');
+        $("#msgIntimationType").addClass('has-error-2');
+        $("#msgIntimationType").focus();
+        errorFlag = 1;
+    }
+    if(sumAssured == '')
+    {
+        toastr.error('Sum Assured cannot be empty','Error');
+        $("#sumAssured").addClass('has-error-2');
+        $("#sumAssured").focus();
+        errorFlag = 1;
+    }
+    if(insuredDOB == '')
+    {
+      	toastr.error('Insured Date of Birth cannot be empty','Error');
+      	$("#insuredDOB").addClass('has-error-2');
+      	$("#insuredDOB").focus();
+      	errorFlag = 1;
+    }
+    if(insuredName == '')
+    {
+      	toastr.error('Please enter Insured Name','Error');
+      	$("#insuredName").addClass('has-error-2');
+      	$("#insuredName").focus();
+      	errorFlag = 1;
+    }
+    if(msgCategory == '')
+    {
+        toastr.error('Investigation Category cannot be empty','Error');
+        $("#msgCategory").addClass('has-error-2');
+        $("#msgCategory").focus();
+        errorFlag = 1;
+    }
+    if(policyNumber == '')
+    {
+    	toastr.error('Policy Number cannot be empty','Error');
+    	$('#policyNumber').addClass('has-error-2');
+    	$('#policyNumber').focus();
+    	errorFlag = 1;
+    }
     
     if(errorFlag == 1)
     	return false;

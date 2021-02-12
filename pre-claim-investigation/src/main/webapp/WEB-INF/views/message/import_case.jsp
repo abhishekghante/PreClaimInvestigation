@@ -1,6 +1,6 @@
-<%@page import="com.preclaim.models.UserRole"%>
 <%@page import = "java.util.List" %>
-<%@page import="com.preclaim.models.ScreenDetails" %>
+<%@page import = "com.preclaim.models.ScreenDetails" %>
+<%@page import = "com.preclaim.models.UserRole"%>
 <%
 List<String>user_permission=(List<String>)session.getAttribute("user_permission");
 List<UserRole> userRole =(List<UserRole>)session.getAttribute("userRole");

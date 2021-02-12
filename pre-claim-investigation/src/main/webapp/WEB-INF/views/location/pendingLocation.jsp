@@ -1,5 +1,5 @@
-<%@page import="com.preclaim.models.Location"%>
-<%@page import="java.util.List"%>
+<%@page import = "java.util.List"%>
+<%@page import = "com.preclaim.models.Location"%>
 <%
 List<Location> pending_location = (List<Location>) session.getAttribute("pending_location");
 session.removeAttribute("pending_location");
@@ -314,11 +314,11 @@ function updateLocation() {
 		},
 		success : function(data) {
 			$("#editlocationsubmit").html('Update');
-			$("#editlocationsubmit").prop('disabled', true);			
+			$("#editlocationsubmit").prop('disabled', false);			
 			if (data == "****") 
 			{
 				toastr.success('Location Updated successfully.', 'Success');
-				location.reload;
+				location.href = "${pageContext.request.contextPath}/location/pending";
 			} 
 			else 
 				toastr.error(data, 'Error');

@@ -68,7 +68,8 @@
                 <label class="col-md-4 control-label" for="encryptionType">Encryption Type <span class="text-danger">*</span></label>
                 <div class="col-md-8">
                   <select id = "encryptionType" name = "encryptionType" class = "form-control">
-                  	<option value = "TLS">TLS</option>
+                  	<option value = '-1' disabled>Select</option> 
+                  	<option value = "TLS" selected>TLS</option>
                   	<option value = "SSL">SSL</option>
                   </select>
                 </div>
@@ -124,9 +125,9 @@ function validateConfig()
 		$("#outgoingServer").addClass("has-error-2");
 		validFlag = 1;
 	}
-	if(password = "" || password == null)
+	if(password == "" || password == null)
 	{
-		toastr.error("Logon Password cannot be blank","Error");
+		toastr.error("Login Password cannot be blank","Error");
 		$("#password").focus();
 		$("#password").addClass("has-error-2");
 		validFlag = 1;
@@ -161,7 +162,8 @@ function validateConfig()
 				$( '#add_config_form #password').val("");
 			    $( '#add_config_form #outgoingServer').val("");
 			    $( '#add_config_form #outgoingPort').val("");
-			    $( '#add_config_form #encryptionType').val("");
+			    $( '#add_config_form #encryptionType').val($( '#encryptionType:option:contains("TLS")'));
+			    
 			} 
 			else 
 				toastr.error(data, 'Error');

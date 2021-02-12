@@ -96,7 +96,7 @@ public class InvestigationTypeController {
 		investigationType.setCreatedBy(user.getUsername());
 		String message = investigationTypedao.addInvestigationType(investigationType);
 		if(message.equals("****"))
-			userDao.activity_log("INVESTIGATION TYPE",investigationType.getInvestigationType(), "ADD", user.getUsername());
+			userDao.activity_log("INVESTIGATION TYPE", investigationType.getInvestigationType(), "ADD", user.getUsername());
 		return message;
 	}
 	

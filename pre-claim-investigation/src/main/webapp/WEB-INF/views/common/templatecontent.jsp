@@ -1,7 +1,7 @@
-<%@page import="com.preclaim.config.Config" %>
 <%@page import = "java.time.LocalDateTime" %>
 <%@page import = "java.time.format.DateTimeFormatter" %>
-<%@page import="com.preclaim.models.ScreenDetails" %>
+<%@page import = "com.preclaim.models.ScreenDetails" %>
+<%@page import = "com.preclaim.config.Config" %>
 <%
 String W0DATE = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd MMMM yyyy hh:mm:ss a"));
 ScreenDetails details = (ScreenDetails) session.getAttribute("ScreenDetails");

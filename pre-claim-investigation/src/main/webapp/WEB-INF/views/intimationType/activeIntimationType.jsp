@@ -1,5 +1,5 @@
-<%@page import="com.preclaim.models.IntimationTypeList"%>
-<%@page import="java.util.List"%>
+<%@page import = "java.util.List"%>
+<%@page import = "com.preclaim.models.IntimationTypeList"%>
 <%
 List<IntimationTypeList>active_list=(List<IntimationTypeList>)session.getAttribute("active_list");
 session.removeAttribute("active_list");
