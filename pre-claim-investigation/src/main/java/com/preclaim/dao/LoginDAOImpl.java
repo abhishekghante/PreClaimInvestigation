@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.preclaim.config.Config;
+import com.preclaim.config.CustomMethods;
 import com.preclaim.models.Login;
 import com.preclaim.models.UserDetails;
 
@@ -71,6 +72,7 @@ public class LoginDAOImpl implements LoginDAO {
 		catch(Exception ex)
 		{
 			ex.printStackTrace();
+			CustomMethods.logError(ex);
 			return null;
 		}
 	}
@@ -85,6 +87,7 @@ public class LoginDAOImpl implements LoginDAO {
 		}
 		catch(Exception ex)
 		{
+			CustomMethods.logError(ex);
 			return ex.getMessage();
 		}
 		return "****";

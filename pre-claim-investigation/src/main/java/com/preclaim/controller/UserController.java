@@ -165,7 +165,10 @@ public class UserController {
 		System.out.println(role.toString());
 		String message = dao.updateUserRole(role);
 		if(message.equals("****"))
+		{
+			session.setAttribute("success_message", "Role updated successfully");
 			dao.activity_log("ROLE", role.getRole_code(), "UPDATE", user.getUsername());
+		}
 		return message;
 	}
 	@RequestMapping(value = "/updateUserStatus", method = RequestMethod.POST)
@@ -218,6 +221,11 @@ public class UserController {
     	details.setSub_menu1("Add User");
     	details.setSub_menu2("Edit Account");
     	details.setSub_menu2_path("/user/user_list");
+    	if(session.getAttribute("success_message") != null)
+    	{
+    		details.setSuccess_message1((String)session.getAttribute("success_message"));
+    		session.removeAttribute("success_message");
+    	}
     	session.setAttribute("ScreenDetails", details);    	
     	List<UserRole> role = dao.role_lists();
     	session.setAttribute("role_list", role);

@@ -101,7 +101,6 @@ function importData()
 	var roleName = $("#import_user_form #roleName").val();
 	var userId = $("#import_user_form #assigneeId").val();
 	var importfile = $('input[type="file"]').val();
-	console.log("11"+importfile+"22");
 	
 	if(roleName == null)
 	{
@@ -121,9 +120,6 @@ function importData()
 		toastr.error("Please select Excel file","Error");
 		return false;
 	}
-
-//	$("#importfile").html('<img src="${pageContext.request.contextPath}/resources/img/input-spinner.gif"> Loading...');
-//	$("#importfile").prop("disabled",true);
 	
 	var formData = new FormData();
 	var files = $('[type="file"]');
@@ -136,6 +132,9 @@ function importData()
         });
         formData.append("userId", userId);
     }
+    $("#importfile").html('<img src="${pageContext.request.contextPath}/resources/img/input-spinner.gif"> Loading...');
+    $("#importfile").prop('disabled', true);
+    $('#import_user_form').css("opacity",".5");
 	$.ajax({
 	    type: "POST",
 	    url: 'importData',
@@ -143,29 +142,18 @@ function importData()
 	    cache: false,
         contentType: false,
         processData: false,
-        async:false,
-        beforeSend: function() {
-	    	$("#importfile").html('<img src="${pageContext.request.contextPath}/resources/img/input-spinner.gif"> Loading...');
-	        $("#importfile").prop('disabled', true);
-	        $('#import_user_form').css("opacity",".5");
-	    },
 	    success: function(data)
 	    {
+	    	$("#importfile").html('Import');
+	        $("#importfile").prop('disabled', false);
+	        $('#import_user_form').css("opacity","");
 	  		if(data = "****")
   			{
-	  			toastr.error("File uploaded successfully", "Error");
-	  			setTimeout(function () { location.reload(1); }, 1000);
-	  		
-	  			
+	  			location.reload();
   			}
 	  		else
   			{
   				toastr.error(data, "Error");
-  				$.ajax({
-  					url:"${pageContext.request.contextPath}/message/downloadErrorReport",
-  					type:"GET",
-  					data:{}
-  				});
   			}
 	    }
 });	
@@ -173,8 +161,6 @@ function importData()
 }
 
 </script>
-
-
 
 <script>
 $("#roleName").change(function(){

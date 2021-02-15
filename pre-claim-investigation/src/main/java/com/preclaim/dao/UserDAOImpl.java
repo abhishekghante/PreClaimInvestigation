@@ -13,6 +13,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
 import com.preclaim.config.Config;
+import com.preclaim.config.CustomMethods;
 import com.preclaim.models.UserDetails;
 import com.preclaim.models.UserList;
 import com.preclaim.models.UserRole;
@@ -83,6 +84,7 @@ public class UserDAOImpl implements UserDAO{
 		catch(Exception e)
 		{
 			e.printStackTrace();
+			CustomMethods.logError(e);
 			return e.getMessage();
 		}
 		return "****";
@@ -91,13 +93,18 @@ public class UserDAOImpl implements UserDAO{
 	public String create_role(UserRole role) {
 		try
 		{
-			String sql = "INSERT INTO user_role(role, role_code, status, created_on, updated_on) "
+			String sql = "SELECT count(*) from user_role where role_code = '" + role.getRole_code() + "'";
+			int count = template.queryForObject(sql, Integer.class);
+			if(count > 0)
+				return "Role code already exists";
+			sql = "INSERT INTO user_role(role, role_code, status, created_on, updated_on) "
 					+ "VALUES(?, ?, ?, getdate(), getdate())";
 			template.update(sql, role.getRole(), role.getRole_code(), role.getStatus());
 		}
 		catch(Exception ex)
 		{
 			ex.printStackTrace();
+			CustomMethods.logError(ex);
 			return ex.getMessage();
 		}
 		return "****";
@@ -113,6 +120,7 @@ public class UserDAOImpl implements UserDAO{
 		catch(Exception ex)
 		{
 			ex.printStackTrace();
+			CustomMethods.logError(ex);
 			return ex.getMessage();
 		}
 		return "****";
@@ -142,6 +150,7 @@ public class UserDAOImpl implements UserDAO{
 		catch(Exception e)
 		{
 			e.printStackTrace();
+			CustomMethods.logError(e);
 			return null;
 		}		
 	}
@@ -156,6 +165,7 @@ public class UserDAOImpl implements UserDAO{
 		catch(Exception e)
 		{
 			e.printStackTrace();
+			CustomMethods.logError(e);
 			return e.getMessage();
 		}
 		return "****";
@@ -171,6 +181,7 @@ public class UserDAOImpl implements UserDAO{
 		catch(Exception e)
 		{
 			e.printStackTrace();
+			CustomMethods.logError(e);
 			return e.getMessage();
 		}
 		return "****";
@@ -211,6 +222,7 @@ public class UserDAOImpl implements UserDAO{
 		catch(Exception e)
 		{
 			e.printStackTrace();
+			CustomMethods.logError(e);
 			return null;
 		}
 	}
@@ -245,6 +257,7 @@ public class UserDAOImpl implements UserDAO{
 		catch(Exception e)
 		{
 			e.printStackTrace();
+			CustomMethods.logError(e);
 			return null;
 		}
 	}
@@ -266,6 +279,7 @@ public class UserDAOImpl implements UserDAO{
 		catch(Exception e)
 		{
 			e.printStackTrace();
+			CustomMethods.logError(e);
 			return e.getMessage();
 		}
 		return "****";
@@ -283,6 +297,7 @@ public class UserDAOImpl implements UserDAO{
 		catch(Exception e)
 		{
 			e.printStackTrace();
+			CustomMethods.logError(e);
 			return e.getMessage();
 		}
 		return "****";
@@ -303,6 +318,7 @@ public class UserDAOImpl implements UserDAO{
 		catch(Exception ex)
 		{
 			ex.printStackTrace();
+			CustomMethods.logError(ex);
 			return null;
 		}
 	}
@@ -339,6 +355,7 @@ public class UserDAOImpl implements UserDAO{
 		catch(Exception ex)
 		{
 			ex.printStackTrace();
+			CustomMethods.logError(ex);
 			return ex.getMessage();
 		}
 		
@@ -358,7 +375,8 @@ public class UserDAOImpl implements UserDAO{
 		catch(Exception e)
 		{
 			e.printStackTrace();
-			return "Error in database. Kindly contact system administrator";
+			CustomMethods.logError(e);
+			return e.getMessage();
 		}
 	}
 
@@ -376,6 +394,7 @@ public class UserDAOImpl implements UserDAO{
 		catch(Exception e)
 		{
 			e.printStackTrace();
+			CustomMethods.logError(e);
 			return e.getMessage();
 		}
 		return "****";
@@ -392,14 +411,16 @@ public class UserDAOImpl implements UserDAO{
 		catch(Exception e) 
 		{
 			e.printStackTrace();
+			CustomMethods.logError(e);
 		}
 		
 	}
 
 	@Override
 	public String getUserRole(String roleCode) {
-        String sql="select role from user_role where role_code='"+roleCode+"'";
-	    return this.template.queryForObject(sql,String.class);
+        String sql="select role from user_role where role_code = ?";
+	    return this.template.query(sql, new Object[] {roleCode}, 
+	    		(ResultSet rs, int rowNum) -> {return rs.getString("role");}).get(0);
 	
 	}
 	

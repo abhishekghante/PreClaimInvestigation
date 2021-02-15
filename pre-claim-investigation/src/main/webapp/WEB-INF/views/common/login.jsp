@@ -1,3 +1,16 @@
+<%
+String username = "";
+String password = "";
+Cookie[] cookies = request.getCookies();
+for(int i = 0; i < cookies.length ;i++)
+{
+	if(cookies[i].getName().equals("pre-claim-user"))
+		username = cookies[i].getValue();
+	if(cookies[i].getName().equals("pre-claim-password"))
+		password = cookies[i].getValue();
+}
+
+%>
 <!DOCTYPE html>
 <html lang="en">
   <!--<![endif]-->
@@ -58,19 +71,21 @@
                   <label class="control-label visible-ie8 visible-ie9">Username</label>
                   <div class="input-icon">
                     <i class="fa fa-user"></i>
-                    <input type="text" class="form-control placeholder-no-fix" id="username" name="username" placeholder="Username">
+                    <input type="text" class="form-control placeholder-no-fix" id="username" name="username" 
+                    	placeholder="Username" value = "<%=username%>">
                   </div>
               </div>
               <div class="form-group">
                   <label class="control-label visible-ie8 visible-ie9">Password</label>
                   <div class="input-icon">
                     <i class="fa fa-lock"></i>
-                    <input type="password" class="form-control placeholder-no-fix" id="password" name="password" placeholder="Password">
+                    <input type="password" class="form-control placeholder-no-fix" id="password" name="password" 
+                    	placeholder="Password" value = "<%=password%>">
                   </div>
               </div>
               <div class="form-actions">
                   <label class="checkbox">
-                    <input type="checkbox" name="remember" checked> Remember me </label>
+                    <input type="checkbox" name="remember" id = "remember_me" checked> Remember me </label>
                     <button type="button" id="login_submit" class="btn green pull-right" name="login_submit" onclick="loginValidate()">Login</button>
               </div>
               <div>
@@ -109,6 +124,7 @@
   function loginValidate() {
 	    var username = $('#username').val();
 	    var password = $('#password').val();
+	    var remember_me = $('#remember_me').val();
 	    if(username == ''){
 	        toastr.error('Username is required.','Error');
 	    }
@@ -118,7 +134,7 @@
 	    if(username && password){
 	    	$("#login_submit").html('<img src="${pageContext.request.contextPath}/resources/img/input-spinner.gif"> Loading...');
             $("#login_submit").prop('disabled', true);
-	    	var formdata = {"username":username,"password":password};
+	    	var formdata = {"username":username,"password":password, "remember_me":remember_me};
 	    	$.ajax({
 	    		type: "POST",
 	            url: "${pageContext.request.contextPath}/login_validate",

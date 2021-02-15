@@ -29,6 +29,8 @@ public class CustomMethods {
 	public static void logError(Exception e)
 	{
 		String error_message = "*************" + e.getClass() + "*************\n";
+		LOGGER.error(e.getMessage());
+		LOGGER.error(e.getCause());
 		StackTraceElement[] trace = e.getStackTrace();
 	    for (StackTraceElement traceElement : trace)
 	        error_message += "\tat " + traceElement + "\n";

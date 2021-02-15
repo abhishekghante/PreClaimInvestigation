@@ -327,6 +327,16 @@ function displayUploadImg(input, PlaceholderID, deleteID, linkID) {
 	        $("#nomineeAdd").focus();
 	        errorFlag = 1;
 	    }
+	    if(nomineeMob)
+	   	{
+	    	if(nomineeMob.length != 10)
+    		{
+		    	$('#nomineeMob').addClass('has-error-2');
+		        $('#nomineeMob').focus();
+		        validflag = 0;
+		        toastr.error("Nominee Mobile number should be of 10 digits","Error");
+    		}
+	   	}
 	    if(nomineeName == '')
 	    {
 	        toastr.error('Please enter Nominee Name','Error');

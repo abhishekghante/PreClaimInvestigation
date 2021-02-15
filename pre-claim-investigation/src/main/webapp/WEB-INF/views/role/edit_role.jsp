@@ -6,15 +6,15 @@
 					<div class="form-group">
 					    <label class="col-md-2 col-sm-2 control-label" for="edit_role">Role Name <span class="text-danger">*</span></label>
 					    <div class="col-md-4 col-sm-4">
-					      <input type="text" required="" maxlength="30" placeholder="Enter Role Name" id="edit_role" 
+					      <input type="text" required maxlength="30" placeholder="Enter Role Name" id="edit_role" 
 					      	class="form-control" name="edit_role">
 					    </div>
 					</div>
 					<div class="form-group">
 					    <label class="col-md-2 col-sm-2 control-label" for="edit_role_code">Role Code</label>
 					    <div class="col-md-4 col-sm-4">
-					      <input type="text" required="" maxlength="10" placeholder="Enter Role Code" id="edit_role_code" 
-							class="form-control username" name="edit_role_code">
+					      <input type="text" required maxlength="10" placeholder="Enter Role Code" id="edit_role_code" 
+							class="form-control username" name="edit_role_code" disabled>
 					    </div>
 					</div>
 					<div class="col-md-offset-2 col-md-4 col-sm-4 text-right">
@@ -49,7 +49,6 @@
             },
             success : function( msg ) {
                 if( msg == "****" ) {
-                    toastr.success('Role updated Successfully.','Success');
                     location.reload();
                 } else {
                     toastr.error(msg,'Error');

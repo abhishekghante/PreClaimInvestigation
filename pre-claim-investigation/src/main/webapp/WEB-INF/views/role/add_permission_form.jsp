@@ -48,6 +48,7 @@ session.removeAttribute("role_list");
                                 </tr>
                             </thead>
                             <tbody>
+                            <!-- 
                             	<tr>
 			                    	<td>
 			                    		<input type="checkbox" <%if(role_permission.contains("appUsers")) {%>checked <%} %> name="appUsers[]" id="appUsers" class="allPLCheck0"  value = "appUsers"> <label for="appUsers">App Users</label>
@@ -59,6 +60,7 @@ session.removeAttribute("role_list");
 			                    		<input type="checkbox" <%if(role_permission.contains("appUsers/import")) {%>checked <%} %> name="appUsers[]" id="appUsers_import" class="indPLCheck0" value="appUsers/import"> <label for="appUsers_import">Import</label>
 			                    	</td>
 			                    </tr>
+			                     -->
 			                    <tr>
 			                    	<td>
 			                    		<input type="checkbox" <%if(role_permission.contains("intimationType")) {%>checked <%} %> name="intimationType[]" id="intimationType" class="allPLCheck1" value="intimationType"> <label for="intimationType">Intimation Type</label>

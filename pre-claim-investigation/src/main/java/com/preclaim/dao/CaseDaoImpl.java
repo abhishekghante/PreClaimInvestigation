@@ -108,6 +108,7 @@ public class CaseDaoImpl implements CaseDao {
 		catch(Exception e)
 		{
 			e.printStackTrace();
+			CustomMethods.logError(e);
 			return 0;
 		}
 	}
@@ -141,8 +142,8 @@ public class CaseDaoImpl implements CaseDao {
 		}
 		catch(Exception ex)
 		{
-			System.out.println(ex.getMessage());
 			ex.printStackTrace();
+			CustomMethods.logError(ex);
 			return null;
 		}
 	}
@@ -178,8 +179,8 @@ public class CaseDaoImpl implements CaseDao {
 		}
 		catch(Exception ex)
 		{
-			System.out.println(ex.getMessage());
 			ex.printStackTrace();
+			CustomMethods.logError(ex);
 			return null;
 		}
 	}
@@ -236,6 +237,7 @@ public class CaseDaoImpl implements CaseDao {
 		catch(Exception e)
 		{
 			e.printStackTrace();
+			CustomMethods.logError(e);
 			return null;
 		}
 	}
@@ -259,6 +261,7 @@ public class CaseDaoImpl implements CaseDao {
 		catch(Exception e)
 		{
 			e.printStackTrace();
+			CustomMethods.logError(e);
 			return e.getMessage();
 		}
 		return "****";
@@ -457,19 +460,21 @@ public class CaseDaoImpl implements CaseDao {
 				}
 				else
 				{
-					error_message = error_message.trim().substring(0, error_message.length()-1);
+					error_message = error_message.trim();
+					error_message = error_message.substring(0, error_message.length());
 					error_case.put(caseDetails, error_message);
 				}
 			}
 			wb.close();
 			//Error File
-			if(!error_message.equals(""))
+			if(error_case != null)
 				writeErrorCase(error_case);
 			return "****";
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
+			CustomMethods.logError(e);
 			return e.getMessage();
 		}
 	}
@@ -535,8 +540,8 @@ public class CaseDaoImpl implements CaseDao {
 		catch(Exception e) 
 		 {
 			e.printStackTrace();
+			CustomMethods.logError(e);
 			return e.getMessage();
-			
 		 }
 	
 		return "****";
@@ -615,6 +620,7 @@ public class CaseDaoImpl implements CaseDao {
 		catch (Exception e) 
 		{
 			e.printStackTrace();
+			CustomMethods.logError(e);
 		}
 		
 		return;
@@ -658,6 +664,7 @@ public class CaseDaoImpl implements CaseDao {
 		catch(Exception e)
 		{
 			e.printStackTrace();
+			CustomMethods.logError(e);
 			return null;
 		}	
 	}

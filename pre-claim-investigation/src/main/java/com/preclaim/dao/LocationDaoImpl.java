@@ -8,6 +8,7 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import com.preclaim.config.CustomMethods;
 import com.preclaim.models.Location;
 
 public class LocationDaoImpl implements LocationDao {
@@ -43,7 +44,8 @@ public class LocationDaoImpl implements LocationDao {
 		catch (Exception e)       
 		{
 		    e.printStackTrace();
-	        return e.getMessage();	      
+		    CustomMethods.logError(e);
+			return e.getMessage();	      
 		}
 		return "****";
 	}
@@ -77,6 +79,7 @@ public class LocationDaoImpl implements LocationDao {
 		catch (Exception e) 
 		{
 			e.printStackTrace();
+			CustomMethods.logError(e);
 			return e.getMessage();
 		}
 		return "****";
@@ -93,6 +96,7 @@ public class LocationDaoImpl implements LocationDao {
 		catch (Exception e) 
 		{
 			e.printStackTrace();
+			CustomMethods.logError(e);
 			return e.getMessage();
 		}
 		return "****";
@@ -109,7 +113,8 @@ public class LocationDaoImpl implements LocationDao {
 	    catch(Exception e) 
 		{
 	    	e.printStackTrace();
-		     return e.getMessage();
+	    	CustomMethods.logError(e);
+			return e.getMessage();
 	    }
 		return "****";
 	}
@@ -133,6 +138,7 @@ public class LocationDaoImpl implements LocationDao {
 		catch(Exception e)
 		{
 			e.printStackTrace();
+			CustomMethods.logError(e);
 			return null;
 		}
 	}

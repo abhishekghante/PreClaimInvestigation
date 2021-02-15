@@ -286,7 +286,7 @@ function updateAccountValidate() {
     	$('#contactNumber').addClass('has-error-2');
         $('#contactNumber').focus();
         validflag = 0;
-        toastr.error("Mobile number should of 10 digits","Error");
+        toastr.error("Mobile number should be of 10 digits","Error");
    	}
     if( state == "" )
     {

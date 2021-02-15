@@ -595,10 +595,10 @@ $("#assignmessagesubmit").click(function()
 	   	{
 	    	if(nomineeMob.length != 10)
     		{
-		    	$('#contactNumber').addClass('has-error-2');
-		        $('#contactNumber').focus();
+		    	$('#nomineeMob').addClass('has-error-2');
+		        $('#nomineeMob').focus();
 		        validflag = 0;
-		        toastr.error("Mobile number should of 10 digits","Error");
+		        toastr.error("Nominee Mobile number should be of 10 digits","Error");
     		}
 	   	}
 	    if(insuredDOD == '')

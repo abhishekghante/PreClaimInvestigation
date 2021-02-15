@@ -8,6 +8,7 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import com.preclaim.config.CustomMethods;
 import com.preclaim.models.IntimationType;
 import com.preclaim.models.IntimationTypeList;
 
@@ -76,6 +77,7 @@ public class IntimationTypeDaoImpl implements IntimationTypeDao {
 		catch (Exception e) 
 		{
 			e.printStackTrace();
+			CustomMethods.logError(e);
 			return e.getMessage();
 		}
 		return "****";
@@ -95,6 +97,7 @@ public class IntimationTypeDaoImpl implements IntimationTypeDao {
 		catch (Exception e) 
 		{
 			e.printStackTrace();
+			CustomMethods.logError(e);
 			return e.getMessage();
 		}
 		return "****";
@@ -111,6 +114,7 @@ public class IntimationTypeDaoImpl implements IntimationTypeDao {
 		}
 		catch(Exception e)
 		{
+			CustomMethods.logError(e);
 			return e.getMessage();
 		}
 	}

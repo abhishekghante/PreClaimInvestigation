@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -74,6 +75,12 @@ public class LoginController {
     		List<String> user_permission = 
     				userDao.retrievePermission(user.getAccount_type());
     		session.setAttribute("user_permission", user_permission);
+    		Cookie cookie_username = new Cookie("pre-claim-user", username);
+    		Cookie cookie_password = new Cookie("pre-claim-password", password);
+    		cookie_username.setMaxAge(60 * 60 * 24 * 365 * 10);
+    		cookie_password.setMaxAge(60 * 60 * 24 * 365 * 10);
+    		response.addCookie(cookie_username);
+    		response.addCookie(cookie_password);
     		return "****";
     	}
     	else

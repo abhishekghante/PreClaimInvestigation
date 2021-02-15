@@ -32,7 +32,7 @@ ArrayList<String> user_permission = (ArrayList<String>)session.getAttribute("use
                     <span class="title">Dashboard</span>
                 </a>
             </li>
-            
+            <!-- 
             <%if(user_permission.contains("appUsers")) {%>
             <li class="nav-item start <%if(details.getMain_menu().equals("App Users Management")){%>active open<%}%>">
                 <a href="${pageContext.request.contextPath}/app_user/app_user" class="nav-link">
@@ -40,7 +40,8 @@ ArrayList<String> user_permission = (ArrayList<String>)session.getAttribute("use
                     <span class="title">App Users Management</span>
                 </a>
             </li>
-            <%} %> 
+            <%} %>
+             --> 
             <li class="nav-item <%if(details.getMain_menu().equals("Live Tracking")){%>active open<%}%>">
                 <a href="${pageContext.request.contextPath}/livetracking/index" class="nav-link">
                     <i class="icon-pointer"></i>

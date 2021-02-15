@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.preclaim.config.Config;
+import com.preclaim.config.CustomMethods;
 import com.preclaim.dao.CaseDao;
 import com.preclaim.dao.Case_movementDao;
 import com.preclaim.dao.IntimationTypeDao;
@@ -78,6 +79,11 @@ public class CaseController {
     	details.setSub_menu1("Bulk case uploads");
     	details.setSub_menu2("App Users");
     	details.setSub_menu2_path("/app_user/app_user");
+    	if(session.getAttribute("success_message") != null)
+    	{
+    		details.setSuccess_message1((String)session.getAttribute("success_message"));
+    		session.removeAttribute("success_message");
+    	}
     	session.setAttribute("ScreenDetails", details);
     	session.setAttribute("userRole", userDao.getAssigneeRole());
     	
@@ -154,7 +160,6 @@ public class CaseController {
     @RequestMapping(value = "/importData", method = RequestMethod.POST)
 	public @ResponseBody String importData(@RequestParam("userfile") ArrayList<MultipartFile> userfile, HttpSession session, HttpServletRequest request)
 	{
-    	System.out.println("calling");
     	UserDetails user = (UserDetails) session.getAttribute("User_Login");
     	String message = "";
 		//File Uploading Routine
@@ -163,20 +168,20 @@ public class CaseController {
 			try 
 			{
 				byte[] temp = userfile.get(0).getBytes();
-	    		System.out.println(temp);
-				String filename = userfile.get(0).getOriginalFilename();
-				System.out.println(filename);
+	    		String filename = userfile.get(0).getOriginalFilename();
 				String toId = request.getParameter("userId");
-	    		filename = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH-mm-SS")) + "_" + filename;
+	    		filename = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH-mm-SS")) + "_" 
+	    				+ filename;
 	    		Path path = Paths.get(Config.upload_directory + filename);
-	    		System.out.println("Entered");
-				Files.write(path, temp);
+	    		Files.write(path, temp);
 				message = caseDao.addBulkUpload(filename, user.getUsername(), toId);
-				userDao.activity_log("RCUTEAM", "Excel", "BULKUPLOAD", user.getUsername());	
+				userDao.activity_log("RCUTEAM", "Excel", "BULKUPLOAD", user.getUsername());
+				session.setAttribute("success_message", "File Uploaded successfully");
 			} 
 			catch (Exception e) 
 			{
 				e.printStackTrace();
+				return e.getMessage();
 			}    	
 		}
 	  
@@ -344,7 +349,7 @@ public class CaseController {
 	    	}
 	    	catch(Exception e)
 	    	{
-	    		
+	    		CustomMethods.logError(e);
 	    	}
     	}
     	return message;
@@ -383,6 +388,7 @@ public class CaseController {
         }
         catch(Exception e)
         {
+        	CustomMethods.logError(e);
         	return;
         }
     }

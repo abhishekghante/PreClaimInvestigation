@@ -9,6 +9,7 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import com.preclaim.config.CustomMethods;
 import com.preclaim.models.InvestigationType;
 import com.preclaim.models.InvestigationTypeList;
 
@@ -36,6 +37,7 @@ public class InvestigationTypeDaoImpl implements InvestigationTypeDao {
 		catch (Exception e) 
 		{
 			e.printStackTrace();
+			CustomMethods.logError(e);
 			return e.getMessage();
 		}
 
@@ -81,7 +83,8 @@ public class InvestigationTypeDaoImpl implements InvestigationTypeDao {
 		catch (Exception e) 
 		{
 			e.printStackTrace();
-            return e.getMessage();
+			CustomMethods.logError(e);
+			return e.getMessage();
 	    }
 		return "****";
 	}
@@ -96,6 +99,7 @@ public class InvestigationTypeDaoImpl implements InvestigationTypeDao {
 		catch(Exception e) 
 		{
 			e.printStackTrace();
+			CustomMethods.logError(e);
 			return e.getMessage();	
 		}
 		return "****";	
@@ -113,6 +117,7 @@ public class InvestigationTypeDaoImpl implements InvestigationTypeDao {
 		catch(Exception e)
 		{
 			e.printStackTrace();
+			CustomMethods.logError(e);
 			return e.getMessage();
 		}
 		return "****";

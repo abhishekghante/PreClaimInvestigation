@@ -21,6 +21,7 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import com.preclaim.config.CustomMethods;
 import com.preclaim.models.MailConfig;
 import com.preclaim.models.MailConfigList;
 
@@ -50,6 +51,7 @@ public class MailConfigDaoImpl implements MailConfigDao {
 		catch(Exception e)
 		{
 			e.printStackTrace();
+			CustomMethods.logError(e);
 			return e.getMessage();
 		}
 	}
@@ -79,6 +81,7 @@ public class MailConfigDaoImpl implements MailConfigDao {
 		catch(Exception e)
 		{
 			e.printStackTrace();
+			CustomMethods.logError(e);
 			return null;
 		}
 	}
@@ -94,6 +97,7 @@ public class MailConfigDaoImpl implements MailConfigDao {
 		catch(Exception e)
 		{
 			e.printStackTrace();
+			CustomMethods.logError(e);
 			return e.getMessage();
 		}
 	}
@@ -114,6 +118,7 @@ public class MailConfigDaoImpl implements MailConfigDao {
 		catch(Exception e)
 		{
 			e.printStackTrace();
+			CustomMethods.logError(e);
 			return "Error updating configuration. Kindly contact system administrator";
 		}
 	}
@@ -137,6 +142,7 @@ public class MailConfigDaoImpl implements MailConfigDao {
 		catch(Exception e)
 		{
 			e.printStackTrace();
+			CustomMethods.logError(e);
 			return e.getMessage();
 		}
 	}
@@ -162,6 +168,7 @@ public class MailConfigDaoImpl implements MailConfigDao {
 		catch(Exception e)
 		{
 			e.printStackTrace();
+			CustomMethods.logError(e);
 			return null;
 		}
 	}
@@ -185,6 +192,7 @@ public class MailConfigDaoImpl implements MailConfigDao {
 		catch(Exception e)
 		{
 			e.printStackTrace();
+			CustomMethods.logError(e);
 			return null;
 		}
 	}
@@ -210,6 +218,7 @@ public class MailConfigDaoImpl implements MailConfigDao {
 		catch(Exception e)
 		{
 			e.printStackTrace();
+			CustomMethods.logError(e);
 			return null;
 		}
 	}
@@ -257,7 +266,8 @@ public class MailConfigDaoImpl implements MailConfigDao {
         } 
         catch (MessagingException mex) {
         	mex.printStackTrace();
-           return mex.getMessage();
+        	CustomMethods.logError(mex);
+			return mex.getMessage();
         }       
 	}
 }
