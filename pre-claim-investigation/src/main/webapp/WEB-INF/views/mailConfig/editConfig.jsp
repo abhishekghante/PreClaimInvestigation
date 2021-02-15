@@ -170,7 +170,6 @@ function validateConfig()
 			$("#editconfigsubmit").prop('disabled', true);
 			if (data == "****") 
 			{
-				toastr.success('Configuration Updated successfully.', 'Success');
 				location.href ="${pageContext.request.contextPath}/mailConfig/pending";
 			} 
 			else 

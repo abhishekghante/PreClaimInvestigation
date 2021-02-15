@@ -317,8 +317,7 @@ function updateLocation() {
 			$("#editlocationsubmit").prop('disabled', false);			
 			if (data == "****") 
 			{
-				toastr.success('Location Updated successfully.', 'Success');
-				location.href = "${pageContext.request.contextPath}/location/pending";
+				location.reload();
 			} 
 			else 
 				toastr.error(data, 'Error');

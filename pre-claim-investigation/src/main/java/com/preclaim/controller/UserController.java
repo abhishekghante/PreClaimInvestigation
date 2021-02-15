@@ -92,6 +92,11 @@ public class UserController {
     	details.setScreen_title("User List");
     	details.setMain_menu("Users");
     	details.setSub_menu1("User Lists");
+    	if(session.getAttribute("success_message") != null)
+    	{
+    		details.setSuccess_message1((String)session.getAttribute("success_message"));
+    		session.removeAttribute("success_message");
+    	}
     	session.setAttribute("ScreenDetails", details);
     	List<UserList> user_list = dao.user_list();
     	session.setAttribute("user_list",user_list);
@@ -174,8 +179,11 @@ public class UserController {
 		System.out.println("User ID:" + user_id + " User_Status:" + user_status);
 		String message = dao.updateUserStatus(user_id, user_status, user.getUsername());
 		if(message.equals("****"))
+		{
+			session.setAttribute("success_message", "User status changed successfully");
 			dao.activity_log("USER",String.valueOf(user_id), user_status == 1 ? "ACTIVE" : "DEACTIVE", 
 					user.getUsername());
+		}
 		return message;
 	}
 	
@@ -188,7 +196,11 @@ public class UserController {
 		int user_id = Integer.parseInt(request.getParameter("user_id"));
 		System.out.println("User ID:" + user_id);
 		String message = dao.deleteAdminUser(user_id);
-		dao.activity_log("USER",String.valueOf(user_id), "DELETE", user.getUsername());
+		if(message.equals("****"))
+		{
+			session.setAttribute("success_message", "User deleted successfully");
+			dao.activity_log("USER",String.valueOf(user_id), "DELETE", user.getUsername());
+		}
 		return message;
 	}
 	
@@ -240,7 +252,10 @@ public class UserController {
 		user_details.setUpdatedBy(user.getUsername());
 		String message = dao.updateUserDetails(user_details);
 		if(message.equals("****"))
+		{
+			session.setAttribute("success_message", "User Details updated successfully");
 			dao.activity_log("USER",user_details.getUsername(), "UPDATE", user_details.getUsername());
+		}
 		return message;
 	}
 	

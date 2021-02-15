@@ -157,12 +157,7 @@ function validateConfig()
 			$("#addConfigsubmit").prop('disabled', false);
 			if (data == "****") 
 			{
-				toastr.success('Configuration created successfully.', 'Success');
-				$( '#add_config_form #username').val("");
-				$( '#add_config_form #password').val("");
-			    $( '#add_config_form #outgoingServer').val("");
-			    $( '#add_config_form #outgoingPort').val("");
-			    $( '#add_config_form #encryptionType').val($( '#encryptionType:option:contains("TLS")'));
+				location.reload();
 			    
 			} 
 			else 

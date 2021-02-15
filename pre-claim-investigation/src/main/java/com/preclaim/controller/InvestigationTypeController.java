@@ -41,6 +41,11 @@ public class InvestigationTypeController {
 		details.setSub_menu1("Add Investigation Type");
 		details.setSub_menu2("Manage Investigation Type");
 		details.setSub_menu2_path("/investigationType/pendingInvestigationType");
+		if(session.getAttribute("success_message") != null)
+    	{
+    		details.setSuccess_message1((String)session.getAttribute("success_message"));
+    		session.removeAttribute("success_message");
+    	}
 		session.setAttribute("ScreenDetails", details);
 		return "common/templatecontent";
 	}
@@ -56,6 +61,11 @@ public class InvestigationTypeController {
 		details.setScreen_title("Investigation Type Lists");
 		details.setMain_menu("Investigation Type");
 		details.setSub_menu1("Pending Investigation Type");
+		if(session.getAttribute("success_message") != null)
+    	{
+    		details.setSuccess_message1((String)session.getAttribute("success_message"));
+    		session.removeAttribute("success_message");
+    	}
 		session.setAttribute("ScreenDetails", details);
 		
 		List<InvestigationTypeList> pendingInvestigationType = investigationTypedao.getInvestigationList(0);
@@ -82,6 +92,11 @@ public class InvestigationTypeController {
 		details.setScreen_title("Investigation Type Lists");
 		details.setMain_menu("Investigation Type");
 		details.setSub_menu1("Active Investigation Type");
+		if(session.getAttribute("success_message") != null)
+    	{
+    		details.setSuccess_message1((String)session.getAttribute("success_message"));
+    		session.removeAttribute("success_message");
+    	}
 		session.setAttribute("ScreenDetails", details);
 		List<InvestigationTypeList> activeList = investigationTypedao.getInvestigationList(1);
 		session.setAttribute("active_list", activeList);
@@ -96,7 +111,10 @@ public class InvestigationTypeController {
 		investigationType.setCreatedBy(user.getUsername());
 		String message = investigationTypedao.addInvestigationType(investigationType);
 		if(message.equals("****"))
-			userDao.activity_log("INVESTIGATION TYPE", investigationType.getInvestigationType(), "ADD", user.getUsername());
+		{
+			userDao.activity_log("INVESTIGATION TYPE", investigationType.getInvestigationType(), "ADD", 
+				user.getUsername());
+		}
 		return message;
 	}
 	
@@ -108,7 +126,10 @@ public class InvestigationTypeController {
 	 String message = investigationTypedao.updateInvestigationType(investigationType, user.getUsername(), 
 			 investigationId);
 	 if(message.equals("****"))
+	 {
+		 session.setAttribute("success_message", "Investigation Type updated successfully");
 		 userDao.activity_log("INVESTIGATION TYPE", investigationType, "UPDATE", user.getUsername());
+	 }
 	 return message;
 	}
 	
@@ -118,9 +139,12 @@ public class InvestigationTypeController {
      String message = investigationTypedao.deleteInvestigationType(investigationId);	
      UserDetails user = (UserDetails) session.getAttribute("User_Login");
      if(message.equals("****"))
+     {
+    	 session.setAttribute("success_message", "Investigation Type deleted successfully");
     	 userDao.activity_log("INVESTIGATION TYPE",String.valueOf(investigationId), "DELETE", 
     			 user.getUsername());
-	 return message;
+     }
+     return message;
 	}
 	
 	@RequestMapping(value = "/updateInvestigationStatus",method = RequestMethod.POST)
@@ -131,8 +155,11 @@ public class InvestigationTypeController {
 		String message = investigationTypedao.updateInvestigationTypeStatus(investigationId, 
 				user.getUsername(), status);
 		if(message.equals("****"))
+		{
+			session.setAttribute("success_message", "Investigation status changed successfully");
 			userDao.activity_log("INVESTIGATION TYPE", String.valueOf(investigationId), status == 1 ? "ACTIVE" : "DEACTIVE", 
 				user.getUsername());
+		}
 		return message;
 	}
 	  

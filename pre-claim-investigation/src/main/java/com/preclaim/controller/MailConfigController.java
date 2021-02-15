@@ -37,6 +37,11 @@ public class MailConfigController{
 		details.setSub_menu1("Add Mail Config");
     	details.setSub_menu2("Manage Mail Config");
     	details.setSub_menu2_path("/mailConfig/pendingConfig");
+    	if(session.getAttribute("success_message") != null)
+    	{
+    		details.setSuccess_message1((String)session.getAttribute("success_message"));
+    		session.removeAttribute("success_message");
+    	}
 		session.setAttribute("ScreenDetails", details);
 		return "common/templatecontent";
 	}
@@ -70,6 +75,11 @@ public class MailConfigController{
 		details.setScreen_title("Pending Mail Config");
 		details.setMain_menu("Mail Config");
 		details.setSub_menu1("Pending Mail Config");
+		if(session.getAttribute("success_message") != null)
+    	{
+    		details.setSuccess_message1((String)session.getAttribute("success_message"));
+    		session.removeAttribute("success_message");
+    	}
 		session.setAttribute("ScreenDetails", details);
 		session.setAttribute("pendingConfig", mailConfigDao.getMailConfigList(0));
 		
@@ -87,6 +97,11 @@ public class MailConfigController{
 		details.setScreen_title("Active mailConfig");
 		details.setMain_menu("Mail Config");
 		details.setSub_menu1("Active Mail Config");
+		if(session.getAttribute("success_message") != null)
+    	{
+    		details.setSuccess_message1((String)session.getAttribute("success_message"));
+    		session.removeAttribute("success_message");
+    	}
 		session.setAttribute("ScreenDetails", details);
 		session.setAttribute("activeConfig", mailConfigDao.getMailConfigList(1));
 		return "common/templatecontent";
@@ -102,7 +117,10 @@ public class MailConfigController{
 		int mailConfigId = Integer.parseInt(request.getParameter("mailConfigId"));
 		String message = mailConfigDao.delete(mailConfigId);
 		if(message.equals("****"))
+		{
+			session.setAttribute("success_message", "Mail Configuration deleted successfully");
 			userDao.activity_log("MAIL", String.valueOf(mailConfigId), "DELETE", user.getUsername());
+		}
 		return message;
 	}
 	
@@ -120,7 +138,11 @@ public class MailConfigController{
 		mailConfig.setEncryptionType(request.getParameter("encryptionType"));
 		mailConfig.setCreatedBy(user.getUsername());
 		String message = mailConfigDao.add(mailConfig);		
-		userDao.activity_log("MAIL", "", "ADD", user.getUsername());
+		if(message.equals("****"))
+		{
+			session.setAttribute("success_message", "Mail Configuration added successfully");
+			userDao.activity_log("MAIL", "", "ADD", user.getUsername());
+		}
 		return message;
 	}
 	
@@ -140,7 +162,10 @@ public class MailConfigController{
 		mailConfig.setUpdatedBy(user.getUsername());
 		String message = mailConfigDao.update(mailConfig);	
 		if(message.equals("****"))
+		{
+			session.setAttribute("success_message", "Mail Configuration updated successfully");
 			userDao.activity_log("MAIL", String.valueOf(mailConfig.getMailConfigId()), "UPDATE", user.getUsername());
+		}
 		return message;
 	}
 	
@@ -154,9 +179,12 @@ public class MailConfigController{
 		int mailConfigStatus = Integer.parseInt(request.getParameter("status"));
 	    String message = mailConfigDao.updateStatus(mailConfigId, mailConfigStatus , user.getUsername()); 
 	    if(message.equals("****"))
-	    	userDao.activity_log("MAIL", String.valueOf(mailConfigId), mailConfigStatus == 1 ? "ACTIVE" : "DEACTIVE", 
-	    		user.getUsername());
-		return message;
+	    {
+	    	session.setAttribute("success_message", "Mail Configuration status changed successfully");
+	    	userDao.activity_log("MAIL", String.valueOf(mailConfigId), 
+	    			mailConfigStatus == 1 ? "ACTIVE" : "DEACTIVE", user.getUsername());
+	    }
+	    return message;
     }
 }
 

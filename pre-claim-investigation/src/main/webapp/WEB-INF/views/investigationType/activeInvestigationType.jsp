@@ -1,7 +1,8 @@
 <%@page import="java.util.List" %>
 <%@page import="com.preclaim.models.InvestigationTypeList"%>
 <%
-List<InvestigationTypeList> activeList =(List<InvestigationTypeList>)session.getAttribute("active_list"); 
+List<InvestigationTypeList> activeList =(List<InvestigationTypeList>)session.getAttribute("active_list");
+session.removeAttribute("active_list");
 List<String>user_permission=(List<String>)session.getAttribute("user_permission");
 boolean allow_statusChg = user_permission.contains("investigationType/status");
 boolean allow_delete = user_permission.contains("investigationType/delete");

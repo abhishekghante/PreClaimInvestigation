@@ -1,25 +1,4 @@
-//Update Mapping Status
-function updateMappingStatus( cmId, status, checkAuthority ) {
-	if(!checkAuthority)
-	{
-		toastr.error("Access Denied", "Error");
-		return false;
-	}
-    $.ajax({
-        type : 'POST',
-        url  : 'updateMappingStatus',
-        data : { 'cmId' : cmId, 'status' : status },
-        beforeSend: function() {
-            $("#mappingStatus"+cmId).html('<img src="../resources/img/input-spinner.gif"> Loading...');
-        },
-        success : function( msg ) 
-        {
-            location.reload();
-        }
-    });
-    return false;
-}
-//DELETE GROUP
+//Delete Intimation Type
 function deleteIntimationType( intimationId, checkAuthority ) {
 	if(!checkAuthority)
 	{
@@ -46,7 +25,6 @@ function deleteIntimationType( intimationId, checkAuthority ) {
                 $('#small_modal').modal('hide');
                 if(msg == "****")
                 {
-                	toastr.error("IntimationType deleted successfully", "Success");
                 	location.reload();
                 }
                 else
@@ -85,165 +63,11 @@ function updateIntimationTypeStatus( intimationId, status, checkAuthority ) {
 	            $('#small_modal').modal('hide');		            
                 if(msg="****")
                 {
-                  	toastr.success("IntimationType status updated successfully",'Success');
-		            location.reload();
+                  	location.reload();
 	            }
 	            else
 	            	 toastr.error(msg,'Error');
             }
-        });
-    });
-}
-//DELETE CHANNEL
-function deleteChannel( channelId, checkAuthority) {
-
-	if(!checkAuthority)
-	{
-		toastr.error("Access Denied", "Error");
-		return false;
-	}
-    $( '#small_modal' ).modal();
-    $( '#sm_modal_title' ).html( 'Are you Sure?' );
-    $( '#sm_modal_body' ).html( 'Do you really want to delete this record?' );
-    $( '#sm_modal_footer' ).html( '<button type="button" class="btn dark btn-outline" data-dismiss="modal">Cancel</button><button type="button" id="continuemodal'+channelId+'" class="btn green">Yes</button>' );
-    $( '#continuemodal'+channelId ).click( function() {
-        $.ajax({
-            type : 'POST',
-            url  : 'deleteChannel',
-            data : { 'channelId' : channelId },
-            beforeSend: function() { 
-                $("#continuemodal"+channelId).html('<img src="../resources/img/input-spinner.gif"> Loading...');
-                $("#continuemodal"+channelId).prop('disabled', true);
-            },
-            success : function( msg ) 
-            {
-                $("#continuemodal"+channelId).html('Yes');
-                $("#continuemodal"+channelId).prop('disabled', false);
-                $('#small_modal').modal('hide');
-                if(msg="****")
-                {
-                  	toastr.success("Channel deleted successfully",'Success');
-		            location.reload();
-	            }
-	            else
-	            	 toastr.error(msg,'Error');
-            }
-        });
-    });
-}
-function updateChannelStatus( channelId, status, checkAuthority ) {
-	if(!checkAuthority)
-	{
-		toastr.error("Access Denied", "Error");
-		return false;
-	}
-    if(status == 1){
-        $( '#sm_modal_body' ).html( 'Do you really want to activate?' );
-    }else{
-        $( '#sm_modal_body' ).html( 'Do you really want to deactivate?' );
-    }
-    $( '#small_modal' ).modal();
-    $( '#sm_modal_title' ).html( 'Are you Sure?' );
-    $( '#sm_modal_footer' ).html( '<button type="button" class="btn dark btn-outline" data-dismiss="modal">Cancel</button><button type="button" id="continuemodal'+channelId+'" class="btn green">Yes</button>' );
-    $( '#continuemodal'+channelId ).click( function() {
-        $.ajax({
-            type : 'POST',
-            url  : 'updateChannelStatus',
-            data : { 'channelId' : channelId, 'status' : status },
-            beforeSend: function() { 
-                $("#continuemodal"+channelId).html('<img src="../resources/img/input-spinner.gif"> Loading...');
-                $("#continuemodal"+channelId).prop('disabled', true);
-            },
-            success : function( msg ) 
-            {
-	            $("#continuemodal"+channelId).html('Yes');
-	            $("#continuemodal"+channelId).prop('disabled', false);
-	            $('#small_modal').modal('hide');
-                
-		        if(msg="****")
-		        {
-		           toastr.success("Group status updated successfully",'Success');
-		           location.reload();              
-		        }
-		        else
-		            toastr.error(msg,'Error');
-            }
-        });
-    });
-}
-//DELETE REGION
-function deleteRegion( regionId , checkAuthority) {
-	if(!checkAuthority)
-	{
-		toastr.error("Access Denied", "Error");
-		return false;
-	}
-    $( '#small_modal' ).modal();
-    $( '#sm_modal_title' ).html( 'Are you Sure?' );
-    $( '#sm_modal_body' ).html( 'Do you really want to delete this record?' );
-    $( '#sm_modal_footer' ).html( '<button type="button" class="btn dark btn-outline" data-dismiss="modal">Cancel</button><button type="button" id="continuemodal'+regionId+'" class="btn green">Yes</button>' );
-    $( '#continuemodal' + regionId ).click( function() {
-        $.ajax({
-            type : 'POST',
-            url  : 'deleteRegion',
-            data : { 'RegionId' : regionId },
-            beforeSend: function() { 
-                $("#continuemodal"+regionId).html('<img src="../resources/img/input-spinner.gif"> Loading...');
-                $("#continuemodal"+regionId).prop('disabled', true);
-            },
-            success : function( msg ) 
-            {
-                $("#continuemodal"+regionId).html('Yes');
-                $("#continuemodal"+regionId).prop('disabled', false);
-                $('#small_modal').modal('hide');
-                if(msg="****")
-	            {
-	               toastr.success("Region deleted successfully",'Success');
-	               location.reload();              
-	            }
-	            else
-	                toastr.error(msg,'Error');
-            }
-        });
-    });
-}
-function updateRegionStatus( regionId, status, checkAuthority ) {
-	if(!checkAuthority)
-	{
-		toastr.error("Access Denied", "Error");
-		return false;
-	}
-    if(status == 1){
-        $( '#sm_modal_body' ).html( 'Do you really want to activate?' );
-    }else{
-        $( '#sm_modal_body' ).html( 'Do you really want to deactivate?' );
-    }
-    $( '#small_modal' ).modal();
-    $( '#sm_modal_title' ).html( 'Are you Sure?' );
-    $( '#sm_modal_footer' ).html( '<button type="button" class="btn dark btn-outline" data-dismiss="modal">Cancel</button><button type="button" id="continuemodal'+regionId+'" class="btn green">Yes</button>' );
-    $( '#continuemodal' + regionId ).click( function() {
-        $.ajax({
-            type : 'POST',
-            url  : 'updateRegionStatus',
-            data : { 'regionId' : regionId, 'status' : status },
-            beforeSend: function() { 
-                $("#continuemodal" + regionId).html('<img src="../resources/img/input-spinner.gif"> Loading...');
-                $("#continuemodal" + regionId).prop('disabled', true);
-            },
-            success : function( msg ) 
-            {
-            	$("#continuemodal"+regionId).html('Yes');
-                $("#continuemodal"+regionId).prop('disabled', false);
-                $('#small_modal').modal('hide');
-                
-	            if (msg="****")
-	            {
-	            	toastr.success("Region status updated successfully",'success');
-	                location.reload();
-	            }
-	            else
-	            	toastr.error(msg,Error)
-            }                      
         });
     });
 }
@@ -274,7 +98,6 @@ function deleteConfig( mailConfigId , checkAuthority) {
                 $('#small_modal').modal('hide');
                 if(msg="****")
 	            {
-	               toastr.success("Configuration deleted successfully",'Success');
 	               location.reload();              
 	            }
 	            else
@@ -314,8 +137,7 @@ function updateConfigStatus( mailConfigId, status, checkAuthority ) {
                 
 	            if (msg="****")
 	            {
-	            	toastr.success("Configuration status updated successfully",'success');
-	                location.reload();
+	            	location.reload();
 	            }
 	            else
 	            	toastr.error(msg,Error)
@@ -389,8 +211,7 @@ function updateLocationStatus(locationId, status, checkAuthority ) {
 	            $('#small_modal').modal('hide');	                
 	            if (msg="****")
 	            {
-	            	toastr.success("Location status updated successfully",'success');
-	                location.reload();
+	            	location.reload();
 	            }
 	            else
 	            	toastr.error(msg,Error)
@@ -464,76 +285,10 @@ function updateInvestigationTypeStatus(investigationId, status, checkAuthority )
                 $('#small_modal').modal('hide');	                
                 if(msg=="****")
                 {
-                	toastr.success("Investigation status updated successfully", "Success");
-	                location.reload();	                
+                	location.reload();	                
             	}
             	else
              		toastr.error(msg,Error);
-            }
-        });
-    });
-}
-//DELETE BANNER
-function deleteBanner( bannerId, checkAuthority ) {
-	if(!checkAuthority)
-	{
-		toastr.error("Access Denied", "Error");
-		return false;
-	}
-    
-    $( '#small_modal' ).modal();
-    $( '#sm_modal_title' ).html( 'Are you Sure?' );
-    $( '#sm_modal_body' ).html( 'Do you really want to delete this record?' );
-    $( '#sm_modal_footer' ).html( '<button type="button" class="btn dark btn-outline" data-dismiss="modal">Cancel</button><button type="button" id="continuemodal'+bannerId+'" class="btn green">Yes</button>' );
-    $( '#continuemodal' + bannerId ).click( function() {
-        $.ajax({
-            type : 'POST',
-            url  : 'deleteBanner',
-            data : { 'bannerId' : bannerId },
-            beforeSend: function() {
-                $("#continuemodal" + bannerId).html('<img src="../resources/img/input-spinner.gif"> Loading...');
-                $("#continuemodal" + bannerId).prop('disabled', true);
-            },
-            success : function( msg ) 
-            {
-                $("#continuemodal" + bannerId).html('Yes');
-                $("#continuemodal" + bannerId).prop('disabled', false);
-                $('#small_modal').modal('hide');
-                location.reload();
-            }
-        });
-        return false;
-    });
-}
-function updateBannerStatus( bannerId, status, checkAuthority  ) {
-	if(!checkAuthority)
-	{
-		toastr.error("Access Denied", "Error");
-		return false;
-	}    
-	if(status == 1){
-        $( '#sm_modal_body' ).html( 'Do you really want to activate?' );
-    }else{
-        $( '#sm_modal_body' ).html( 'Do you really want to deactivate?' );
-    }
-    $( '#small_modal' ).modal();
-    $( '#sm_modal_title' ).html( 'Are you Sure?' );
-    $( '#sm_modal_footer' ).html( '<button type="button" class="btn dark btn-outline" data-dismiss="modal">Cancel</button><button type="button" id="continuemodal'+bannerId+'" class="btn green">Yes</button>' );
-    $( '#continuemodal'+bannerId ).click( function() {
-        $.ajax({
-            type : 'POST',
-            url  : 'updateBannerStatus',
-            data : { 'bannerId' : bannerId, 'status' : status },
-            beforeSend: function() { 
-                $("#continuemodal" + bannerId).html('<img src="../resources/img/input-spinner.gif"> Loading...');
-                $("#continuemodal" + bannerId).prop('disabled', true);
-            },
-            success : function( msg ) 
-            {
-                $("#continuemodal" + bannerId).html('Yes');
-                $("#continuemodal" + bannerId).prop('disabled', false);
-                $('#small_modal').modal('hide');
-                location.reload();
             }
         });
     });
@@ -565,7 +320,6 @@ function deleteAdminUser( user_id, checkAuthority  ) {
                 $('#small_modal').modal('hide');
                 if(msg == "****")
                 {
-                	toastr.error("User deleted successfully", "Success");
                 	location.reload();
                 }
                 else
@@ -643,7 +397,6 @@ function updateUserStatus( user_id, status, checkAuthority ) {
                 $('#small_modal').modal('hide');
                 if(msg == "****")
                 {
-                	toastr.error("User status updated successfully", "Success");
                 	location.reload();
                 }
                 else
@@ -755,7 +508,10 @@ function updateMessageStatus( msgId, caseSubStatus, checkAuthority  ) {
                 $("#continuemodal"+msgId).html('Yes');
                 $("#continuemodal"+msgId).prop('disabled', false);
                 $('#small_modal').modal('hide');
-                location.reload();
+                if(msg == "****")
+                	location.reload();
+            	else
+            		toastr.error(msg, "Error");
             }
         });
     });
@@ -784,42 +540,13 @@ function deleteMessage( msgId, checkAuthority) {
                 $("#continuemodal"+msgId).html('Yes');
                 $("#continuemodal"+msgId).prop('disabled', false);
                 $('#small_modal').modal('hide');
-                location.reload();
+                if(msg == "****")
+                	location.reload();
+                else
+                	toastr.error(msg, "Error");
             }
         });
         return false;
-    });
-}
-function updateDashMessageStatus( msgId, status, checkAuthority  ) {
-	if(!checkAuthority)
-	{
-		toastr.error("Access Denied", "Error");
-		return false;
-	}    
-    if(status == 1){
-        $( '#sm_modal_body' ).html( 'Do you really want to activate?' );
-    }else{
-        $( '#sm_modal_body' ).html( 'Do you really want to Reject?' );
-    }
-    $( '#small_modal' ).modal();
-    $( '#sm_modal_title' ).html( 'Are you Sure?' );
-    $( '#sm_modal_footer' ).html( '<button type="button" class="btn dark btn-outline" data-dismiss="modal">Cancel</button><button type="button" id="continuemodal'+msgId+'" class="btn green">Yes</button>' );
-    $( '#continuemodal'+msgId ).click( function() {
-        $.ajax({
-            type : 'POST',
-            url  : 'updateMessageStatus',
-            data : { 'msgId' : msgId, 'status' : status },
-            beforeSend: function() { 
-                $("#continuemodal"+msgId).html('<img src="../resources/img/input-spinner.gif"> Loading...');
-                $("#continuemodal"+msgId).prop('disabled', true);
-            },
-            success : function( msg ) {
-                $("#continuemodal"+msgId).html('Yes');
-                $("#continuemodal"+msgId).prop('disabled', false);
-                $('#small_modal').modal('hide');
-                ajaxDashMessage();
-            }
-        });
     });
 }
 

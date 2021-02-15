@@ -3,7 +3,7 @@
 <%
 List<Location> activeList = (List<Location>) session.getAttribute("active_location");
 session.removeAttribute("active_location");
-List<String> user_permission=(List<String>)session.getAttribute("user_permission");
+List<String> user_permission = (List<String>)session.getAttribute("user_permission");
 boolean allow_statusChg = user_permission.contains("location/status");
 boolean allow_delete = user_permission.contains("locations/delete");
 %>

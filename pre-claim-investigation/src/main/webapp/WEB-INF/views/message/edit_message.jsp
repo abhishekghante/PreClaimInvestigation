@@ -20,6 +20,7 @@ List<UserRole> userRole =(List<UserRole>)session.getAttribute("userRole");
 session.removeAttribute("userRole");
 boolean allow_edit = user_permission.contains("messages/add");
 boolean allow_assign = user_permission.contains("messages/assign");
+boolean allow_reassign = user_permission.contains("messages/reassign");
 boolean allow_closure = user_permission.contains("messages/close");
 %>
 <style type="text/css">
@@ -364,7 +365,9 @@ boolean allow_closure = user_permission.contains("messages/close");
 	                  	tabindex="-1">
 	                    <option value="-1" disabled>Select</option>
 	                    <option value = "Approved">Approved</option>
+	                    <%if(allow_reassign) {%>
 	                    <option value = "Rejected">Rejected</option>
+	                    <%} %>
 	                    <%if(allow_closure) {%>
 	                    <option value = "Closed">Closure</option>
 	                    <%} %> 
@@ -476,12 +479,21 @@ $("#assignmessagesubmit").click(function()
 		return false;    	
    	}
     
+    $("#assignmessagesubmit").html('<img src="${pageContext.request.contextPath}/resources/img/input-spinner.gif"> Loading...');
+    $("#assignmessagesubmit").prop('disabled', true);
+    $('#assignmessagesubmit').css("opacity",".5");
+    
+    
     $.ajax({
 	    type: "POST",
 	    url: 'assignCase',
 	    data:{"toId" : toId, "toStatus" : toStatus, "toRemarks" : toRemarks, "caseId": caseId},
 	    success:function(message)
 	    {
+	    	$("#editmessagesubmit").html('Assign Case');
+	        $("#editmessagesubmit").prop('disabled', false);
+	        $('#editmessagesubmit').css("opacity","");
+	        
 	    	if(message == "****")
 	    		{
 		    		toastr.success("Case assigned successfully", "Success");
@@ -538,22 +550,22 @@ $("#assignmessagesubmit").click(function()
     $("#nomineeName").removeClass('has-error-2');
     $("#nomineeAdd").removeClass('has-error-2');
     $("#insuredAdd").removeClass('has-error-2');
-    $("#roleName").removeClass('has-error-2');
-    $("#assigneeId").removeClass('has-error-2');
+    $("#toRole").removeClass('has-error-2');
+    $("#toId").removeClass('has-error-2');
     
     var errorFlag = 0;
-    if(assigneeId == null)
+    if(toId == null)
     {
         toastr.error('Please select User','Error');
-        $("#assigneeId").addClass('has-error-2');
-        $("#assigneeId").focus();
+        $("#toId").addClass('has-error-2');
+        $("#toId").focus();
         errorFlag = 1;
     }
-    if(roleName == null)
+    if(toRole == null)
     {
         toastr.error('Role Name cannot be empty','Error');
-        $("#roleName").addClass('has-error-2');
-        $("#roleName").focus();
+        $("#toRole").addClass('has-error-2');
+        $("#toRole").focus();
         errorFlag = 1;
     }
     if(insuredAdd == '')
@@ -695,33 +707,6 @@ function clearForm(){
 	  $('#small_modal').modal('hide');
   });
 }
-</script>
-<script>
-$("#roleName").change(function(){
-	console.log($("#roleName option:selected").val());
-	var roleCode = $(this).val();
-	$("#assigneeId option").each(function(){
-		if($(this).val() != '-1')
-			$(this).remove();
-	});
-	$.ajax({
-	    type: "POST",
-	    url: 'getUserByRole',
-	    data: {"role_code": roleCode},
-	    success: function(userList)
-	    {
-	    	console.log(userList);
-	  		var options = "";
-	    	for(i = 0; i < userList.length ; i++)
-	  			{
-	  				options += "<option value ='" + userList[i].username + "'>" + userList[i].full_name + "</option>";  
-	  			}
-	  		console.log(options);
-	    	$("#assigneeId").append(options);
-	    }
-});
-
-});
 </script>
 <script>
 $("#toRole").change(function(){

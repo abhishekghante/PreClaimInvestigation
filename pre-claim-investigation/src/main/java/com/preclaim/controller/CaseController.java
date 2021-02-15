@@ -112,6 +112,11 @@ public class CaseController {
     	details.setScreen_title("Pending Cases Lists");
     	details.setMain_menu("Case Management");
     	details.setSub_menu1("Pending Cases");
+    	if(session.getAttribute("success_message") != null)
+    	{
+    		details.setSuccess_message1((String)session.getAttribute("success_message"));
+    		session.removeAttribute("success_message");
+    	}
     	session.setAttribute("ScreenDetails", details);
     	session.setAttribute("pendingCaseList", caseDao.getPendingCaseList(user.getUsername()));
     	session.setAttribute("investigation_list", investigationDao.getActiveInvestigationList());
@@ -172,13 +177,13 @@ public class CaseController {
 				if(message.equals("****"))
 					details.setSuccess_message1("File uploaded successfully");		
 				else
-					details.setError_message1(message);
+					details.setSuccess_message1(message);
 				userDao.activity_log("RCUTEAM", "Excel", "BULKUPLOAD", user.getUsername());	
 			} 
 			catch (Exception e) 
 			{
 				e.printStackTrace();
-				details.setError_message1(e.getMessage());
+				details.setSuccess_message1(e.getMessage());
 			}    	
 		}
 	  
@@ -192,7 +197,7 @@ public class CaseController {
 		if(user == null)
 			return "common/login";
        	
-		CaseDetails caseDetail=new CaseDetails();
+		CaseDetails caseDetail = new CaseDetails();
        	caseDetail.setPolicyNumber(request.getParameter("policyNumber"));
        	caseDetail.setInvestigationId(Integer.parseInt(request.getParameter("msgCategory")));
        	caseDetail.setInsuredName( request.getParameter("insuredName"));
@@ -217,17 +222,26 @@ public class CaseController {
        	caseMovement.setFromId(caseDetail.getCreatedBy());
        	caseMovement.setToId(request.getParameter("assigneeId"));
        	String message = caseMovementDao.CreatecaseMovement(caseMovement);
-       	
-       	userDao.activity_log("CASE HISTORY", caseDetail.getPolicyNumber(), "ADD CASE", user.getUsername());
-   		
+       	if(message.equals("****"))
+       	{
+       		userDao.activity_log("CASE HISTORY", caseDetail.getPolicyNumber(), "ADD CASE", 
+       				user.getUsername());
+       	}
        	return message;
    	}
     
     @RequestMapping(value = "/deleteMessage",method = RequestMethod.POST)
     public @ResponseBody String deleteMessage(HttpServletRequest request,HttpSession session) 
     {
-		int caseId=Integer.parseInt(request.getParameter("msgId"));
-	    String message=caseDao.deleteCase(caseId);  	
+    	UserDetails user = (UserDetails) session.getAttribute("User_Login");
+		int caseId = Integer.parseInt(request.getParameter("msgId"));
+	    String message = caseDao.deleteCase(caseId);
+	    if(message.equals("****"))
+	    {
+	    	session.setAttribute("success_message", "Case deleted successfully");
+	    	userDao.activity_log("CASE HISTORY", String.valueOf(caseId), "DELETE CASE", 
+       				user.getUsername());
+	    }
 	    return message;
     }
     
@@ -288,9 +302,12 @@ public class CaseController {
 		String toRemarks = request.getParameter("toRemarks");
     	CaseMovement case_movement = new CaseMovement(caseId, fromId, toId, toStatus, toRemarks);
     	String message = caseMovementDao.updateCaseMovement(case_movement);
-    	
-    	userDao.activity_log("CASE HISTORY", caseDetail.getPolicyNumber(), "EDIT CASE", user.getUsername());
-   		return message;
+    	if(message.equals("****"))
+    	{
+    		session.setAttribute("success_message", "Case Details updated successfully");
+	    	userDao.activity_log("CASE HISTORY", caseDetail.getPolicyNumber(), "EDIT CASE", user.getUsername());
+    	}
+    	return message;
     }
     
     @RequestMapping(value = "/assignCase",method = RequestMethod.POST)
@@ -304,8 +321,12 @@ public class CaseController {
 		String toRemarks = request.getParameter("toRemarks");
     	CaseMovement case_movement = new CaseMovement(caseId, fromId, toId, toStatus, toRemarks);
     	String message = caseMovementDao.updateCaseMovement(case_movement);
-    	userDao.activity_log("CASE HISTORY","", "ASSIGN CASE", user.getUsername());
-		return message;
+    	if(message.equals("****"))
+    	{
+    		session.setAttribute("success_message", "Case assigned successfully");
+	    	userDao.activity_log("CASE HISTORY","", "ASSIGN CASE", user.getUsername());
+    	}
+    	return message;
 		
     }
     

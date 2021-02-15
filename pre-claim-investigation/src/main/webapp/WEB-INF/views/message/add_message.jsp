@@ -426,7 +426,7 @@ function displayUploadImg(input, PlaceholderID, deleteID, linkID) {
 	        $("#addmessagesubmit").prop('disabled',false );
 	  	  if(data == "****")
 	  	  {
-	         toastr.success( 'Message Added successfully.','Success' );
+	         toastr.success( 'Case added successfully.','Success' );
 	         $("form#add_message_form").trigger("reset");            
 	  	  }
 	  	  else

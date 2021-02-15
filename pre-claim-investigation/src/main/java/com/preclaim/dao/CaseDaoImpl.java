@@ -68,6 +68,8 @@ public class CaseDaoImpl implements CaseDao {
 		String error ="";
 		if(extension.equals("xlsx"))
 			error = readCaseXlsx(filename, fromId, toId);
+		else
+			error = "Invalid File extension";
 		return error;
 	}
 	
@@ -468,7 +470,7 @@ public class CaseDaoImpl implements CaseDao {
 		catch(Exception e)
 		{
 			e.printStackTrace();
-			return null;
+			return e.getMessage();
 		}
 	}
 

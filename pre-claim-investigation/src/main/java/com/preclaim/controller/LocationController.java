@@ -37,6 +37,11 @@ public class LocationController{
 		details.setSub_menu1("Add Location");
     	details.setSub_menu2("Manage Locations");
     	details.setSub_menu2_path("/location/pending");
+    	if(session.getAttribute("success_message") != null)
+    	{
+    		details.setSuccess_message1((String)session.getAttribute("success_message"));
+    		session.removeAttribute("success_message");
+    	}
 		session.setAttribute("ScreenDetails", details);
 		return "common/templatecontent";
 	}
@@ -52,6 +57,11 @@ public class LocationController{
 		details.setScreen_title("Pending Location");
 		details.setMain_menu("Location");
 		details.setSub_menu1("Pending Location");
+		if(session.getAttribute("success_message") != null)
+    	{
+    		details.setSuccess_message1((String)session.getAttribute("success_message"));
+    		session.removeAttribute("success_message");
+    	}
 		session.setAttribute("ScreenDetails", details);
 		session.setAttribute("pending_location", locationDao.locationList(0));
 		
@@ -72,6 +82,11 @@ public class LocationController{
 		details.setScreen_title("Active Location");
 		details.setMain_menu("Location");
 		details.setSub_menu1("Active Location");
+		if(session.getAttribute("success_message") != null)
+    	{
+    		details.setSuccess_message1((String)session.getAttribute("success_message"));
+    		session.removeAttribute("success_message");
+    	}
 		session.setAttribute("ScreenDetails", details);
 		session.setAttribute("active_location", locationDao.locationList(1));
 		return "common/templatecontent";
@@ -86,7 +101,10 @@ public class LocationController{
 		int locationId = Integer.parseInt(request.getParameter("locationId"));
 		String message = locationDao.deleteLocation(locationId);
 		if(message.equals("****"))
-			userDao.activity_log("LOCATION", String.valueOf(locationId), "DELETE", user.getUsername()); 
+		{
+			session.setAttribute("success_message", "Location deleted successfully");
+	    	userDao.activity_log("LOCATION", String.valueOf(locationId), "DELETE", user.getUsername()); 
+		}
 		return message;
 	}
 	
@@ -104,6 +122,7 @@ public class LocationController{
 		String message = locationDao.addLocation(location);
 		if(message.equals("****"))
 		{
+			session.setAttribute("success_message", "Location added successfully");
 			userDao.activity_log("LOCATION" ,location.getCity(), "ADD", user.getUsername());
 			userDao.activity_log("LOCATION" ,location.getState(), "ADD", user.getUsername());
 			userDao.activity_log("LOCATION" ,location.getZone(), "ADD", user.getUsername());
@@ -125,8 +144,11 @@ public class LocationController{
         System.out.println(updatedBy);
         String message = locationDao.updateLocation(locationId, city, state, zone, updatedBy);
         if(message.equals("****"))
-        	userDao.activity_log("LOCATION", String.valueOf(locationId), "UPDATE", user.getUsername());
-		return message;
+        {
+        	session.setAttribute("success_message", "Location updated successfully");
+	    	userDao.activity_log("LOCATION", String.valueOf(locationId), "UPDATE", user.getUsername());
+        }
+        return message;
 	}
 	
 	@RequestMapping(value = "/updateLocationStatus",method = RequestMethod.POST)
@@ -139,9 +161,12 @@ public class LocationController{
 		int locationStatus=Integer.parseInt(request.getParameter("status"));
 	    String message= locationDao.updateLocationStatus(locationId, locationStatus, user.getUsername()); 
 	    if(message.equals("****"))
-	    	userDao.activity_log("LOCATION", String.valueOf(locationId), locationStatus == 1 ? "ACTIVE" : "DEACTIVE", 
-	    		user.getUsername());
-		return message;
+	    {
+	    	session.setAttribute("success_message", "Location status changed successfully");
+	    	userDao.activity_log("LOCATION", String.valueOf(locationId), 
+	    			locationStatus == 1 ? "ACTIVE" : "DEACTIVE", user.getUsername());
+	    }
+	    return message;
     }
 }
 

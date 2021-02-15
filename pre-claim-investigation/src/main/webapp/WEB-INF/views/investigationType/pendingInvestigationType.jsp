@@ -237,7 +237,6 @@ $(document).ready(function(){
               $("#addcategorysubmit").prop('disabled', false);
         	  if(data == "****")
         	  {
-	              toastr.success('Investigation Type added successfully.','Success' );
 	              location.reload();
         	  }
             else

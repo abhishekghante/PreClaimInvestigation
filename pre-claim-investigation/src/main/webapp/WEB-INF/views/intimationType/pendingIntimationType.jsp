@@ -218,16 +218,15 @@ function addIntimationType() {
 			$("#addIntimationTypesubmit").prop('disabled', true);
 		},
 		success : function(data) {
-			if (data == "****") {
-				$("#addIntimationTypesubmit").html('Add Intimation Type');
-				$("#addIntimationTypesubmit").prop('disabled', false);
-				toastr.success('Intimation Type Added successfully.','Success');
-				$('#add_intimation_type #intimationtypeName').val('');
+			$("#addIntimationTypesubmit").html('Add Intimation Type');
+			$("#addIntimationTypesubmit").prop('disabled', false);
+			if (data == "****") 
+			{
 				location.reload();
-			} else {
+			}
+			else 
+			{
 				toastr.error(data, 'Error');
-				$("#addIntimationTypesubmit").html('Add Intimation Type');
-				$("#addIntimationTypesubmit").prop('disabled', false);
 			}
 		}
 	});

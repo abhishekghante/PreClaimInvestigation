@@ -70,7 +70,7 @@ public class Case_movementDaoImpl implements Case_movementDao {
 				   caseMovement.getCaseStatus(),caseMovement.getRemarks(), caseMovement.getCaseId());
 		 
 		   query = "INSERT INTO audit_case_movement(caseId, fromID, toId, caseStatus, remarks, "
-		   		+ "createdBy, createdDate, updatedDate) "
+		   		+ "createdDate, updatedDate) "
 		   		+ "values(?, ?, ?, ?, ?, getdate(), getdate()) ";
 		   this.template.update(query, caseMovement.getCaseId(), caseMovement.getFromId(), 
 				   caseMovement.getToId(), caseMovement.getCaseStatus(), caseMovement.getRemarks());
@@ -94,7 +94,7 @@ public class Case_movementDaoImpl implements Case_movementDao {
 
 	@Override
 	public List<CaseHistory> getCaseMovementHistory(long caseId) {
-		String sql = "SELECT * FROM audit_case_movement where caseId = ?";	
+		String sql = "SELECT * FROM audit_case_movement where caseId = ? order by createdDate";	
 		List<CaseHistory> case_details = template.query(sql, new Object[] {caseId}, 
 				(ResultSet rs, int rowNum) -> 
 		{

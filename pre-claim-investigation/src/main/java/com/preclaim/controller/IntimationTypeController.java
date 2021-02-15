@@ -42,6 +42,11 @@ public class IntimationTypeController {
     	details.setSub_menu1("Add Intimation Type");
     	details.setSub_menu2("Manage Intimation");
     	details.setSub_menu2_path("/intimationType/pending");
+    	if(session.getAttribute("success_message") != null)
+    	{
+    		details.setSuccess_message1((String)session.getAttribute("success_message"));
+    		session.removeAttribute("success_message");
+    	}
     	session.setAttribute("ScreenDetails", details);
     	return "common/templatecontent";
     }
@@ -58,6 +63,11 @@ public class IntimationTypeController {
     	details.setScreen_title("Pending Intimation Type List");
     	details.setMain_menu("Intimation Type");
     	details.setSub_menu1("Pending Intimation");
+    	if(session.getAttribute("success_message") != null)
+    	{
+    		details.setSuccess_message1((String)session.getAttribute("success_message"));
+    		session.removeAttribute("success_message");
+    	}
     	session.setAttribute("ScreenDetails", details);
     	List<IntimationTypeList> pending_list= intimationTypeDao.intimationType_list(0);
     	session.setAttribute("pending_intimationType", pending_list);
@@ -84,6 +94,11 @@ public class IntimationTypeController {
     	details.setScreen_title("Active Intimation");
     	details.setMain_menu("Intimation Type");
     	details.setSub_menu1("Active Intimation");
+    	if(session.getAttribute("success_message") != null)
+    	{
+    		details.setSuccess_message1((String)session.getAttribute("success_message"));
+    		session.removeAttribute("success_message");
+    	}
     	session.setAttribute("ScreenDetails", details);
     	List<IntimationTypeList> active_list = intimationTypeDao.intimationType_list(1);
     	session.setAttribute("active_list", active_list);
@@ -97,8 +112,11 @@ public class IntimationTypeController {
 		UserDetails user = (UserDetails) session.getAttribute("User_Login");
 		String message = intimationTypeDao.deleteIntimationType(IntimationId);
 		if(message.equals("****"))
+		{
+			session.setAttribute("success_message", "Intimation Type deleted successfully");
 			userDao.activity_log("IntimationType", String.valueOf(IntimationId), "DELETE", 
 					user.getUsername());
+		}
 		return message;
 	}
     
@@ -112,7 +130,10 @@ public class IntimationTypeController {
 		intimationType.setCreatedBy(user.getUsername());
 		String message = intimationTypeDao.add_intimationType(intimationType);
 		if(message.equals("****"))
+		{
+			session.setAttribute("success_message", "Intimation Type added successfully");
 			userDao.activity_log("IntimationType", IntimationtypeName, "ADD", user.getUsername());
+		}
 		return message;
 	}
 	
@@ -126,7 +147,10 @@ public class IntimationTypeController {
 		String message = intimationTypeDao.updateIntimationType(IntimationId, IntimationType, 
 				user.getUsername());
 		if(message.equals("****"))
+		{
+			session.setAttribute("success_message", "Intimation Type updated successfully");
 			userDao.activity_log("IntimationType", IntimationType, "UPDATE", user.getUsername());
+		}
 		return message;
 	}
 	
@@ -138,8 +162,11 @@ public class IntimationTypeController {
 		UserDetails user = (UserDetails) session.getAttribute("User_Login");
 		String message = intimationTypeDao.updateIntimationTypeStatus(IntimationId, status, user.getUsername());
 		if(message.equals("****"))
+		{
+			session.setAttribute("success_message", "Intimation Type status changed successfully");
 			userDao.activity_log("IntimationType", String.valueOf(IntimationId), 
 					status == 1 ? "ACTIVE" : "DEACTIVE", user.getUsername());
+		}
 		return message;
 	}
 	

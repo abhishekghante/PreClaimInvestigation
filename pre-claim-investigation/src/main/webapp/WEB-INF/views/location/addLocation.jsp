@@ -155,19 +155,16 @@ function addLocation() {
 	          $("#addlocationsubmit").prop('disabled', true);
 	      },
 	      success: function( data ) {
-	        if(data == "****"){
-	          $("#addlocationsubmit").html('Add Location');
+	    	  $("#addlocationsubmit").html('Add Location');
 	          $("#addlocationsubmit").prop('disabled', false);
-	          toastr.success( 'Location Added successfully.','Success' );
-	          $( '#add_location_form #city' ).val('');
-	          $( '#add_location_form #state' ).val('');
-	          $( '#add_location_form #zone' ).val('');
-	          location.reload();
-	        }else{
-	          toastr.error( data,'Error' );
-	          $("#addlocationsubmit").html('Add Location');
-	          $("#addlocationsubmit").prop('disabled', false);
-	        }
+	    	  if(data == "****")
+	    	  {
+	          	location.reload();
+	    	  }
+	    	  else
+	    	  {
+	          	toastr.error( data,'Error' );
+	    	  }
 	      }
 	    });
 	  

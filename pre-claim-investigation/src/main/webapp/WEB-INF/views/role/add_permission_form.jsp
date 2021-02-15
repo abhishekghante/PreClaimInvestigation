@@ -108,6 +108,7 @@ ArrayList<String> user_permission=(ArrayList<String>)session.getAttribute("user_
 			                    		<input type="checkbox" <%if(role_permission.contains("messages/add")) {%>checked <%} %> name="messages[]" id="messages_add" class="indPLCheck7" value="messages/add"> <label for="messages_add">Add</label>
 			                    		<input type="checkbox" <%if(role_permission.contains("messages/delete")) {%>checked <%} %> name="messages[]" id="messages_delete" class="indPLCheck7" value="messages/delete"> <label for="messages_delete">Delete</label>
 			                    		<input type="checkbox" <%if(role_permission.contains("messages/assign")) {%>checked <%} %> name="messages[]" id="messages_assign" class="indPLCheck7" value="messages/assign"> <label for="messages_assign">Assign</label>
+			                    		<input type="checkbox" <%if(role_permission.contains("messages/reassign")) {%>checked <%} %> name="messages[]" id="messages_reassign" class="indPLCheck7" value="messages/reassign"> <label for="messages_reassign">Re-Assign</label>
 			                    		<input type="checkbox" <%if(role_permission.contains("messages/close")) {%>checked <%} %> name="messages[]" id="messages_close" class="indPLCheck7" value="messages/close"> <label for="messages_close">Case Closure</label>
 			                    	</td>
 			                    </tr>
