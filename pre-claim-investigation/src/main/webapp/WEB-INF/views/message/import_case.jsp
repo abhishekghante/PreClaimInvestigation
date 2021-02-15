@@ -44,7 +44,7 @@ ScreenDetails details = (ScreenDetails) session.getAttribute("ScreenDetails");
                   <note>Kindly upload .xlsx file only</note>
                 </div>
                 <div class="col-md-2 padding-left-0 col-xs-2">
-                  <button type="button" class="btn btn-info btn-sm" name="importfile" id = "importfile" onclick="importData()">
+                  <button type="button" class="btn btn-info btn-sm" name="importfile" id ="importfile" onclick="importData()">
                   	Import
                   </button>
                 </div>
@@ -100,20 +100,31 @@ function importData()
 {
 	var roleName = $("#import_user_form #roleName").val();
 	var userId = $("#import_user_form #assigneeId").val();
+	var importfile = $('input[type="file"]').val();
+	console.log("11"+importfile+"22");
 	
 	if(roleName == null)
 	{
-			toastr.error("Kindly select Assignee Role","Error");		
+		
+		toastr.error("Kindly select Assignee Role","Error");	
+		return false;
 	}
 	if(userId == null)
 	{
+		
 		toastr.error("Kindly select Assignee","Error");
+		return false;
+	}
+	if(importfile == "")
+	{
+		
+		toastr.error("Please select Excel file","Error");
+		return false;
 	}
 
-	$("#importfile").html('<img src="${pageContext.request.contextPath}/resources/img/input-spinner.gif"> Loading...');
-	$("#importfile").prop("disabled",true);
-
-	console.log("enter");
+//	$("#importfile").html('<img src="${pageContext.request.contextPath}/resources/img/input-spinner.gif"> Loading...');
+//	$("#importfile").prop("disabled",true);
+	
 	var formData = new FormData();
 	var files = $('[type="file"]');
 
@@ -133,11 +144,19 @@ function importData()
         contentType: false,
         processData: false,
         async:false,
+        beforeSend: function() {
+	    	$("#importfile").html('<img src="${pageContext.request.contextPath}/resources/img/input-spinner.gif"> Loading...');
+	        $("#importfile").prop('disabled', true);
+	        $('#import_user_form').css("opacity",".5");
+	    },
 	    success: function(data)
 	    {
 	  		if(data = "****")
   			{
 	  			toastr.error("File uploaded successfully", "Error");
+	  			setTimeout(function () { location.reload(1); }, 1000);
+	  		
+	  			
   			}
 	  		else
   			{
