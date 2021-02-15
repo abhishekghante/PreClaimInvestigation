@@ -373,8 +373,7 @@ function updateAccountValidate() {
             $("#editaccountsubmit").prop('disabled', false);
             if( msg == "****" ) 
             {
-            	toastr.success("User updated successfully",'success');
-                window.location.href = "${pageContext.request.contextPath}/user/user_list";
+            	window.location.href = "${pageContext.request.contextPath}/user/user_list";
             } 
             else
                 toastr.error(msg,'Error');

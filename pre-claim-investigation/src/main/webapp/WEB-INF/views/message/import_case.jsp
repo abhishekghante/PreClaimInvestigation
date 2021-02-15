@@ -91,6 +91,9 @@ $(document).ready(function(){
 			data:{}
 		});
 	<%}%>
+	<%if(!details.getError_message2().equals("")){%>
+		console.log(<%=details.getError_message2()%>);
+	<%}%>
 });
 function importData()
 {

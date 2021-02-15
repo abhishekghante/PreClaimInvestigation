@@ -366,7 +366,7 @@ boolean allow_closure = user_permission.contains("messages/close");
 	                    <option value="-1" disabled>Select</option>
 	                    <option value = "Approved">Approved</option>
 	                    <%if(allow_reassign) {%>
-	                    <option value = "Rejected">Rejected</option>
+	                    <option value = "Reassigned">Reassigned</option>
 	                    <%} %>
 	                    <%if(allow_closure) {%>
 	                    <option value = "Closed">Closure</option>
@@ -686,7 +686,6 @@ $("#assignmessagesubmit").click(function()
 	        $('#editmessagesubmit').css("opacity","");
 	  	  if(data == "****")
 	  	  {
-	         toastr.success( 'Case Updated successfully.','Success');
 	         location.href = "${pageContext.request.contextPath}/message/pending_message";
 	  	  }
 	  	  else

@@ -25,15 +25,17 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import com.preclaim.config.Config;
 import com.preclaim.dao.CaseDao;
+import com.preclaim.dao.Case_movementDao;
 import com.preclaim.dao.IntimationTypeDao;
 import com.preclaim.dao.InvestigationTypeDao;
 import com.preclaim.dao.LocationDao;
+import com.preclaim.dao.MailConfigDao;
 import com.preclaim.dao.UserDAO;
-import com.preclaim.dao.Case_movementDao;
 import com.preclaim.models.CaseDetails;
+import com.preclaim.models.CaseMovement;
+import com.preclaim.models.MailConfig;
 import com.preclaim.models.ScreenDetails;
 import com.preclaim.models.UserDetails;
-import com.preclaim.models.CaseMovement;
 
 @Controller
 @RequestMapping(value = "/message")
@@ -56,6 +58,9 @@ public class CaseController {
 	
 	@Autowired
 	Case_movementDao caseMovementDao;
+	
+	@Autowired
+	MailConfigDao mailConfigDao;
 	
     @RequestMapping(value = "/import_case", method = RequestMethod.GET)
     public String import_case(HttpSession session) {
@@ -177,7 +182,10 @@ public class CaseController {
 				if(message.equals("****"))
 					details.setSuccess_message1("File uploaded successfully");		
 				else
-					details.setSuccess_message1(message);
+				{
+					details.setError_message1("Error uploading file");
+					details.setError_message2(message);
+				}
 				userDao.activity_log("RCUTEAM", "Excel", "BULKUPLOAD", user.getUsername());	
 			} 
 			catch (Exception e) 
@@ -325,6 +333,35 @@ public class CaseController {
     	{
     		session.setAttribute("success_message", "Case assigned successfully");
 	    	userDao.activity_log("CASE HISTORY","", "ASSIGN CASE", user.getUsername());
+	    	try
+	    	{
+		    	MailConfig mail = mailConfigDao.getActiveConfig();
+		    	if(mail != null)
+		    	{
+		    		//From ID
+			    	mail.setSubject("Case Assigned - Claims");
+			    	String message_body = "Dear <User>, \n Case has been assigned successfully\n\n";
+			    	message_body.replaceAll("<User>", user.getFull_name());
+			    	message_body+= "Thanks & Regards,\n Claims";
+			        mail.setMessageBody(message_body);
+			        mail.setReceipent(user.getUser_email());
+			    	mailConfigDao.sendMail(mail);
+			    	
+			    	//To ID
+			    	UserDetails toUser = userDao.getUserDetails(toId);
+			    	mail.setSubject("New Case Assigned - Claims");
+			    	message_body = "Dear <User>, \n Your are required to take action on new cases\n\n";
+			    	message_body.replaceAll("<User>", toUser.getFull_name());
+			    	message_body+= "Thanks & Regards,\n Claims";
+			        mail.setMessageBody(message_body);
+			        mail.setReceipent(toUser.getUser_email());
+			    	mailConfigDao.sendMail(mail);
+		    	}
+	    	}
+	    	catch(Exception e)
+	    	{
+	    		
+	    	}
     	}
     	return message;
 		
