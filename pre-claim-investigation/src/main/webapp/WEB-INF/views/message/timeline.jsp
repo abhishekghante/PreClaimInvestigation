@@ -14,7 +14,6 @@ session.removeAttribute("case_history");
 /* The actual timeline (the vertical ruler) */
 .timeline {
   position: relative;
-  margin: 50px auto;
   border: 1px solid Red;
 }
 
@@ -88,7 +87,7 @@ session.removeAttribute("case_history");
   width: 0;
   z-index: 1;
   left: 30px;
-   border: 1px solid Black;
+  border: 1px solid Black;
   border-width: 10px 10px 10px 0;
   border-color: transparent Black transparent transparent;
 }

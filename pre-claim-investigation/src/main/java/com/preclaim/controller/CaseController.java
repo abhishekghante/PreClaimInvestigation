@@ -330,7 +330,7 @@ public class CaseController {
 		    		//From ID
 			    	mail.setSubject("Case Assigned - Claims");
 			    	String message_body = "Dear <User>, \n Case has been assigned successfully\n\n";
-			    	message_body.replaceAll("<User>", user.getFull_name());
+			    	message_body = message_body.replaceAll("<User>", user.getFull_name());
 			    	message_body+= "Thanks & Regards,\n Claims";
 			        mail.setMessageBody(message_body);
 			        mail.setReceipent(user.getUser_email());
@@ -340,7 +340,7 @@ public class CaseController {
 			    	UserDetails toUser = userDao.getUserDetails(toId);
 			    	mail.setSubject("New Case Assigned - Claims");
 			    	message_body = "Dear <User>, \n Your are required to take action on new cases\n\n";
-			    	message_body.replaceAll("<User>", toUser.getFull_name());
+			    	message_body = message_body.replace("<User>", toUser.getFull_name());
 			    	message_body+= "Thanks & Regards,\n Claims";
 			        mail.setMessageBody(message_body);
 			        mail.setReceipent(toUser.getUser_email());
