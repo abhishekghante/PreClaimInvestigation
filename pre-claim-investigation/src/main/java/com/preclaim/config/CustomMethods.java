@@ -2,7 +2,11 @@ package com.preclaim.config;
 
 import java.util.ArrayList;
 
+import org.apache.log4j.Logger;
+
 public class CustomMethods {
+	
+	private static final Logger LOGGER = Logger.getLogger(CustomMethods.class);
 	
 	public static ArrayList<String> importCaseHeader()
 	{
@@ -20,6 +24,16 @@ public class CustomMethods {
 		header_list.add("Nominee Address");
 		header_list.add("Insured Address");
 		return header_list;
+	}
+	
+	public static void logError(Exception e)
+	{
+		String error_message = "*************" + e.getClass() + "*************\n";
+		StackTraceElement[] trace = e.getStackTrace();
+	    for (StackTraceElement traceElement : trace)
+	        error_message += "\tat " + traceElement + "\n";
+		LOGGER.error(error_message);
+		
 	}
 
 }

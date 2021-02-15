@@ -5,14 +5,18 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import com.preclaim.config.CustomMethods;
 import com.preclaim.models.CaseHistory;
 import com.preclaim.models.CaseMovement;
 
 public class Case_movementDaoImpl implements Case_movementDao {
 
+	private static final Logger LOGGER = Logger.getLogger(Case_movementDao.class);
+	
 	@Autowired
 	DataSource datasource;
 
@@ -41,6 +45,8 @@ public class Case_movementDaoImpl implements Case_movementDao {
 		catch(Exception e) 
 		{	
 			e.printStackTrace();
+			LOGGER.error(caseMovement.toString());
+			CustomMethods.logError(e);
 			return e.getMessage();	
 		}
 		return "****";
@@ -87,7 +93,9 @@ public class Case_movementDaoImpl implements Case_movementDao {
 		catch(Exception e) 
 		{	
 			e.printStackTrace();
-			return e.getMessage();	
+			LOGGER.error(caseMovement.toString());
+			CustomMethods.logError(e);
+			return e.getMessage();
 		}		
 		return "****";
 	}
