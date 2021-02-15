@@ -216,6 +216,13 @@ function accountValidate() {
         validflag = 0;
         toastr.error("Kindly enter Contact Number","Error");
     }
+    else if(contactNumber.length != 10)
+   	{
+    	$('#contactNumber').addClass('has-error-2');
+        $('#contactNumber').focus();
+        validflag = 0;
+        toastr.error("Mobile number should of 10 digits","Error");
+   	}
     if( state == "" ){
         $('#state').addClass('has-error-2');
         $('#state').focus();

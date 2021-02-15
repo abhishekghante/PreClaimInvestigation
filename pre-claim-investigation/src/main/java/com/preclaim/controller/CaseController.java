@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -21,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.preclaim.config.Config;
 import com.preclaim.dao.CaseDao;
@@ -151,52 +152,35 @@ public class CaseController {
     }
     
     @RequestMapping(value = "/importData", method = RequestMethod.POST)
-	public @ResponseBody String importData(@RequestParam("userfile") CommonsMultipartFile userfile,HttpSession session, HttpServletRequest request)
+	public @ResponseBody String importData(@RequestParam("userfile") ArrayList<MultipartFile> userfile, HttpSession session, HttpServletRequest request)
 	{
     	System.out.println("calling");
     	UserDetails user = (UserDetails) session.getAttribute("User_Login");
-		if(user == null)
-			return "common/login";
-		session.removeAttribute("ScreenDetails");    	
-		
-		ScreenDetails details = new ScreenDetails();
-		details.setScreen_name("../message/import_case.jsp");
-    	details.setScreen_title("Import Case");
-    	details.setMain_menu("Case Management");
-    	details.setSub_menu1("Bulk case uploads");
-    	details.setSub_menu2("App Users");
-    	details.setSub_menu2_path("/app_user/app_user");
-    	session.setAttribute("ScreenDetails", details);	
+    	String message = "";
 		//File Uploading Routine
 		if(userfile != null)
 		{
 			try 
 			{
+				byte[] temp = userfile.get(0).getBytes();
+	    		System.out.println(temp);
+				String filename = userfile.get(0).getOriginalFilename();
+				System.out.println(filename);
 				String toId = request.getParameter("userId");
-	    		byte[] temp = userfile.getBytes();
-	    		String filename = userfile.getOriginalFilename();
 	    		filename = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH-mm-SS")) + "_" + filename;
 	    		Path path = Paths.get(Config.upload_directory + filename);
 	    		System.out.println("Entered");
 				Files.write(path, temp);
-				String message = caseDao.addBulkUpload(filename, user.getUsername(), toId);
-				if(message.equals("****"))
-					details.setSuccess_message1("File uploaded successfully");		
-				else
-				{
-					details.setError_message1("Error uploading file");
-					details.setError_message2(message);
-				}
+				message = caseDao.addBulkUpload(filename, user.getUsername(), toId);
 				userDao.activity_log("RCUTEAM", "Excel", "BULKUPLOAD", user.getUsername());	
 			} 
 			catch (Exception e) 
 			{
 				e.printStackTrace();
-				details.setSuccess_message1(e.getMessage());
 			}    	
 		}
 	  
-		return "common/templatecontent";
+		return message;
 	}
     
     @RequestMapping(value = "/addMessage",method = RequestMethod.POST)

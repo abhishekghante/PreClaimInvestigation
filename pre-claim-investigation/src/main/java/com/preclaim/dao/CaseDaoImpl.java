@@ -457,7 +457,7 @@ public class CaseDaoImpl implements CaseDao {
 				}
 				else
 				{
-					error_message = error_message.trim().substring(0, error_message.length());
+					error_message = error_message.trim().substring(0, error_message.length()-1);
 					error_case.put(caseDetails, error_message);
 				}
 			}
@@ -632,6 +632,34 @@ public class CaseDaoImpl implements CaseDao {
 					details.setUserID(rs.getInt("user_id"));
 					return details;
 				});
+	}
+
+	@Override
+	public List<CaseDetails> getLiveCaseList(String username) {
+		try
+		{
+			String sql = "SELECT * FROM case_lists a where longitude <> '' and latitude <> '' and caseId in "
+					+ "(select caseId from audit_case_movement where toId = ?)";
+			     List<CaseDetails> caseDetail = this.template.query(sql, new Object[] {username}, 
+					(ResultSet rs, int rowCount) -> 
+					{
+						CaseDetails detail = new CaseDetails();
+						detail.setCaseId(rs.getLong("caseId"));
+						detail.setPolicyNumber(rs.getString("policyNumber"));
+						detail.setLongitude(rs.getString("longitude"));
+						detail.setLatitude(rs.getString("latitude"));
+						return detail;
+					}
+					);
+			   			     
+			     return caseDetail;
+		          
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			return null;
+		}	
 	}
 	
 }

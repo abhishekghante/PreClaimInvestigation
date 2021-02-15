@@ -161,54 +161,7 @@ String date = LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
         </div>
     </div>
 </div>
-<div class="row">
-<div class="col-md-6 col-sm-6">
-    <div class="portlet light bordered">
-        <div class="portlet-title tabbable-line">
-            <div class="caption">
-                <i class="icon-envelope-letter font-green"></i>
-                <span class="caption-subject font-green bold uppercase">Active Cases</span>
-            </div>
-            <ul class="nav nav-tabs">
-                <li class="active">
-                    <a href="#tab_actions_pending" data-toggle="tab"> Work in Progress Cases </a>
-                </li>
-                <li>
-                    <a href="#tab_actions_completed" data-toggle="tab"> Investigation Billing Cases </a>
-                </li>
-            </ul>
-        </div>
-        <div class="portlet-body">
-            <div class="tab-content" id="dash_message_lists">
-                <jsp:include page="dash_message_lists.jsp"></jsp:include>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="col-md-6 col-sm-6">
-    <div class="portlet light bordered">
-        <div class="portlet-title tabbable-line">
-            <div class="caption">
-                <i class="icon-envelope-letter font-green"></i>
-                <span class="caption-subject font-green bold uppercase">New Investigations</span>
-            </div>
-            <ul class="nav nav-tabs">
-                <li class="active">
-                    <a href="#tab_cat_pending" data-toggle="tab"> Pending </a>
-                </li>
-                <li>
-                    <a href="#tab_cat_completed" data-toggle="tab"> Active </a>
-                </li>
-            </ul>
-        </div>
-        <div class="portlet-body">
-            <div class="tab-content" id="dash_category_lists">
-                <jsp:include page="dash_category_lists.jsp"></jsp:include>
-            </div>
-        </div>
-    </div>
-</div>
-</div>
+
 
 <div id="testmodal" class="modal fade">
     <div class="modal-dialog">

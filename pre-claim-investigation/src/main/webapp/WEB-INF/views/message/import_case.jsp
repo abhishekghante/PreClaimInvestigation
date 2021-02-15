@@ -98,9 +98,6 @@ $(document).ready(function(){
 
 function importData()
 {
-	console.log("Enter")
-	var userfile = $("#import_user_form #userfile");
-	console.log(userfile);
 	var roleName = $("#import_user_form #roleName").val();
 	var userId = $("#import_user_form #assigneeId").val();
 	
@@ -108,36 +105,49 @@ function importData()
 	{
 			toastr.error("Kindly select Assignee Role","Error");		
 	}
-	if(userfile == null)
-	{
-		toastr.error("Kindly select Excel file","Error");	
-	}
-	console.log("enter2");
 	if(userId == null)
 	{
 		toastr.error("Kindly select Assignee","Error");
 	}
 
-	console.log("enter3");
 	$("#importfile").html('<img src="${pageContext.request.contextPath}/resources/img/input-spinner.gif"> Loading...');
 	$("#importfile").prop("disabled",true);
 
 	console.log("enter");
 	var formData = new FormData();
-	formData.append('userfile', userfile.files);
-	console.log(formData);
+	var files = $('[type="file"]');
+
+    if (files.length > 0) {
+        var count = 0;
+        $(files).each(function (i, value) {
+            count++;
+            formData.append('userfile', value.files[0]);
+        });
+        formData.append("userId", userId);
+    }
 	$.ajax({
 	    type: "POST",
 	    url: 'importData',
 	    data: formData,
-	    enctype: 'multipart/form-data',
 	    cache: false,
         contentType: false,
         processData: false,
         async:false,
 	    success: function(data)
 	    {
-	  		console.log(data);
+	  		if(data = "****")
+  			{
+	  			toastr.error("File uploaded successfully", "Error");
+  			}
+	  		else
+  			{
+  				toastr.error(data, "Error");
+  				$.ajax({
+  					url:"${pageContext.request.contextPath}/message/downloadErrorReport",
+  					type:"GET",
+  					data:{}
+  				});
+  			}
 	    }
 });	
 

@@ -591,6 +591,16 @@ $("#assignmessagesubmit").click(function()
 	        $("#nomineeName").focus();
 	        errorFlag = 1;
 	    }
+	    if(nomineeMob)
+	   	{
+	    	if(nomineeMob.length != 10)
+    		{
+		    	$('#contactNumber').addClass('has-error-2');
+		        $('#contactNumber').focus();
+		        validflag = 0;
+		        toastr.error("Mobile number should of 10 digits","Error");
+    		}
+	   	}
 	    if(insuredDOD == '')
 	    {
 	      	toastr.error('Insured Date of Death cannot be empty','Error');

@@ -84,7 +84,7 @@ boolean allow_delete = user_permission.contains("intimationType/delete");
 				</div>
 				<div class="actions">
 					<div class="btn-group">
-						<a href="${pageContext.request.contextPath}/intimation/add"
+						<a href="${pageContext.request.contextPath}/intimationType/add"
 							data-toggle="tooltip" title="Add" data-original-title="Add New"
 							class="btn green-haze btn-outline btn-xs pull-right" data-toggle="tooltip"
 							style="margin-right: 5px;"> <i class="fa fa-plus"></i>
