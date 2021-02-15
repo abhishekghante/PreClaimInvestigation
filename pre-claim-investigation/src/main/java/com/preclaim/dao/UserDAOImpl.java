@@ -42,6 +42,30 @@ public class UserDAOImpl implements UserDAO{
 			}
 		});
 	}
+	
+	@Override
+	public List<UserRole> getUserRole_lists(String role_code, String status) {
+		String sql="";
+		
+		if(status.equals("Approved"))
+		      sql = "select * from user_role where 'approve/' + role_code in (\n"
+				      + "select module from permission where module like 'approve/%' and role_code = ?)";
+		else if(status.equals("Reassigned"))
+		      sql="select * from user_role where 'reassign/'+ role_code in (\n"
+				+ "select module from permission where module like 'reassign/%' and role_code = ?)";
+		      
+		return template.query(sql,new Object[] {role_code}, new RowMapper<UserRole>(){			
+			public UserRole mapRow(ResultSet rs, int row) throws SQLException
+			{
+				UserRole role = new UserRole();
+				role.setRoleId(rs.getInt(1));
+				role.setRole(rs.getString(2));
+				role.setRole_code(rs.getString(3));
+				role.setStatus(rs.getInt(4));
+				return role;
+			}
+		});
+	}
 
 	@Override
 	public String create_user(UserDetails user) {

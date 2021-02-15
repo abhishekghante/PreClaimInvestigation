@@ -36,8 +36,7 @@ ScreenDetails details = (ScreenDetails) session.getAttribute("ScreenDetails");
       <div class="box-body">
         <div class="row">
           <div class="col-md-12">
-          <form id="import_user_form" class="form-horizontal" method = "POST" action = "importData" 
-          	enctype="multipart/form-data" onsubmit = "return importData()">
+          <form id="import_user_form" class="form-horizontal" method = "POST" enctype="multipart/form-data">
               <div class="form-group">
                 <label class="col-md-4 padding-left-5 col-xs-4 control-label">Import Data</label>
                 <div class="col-md-6 padding-left-0 col-xs-6">
@@ -45,7 +44,7 @@ ScreenDetails details = (ScreenDetails) session.getAttribute("ScreenDetails");
                   <note>Kindly upload .xlsx file only</note>
                 </div>
                 <div class="col-md-2 padding-left-0 col-xs-2">
-                  <button type="submit" class="btn btn-info btn-sm" name="importfile" id = "importfile">
+                  <button type="button" class="btn btn-info btn-sm" name="importfile" id = "importfile" onclick="importData()">
                   	Import
                   </button>
                 </div>
@@ -95,33 +94,59 @@ $(document).ready(function(){
 		console.log(<%=details.getError_message2()%>);
 	<%}%>
 });
+
+
 function importData()
 {
-	var roleName = $("#roleName").val();
-	var userId = $("#assigneeId").val();
+	console.log("Enter")
+	var userfile = $("#import_user_form #userfile");
+	console.log(userfile);
+	var roleName = $("#import_user_form #roleName").val();
+	var userId = $("#import_user_form #assigneeId").val();
 	
-	var validFlag = 0;
 	if(roleName == null)
-		{
-			toastr.error("Kindly select Assignee Role","Error");
-			validFlag = 1;
-		}
+	{
+			toastr.error("Kindly select Assignee Role","Error");		
+	}
+	if(userfile == null)
+	{
+		toastr.error("Kindly select Excel file","Error");	
+	}
+	console.log("enter2");
 	if(userId == null)
 	{
 		toastr.error("Kindly select Assignee","Error");
-		validFlag = 1;
 	}
-	if(validFlag == 1)
-	{
-		return false;
-	}
+
+	console.log("enter3");
 	$("#importfile").html('<img src="${pageContext.request.contextPath}/resources/img/input-spinner.gif"> Loading...');
 	$("#importfile").prop("disabled",true);
-	
-	return true;
+
+	console.log("enter");
+	var formData = new FormData();
+	formData.append('userfile', userfile.files);
+	console.log(formData);
+	$.ajax({
+	    type: "POST",
+	    url: 'importData',
+	    data: formData,
+	    enctype: 'multipart/form-data',
+	    cache: false,
+        contentType: false,
+        processData: false,
+        async:false,
+	    success: function(data)
+	    {
+	  		console.log(data);
+	    }
+});	
+
 }
 
 </script>
+
+
+
 <script>
 $("#roleName").change(function(){
 	console.log($("#roleName option:selected").val());

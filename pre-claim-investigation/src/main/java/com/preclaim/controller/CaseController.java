@@ -36,6 +36,7 @@ import com.preclaim.models.CaseMovement;
 import com.preclaim.models.MailConfig;
 import com.preclaim.models.ScreenDetails;
 import com.preclaim.models.UserDetails;
+import com.preclaim.models.UserRole;
 
 @Controller
 @RequestMapping(value = "/message")
@@ -150,8 +151,9 @@ public class CaseController {
     }
     
     @RequestMapping(value = "/importData", method = RequestMethod.POST)
-	public String importData(@RequestParam CommonsMultipartFile userfile,HttpSession session, HttpServletRequest request)
+	public @ResponseBody String importData(@RequestParam("userfile") CommonsMultipartFile userfile,HttpSession session, HttpServletRequest request)
 	{
+    	System.out.println("calling");
     	UserDetails user = (UserDetails) session.getAttribute("User_Login");
 		if(user == null)
 			return "common/login";
@@ -164,14 +166,13 @@ public class CaseController {
     	details.setSub_menu1("Bulk case uploads");
     	details.setSub_menu2("App Users");
     	details.setSub_menu2_path("/app_user/app_user");
-    	session.setAttribute("ScreenDetails", details);
-				
+    	session.setAttribute("ScreenDetails", details);	
 		//File Uploading Routine
 		if(userfile != null)
 		{
 			try 
 			{
-				String toId = request.getParameter("assigneeId");
+				String toId = request.getParameter("userId");
 	    		byte[] temp = userfile.getBytes();
 	    		String filename = userfile.getOriginalFilename();
 	    		filename = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH-mm-SS")) + "_" + filename;
@@ -269,12 +270,11 @@ public class CaseController {
     	details.setSub_menu2("Manage Cases");
     	details.setSub_menu2_path("../message/pending_message.jsp");
     	session.setAttribute("ScreenDetails", details);    	
-    	session.setAttribute("userRole", userDao.getAssigneeRole());
+    	session.setAttribute("userRole", userDao.getUserRole_lists(user.getAccount_type(), "Approved"));
     	session.setAttribute("location_list", locationDao.getActiveLocationList());
     	session.setAttribute("investigation_list", investigationDao.getActiveInvestigationList());
     	session.setAttribute("intimation_list", intimationTypeDao.getActiveIntimationType());
     	session.setAttribute("case_detail",caseDao.getCaseDetail(Integer.parseInt(request.getParameter("caseId"))));
-		
 		return "common/templatecontent";
    	}
     
@@ -407,9 +407,11 @@ public class CaseController {
     public @ResponseBody List<UserDetails> getUserByRole(HttpServletRequest request,HttpSession session) 
     {
     	String role_code = request.getParameter("role_code");
+    	userDao.getUserRole(role_code);
     	return caseDao.getUserListByRole(role_code);
 		
     }
+    
     
     
     @RequestMapping(value = "/case_history",method = RequestMethod.GET)
@@ -434,6 +436,15 @@ public class CaseController {
     
     	return "common/templatecontent";
    	}
+    
+    @RequestMapping(value = "/getUserRoleBystatus",method = RequestMethod.POST)
+    public @ResponseBody List<UserRole> getUserRoleBystatus(HttpServletRequest request,HttpSession session) 
+    {
+    	UserDetails user = (UserDetails) session.getAttribute("User_Login");
+    	String status = request.getParameter("status");
+    	return userDao.getUserRole_lists(user.getAccount_type(), status);
+		
+    }
     
     
 }

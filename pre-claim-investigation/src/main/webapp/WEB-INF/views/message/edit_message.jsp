@@ -735,4 +735,27 @@ $("#toRole").change(function(){
 });
 </script>
 
+<script>
+$("#toStatus").change(function(){
+	console.log($("#toStatus option:selected").val());
+	var status = $(this).val();
+	
+	$.ajax({
+	    type: "POST",
+	    url: 'getUserRoleBystatus',
+	    data: {"status": status},
+	    success: function(roleList)
+	    {
+	    	console.log(roleList);
+	  		var options = "";
+	    	for(i = 0; i < roleList.length ; i++)
+	  			{
+	  				options += "<option value ='" + userList[i].username + "'>" + userList[i].full_name + "</option>";  
+	  			}
+	  		console.log(options);
+	    	$("#toId").append(options);
+	    }
+});
 
+});
+</script>

@@ -1,4 +1,6 @@
 <%@page import = "java.util.ArrayList" %>
+<%@page import="java.util.List" %>
+<%@page import="com.preclaim.models.UserRole" %>
 <%
 ArrayList<String> role_permission = new ArrayList<String>();
 role_permission = (ArrayList<String>) session.getAttribute("permission");
@@ -8,6 +10,8 @@ session.removeAttribute("role_id");
 String roleName=(String)session.getAttribute("user role");
 session.removeAttribute("user role");
 ArrayList<String> user_permission=(ArrayList<String>)session.getAttribute("user_permission");
+List<UserRole> user_role=(List<UserRole>)session.getAttribute("role_list");
+session.removeAttribute("role_list");
 %>
 <div class="row add-permission-form">
     <div class="col-xs-12 col-sm-12">
@@ -148,6 +152,34 @@ ArrayList<String> user_permission=(ArrayList<String>)session.getAttribute("user_
 			                    		<input type="checkbox" <%if(role_permission.contains("report/loginDetails")) {%>checked <%} %> name="report[]" id="report_loginDetails" class="indPLCheck10" value="report/loginDetails"> <label for="report_loginDetails">Log In Details</label>
 			                    	</td>
 			                    </tr>
+			                     <tr>
+			                    	<td>
+			                    	    <input type="checkbox" <%if(role_permission.contains("approve")) {%>checked <%} %> name="approve" id="approve" class="allPLCheck11" value="approve"> <label for="approve">Approve</label>
+			                    	</td>
+			                    	<td>
+			                    	     <%if(user_role!=null){
+			                    	          for(UserRole role :user_role){	
+			                    	     %>
+		                           <input type="checkbox" <%if(role_permission.contains("approve/" + role.getRole_code())) {%>checked <%} %> name="approve[]" id="approve_<%=role.getRole_code() %>" class="indPLCheck11" value="approve/<%=role.getRole_code()%>"> <label for="approve_<%=role.getRole_code()%>"><%=role.getRole() %></label>	
+			                        	<%}}%>
+			                        </td>
+			                         		
+			                    </tr>
+			                    
+			                     <tr>
+			                    	<td>
+			                    	    <input type="checkbox" <%if(role_permission.contains("reassign")) {%>checked <%} %> name="reassign" id="reassign" class="allPLCheck12" value="reassign"> <label for="reassign">Re-Assign</label>
+			                    	</td>
+			                    	<td>
+			                    	     <%if(user_role!=null){
+			                    	          for(UserRole role :user_role){	
+			                    	     %>
+			                           <input type="checkbox" <%if(role_permission.contains("reassign/" + role.getRole_code())) {%>checked <%} %> name="reassign[]" id="reassign_<%=role.getRole_code() %>" class="indPLCheck12" value="reassign/<%=role.getRole_code()%>"> <label for="reassign_<%=role.getRole_code()%>"><%=role.getRole() %></label>	
+			                        	<%}}%>
+			                        </td>
+			                         		
+			                    </tr>
+			                    
 		                	</tbody>
                         </table>
                       </div>
@@ -247,6 +279,20 @@ ArrayList<String> user_permission=(ArrayList<String>)session.getAttribute("user_
 			$( '.indPLCheck10' ).prop( "checked", true );
 		} else {
 			$( '.indPLCheck10' ).prop( 'checked', false );
+		}
+	});
+	$( '.allPLCheck11' ).on( 'click', function() {
+		if( $( this ).is( ':checked' ) ) {
+			$( '.indPLCheck11' ).prop( "checked", true );
+		} else {
+			$( '.indPLCheck11' ).prop( 'checked', false );
+		}
+	});
+	$( '.allPLCheck12' ).on( 'click', function() {
+		if( $( this ).is( ':checked' ) ) {
+			$( '.indPLCheck12' ).prop( "checked", true );
+		} else {
+			$( '.indPLCheck12' ).prop( 'checked', false );
 		}
 	});
 	$( '.allPLCheckRM' ).on( 'click', function() {
