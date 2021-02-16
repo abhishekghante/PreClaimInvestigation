@@ -384,7 +384,6 @@ public class CaseController {
 	
 	        inputStream.close();
 	        outStream.close();
-	        downloadFile.delete();
         }
         catch(Exception e)
         {

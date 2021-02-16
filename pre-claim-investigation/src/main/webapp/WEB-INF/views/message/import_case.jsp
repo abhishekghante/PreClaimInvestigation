@@ -47,9 +47,15 @@ ScreenDetails details = (ScreenDetails) session.getAttribute("ScreenDetails");
                   <button type="button" class="btn btn-info btn-sm" name="importfile" id ="importfile" onclick="importData()">
                   	Import
                   </button>
+                  <%if(!details.getSuccess_message1().equals("")){%>
+                  		<a href = "${pageContext.request.contextPath}/message/downloadErrorReport" 
+                  			id = "error_log"><i class =" fa fa-exclamation"></i></a>
+                  	<%}%>
                 </div>
                 <div class="col-md-12 text-center">
-                  <div><a style="display: inline-block;" href="../resources/uploads/Import Case.xlsx">Click to download sample "Excel" file</a></div>
+                  <div>
+                  	<a style="display: inline-block;" href="../resources/uploads/Import Case.xlsx">Click to download sample "Excel" file</a>
+                  </div>
                 </div>
               </div>
               <div class="form-group selectDiv">
@@ -83,16 +89,7 @@ ScreenDetails details = (ScreenDetails) session.getAttribute("ScreenDetails");
 </div>
 <script>
 $(document).ready(function(){
-	<%if(!details.getSuccess_message1().equals("")){%>
-		$.ajax({
-			url:"${pageContext.request.contextPath}/message/downloadErrorReport",
-			type:"GET",
-			data:{}
-		});
-	<%}%>
-	<%if(!details.getError_message2().equals("")){%>
-		console.log(<%=details.getError_message2()%>);
-	<%}%>
+	<% details.setSuccess_message1("");%>
 });
 
 
