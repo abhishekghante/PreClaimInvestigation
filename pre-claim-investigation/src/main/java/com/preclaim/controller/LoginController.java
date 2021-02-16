@@ -75,12 +75,16 @@ public class LoginController {
     		List<String> user_permission = 
     				userDao.retrievePermission(user.getAccount_type());
     		session.setAttribute("user_permission", user_permission);
-    		Cookie cookie_username = new Cookie("pre-claim-user", username);
-    		Cookie cookie_password = new Cookie("pre-claim-password", user.getDecodedPassword());
-    		cookie_username.setMaxAge(60 * 60 * 24 * 365 * 10);
-    		cookie_password.setMaxAge(60 * 60 * 24 * 365 * 10);
-    		response.addCookie(cookie_username);
-    		response.addCookie(cookie_password);
+    		String remember_me = request.getParameter("remember_me");
+    		if(remember_me.equals("true"))
+    		{
+	    		Cookie cookie_username = new Cookie("pre-claim-user", username);
+	    		Cookie cookie_password = new Cookie("pre-claim-password", user.getDecodedPassword());
+	    		cookie_username.setMaxAge(60 * 60 * 24 * 365 * 10);
+	    		cookie_password.setMaxAge(60 * 60 * 24 * 365 * 10);
+	    		response.addCookie(cookie_username);
+	    		response.addCookie(cookie_password);
+    		}
     		return "****";
     	}
     	else
