@@ -99,6 +99,9 @@ function importData()
 	var userId = $("#import_user_form #assigneeId").val();
 	var importfile = $('input[type="file"]').val();
 	
+	var userfile = $('#userfile').val().toLowerCase();
+	var userfileFileExtension = userfile.substring(userfile.lastIndexOf('.') + 1);
+	
 	if(roleName == null)
 	{
 		
@@ -111,12 +114,19 @@ function importData()
 		toastr.error("Kindly select Assignee","Error");
 		return false;
 	}
-	if(importfile == "")
+	if(userfile == "" )
 	{
 		
 		toastr.error("Please select Excel file","Error");
 		return false;
 	}
+	if(userfile != "" && userfileFileExtension!="xlsx")
+	{
+		
+		toastr.error("File format not supported. Supported Formats are .xlsx"","Error");
+		return false;
+	}
+	
 	
 	var formData = new FormData();
 	var files = $('[type="file"]');
@@ -158,6 +168,7 @@ function importData()
 }
 
 </script>
+
 
 <script>
 $("#roleName").change(function(){

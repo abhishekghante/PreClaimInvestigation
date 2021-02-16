@@ -23,7 +23,7 @@ session.removeAttribute("case_history");
   position: absolute;
   width: 6px;
   background-color: white;
-  top: 1%;
+  top: 0%;
   bottom:0%;
   left: 20%;
   margin-left: -3px;
@@ -165,6 +165,29 @@ session.removeAttribute("case_history");
             <div class="col-md-12 table-container">
                 <div class="box-body no-padding">
 		          <div class="timeline">
+		          <%if (case_history == null){ %>
+		          
+		           <div class="container right">
+						<div class="content">
+							<div class = "row">
+								<div class = "col-md-6">Name :- </div>
+								<div class = "col-md-6">Received Date :-  </div>
+							</div>
+							<div class = "row">
+								<div class = "col-md-12">Role :-  </div>
+							</div>
+							<div class = "row">
+								<div class = "col-md-12">Status :-  </div>
+							</div>
+							<div class = "row">
+								<div class = "col-md-12">Remarks :-  </div>
+							</div>
+						</div>
+					</div>
+		          
+		          	<%} %>
+		          
+		          <%if (case_history!=null){ %>
 		          <%for(CaseHistory list: case_history) {%>
 		             <div class="container right">
 						<div class="content">
@@ -183,6 +206,7 @@ session.removeAttribute("case_history");
 							</div>
 						</div>
 					</div>
+					<%} %>
 					<%} %>
 		          </div>           
                 </div>
