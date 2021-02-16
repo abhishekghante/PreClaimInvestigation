@@ -175,8 +175,42 @@ public class CaseController {
 	    		Path path = Paths.get(Config.upload_directory + filename);
 	    		Files.write(path, temp);
 				message = caseDao.addBulkUpload(filename, user.getUsername(), toId);
-				userDao.activity_log("RCUTEAM", "Excel", "BULKUPLOAD", user.getUsername());
-				session.setAttribute("success_message", "File Uploaded successfully");
+				if(message.equals("****"))
+				{
+					userDao.activity_log("RCUTEAM", "Excel", "BULKUPLOAD", user.getUsername());
+					session.setAttribute("success_message", "File Uploaded successfully");
+					try
+			    	{
+				    	MailConfig mail = mailConfigDao.getActiveConfig();
+				    	if(mail != null)
+				    	{
+				    		//From ID
+					    	mail.setSubject("Case Assigned - Claims");
+					    	String message_body = "Dear <User>, \n Case has been assigned successfully\n\n";
+					    	message_body = message_body.replaceAll("<User>", user.getFull_name());
+					    	message_body+= "Thanks & Regards,\n Claims";
+					        mail.setMessageBody(message_body);
+					        mail.setReceipent(user.getUser_email());
+					    	mailConfigDao.sendMail(mail);
+					    	
+					    	//To ID
+					    	UserDetails toUser = userDao.getUserDetails(toId);
+					    	mail.setSubject("New Case Assigned - Claims");
+					    	message_body = "Dear <User>, \n Your are required to take action on new cases\n\n";
+					    	message_body = message_body.replace("<User>", toUser.getFull_name());
+					    	message_body+= "Thanks & Regards,\n Claims";
+					        mail.setMessageBody(message_body);
+					        mail.setReceipent(toUser.getUser_email());
+					    	mailConfigDao.sendMail(mail);
+				    	}
+			    	}
+			    	catch(Exception e)
+			    	{
+			    		CustomMethods.logError(e);
+			    	}
+				}
+				else
+					return message;
 			} 
 			catch (Exception e) 
 			{
@@ -224,6 +258,35 @@ public class CaseController {
        	{
        		userDao.activity_log("CASE HISTORY", caseDetail.getPolicyNumber(), "ADD CASE", 
        				user.getUsername());
+       		try
+	    	{
+		    	MailConfig mail = mailConfigDao.getActiveConfig();
+		    	if(mail != null)
+		    	{
+		    		//From ID
+			    	mail.setSubject("Case Assigned - Claims");
+			    	String message_body = "Dear <User>, \n Case has been assigned successfully\n\n";
+			    	message_body = message_body.replaceAll("<User>", user.getFull_name());
+			    	message_body+= "Thanks & Regards,\n Claims";
+			        mail.setMessageBody(message_body);
+			        mail.setReceipent(user.getUser_email());
+			    	mailConfigDao.sendMail(mail);
+			    	
+			    	//To ID
+			    	UserDetails toUser = userDao.getUserDetails(caseMovement.getToId());
+			    	mail.setSubject("New Case Assigned - Claims");
+			    	message_body = "Dear <User>, \n Your are required to take action on new cases\n\n";
+			    	message_body = message_body.replace("<User>", toUser.getFull_name());
+			    	message_body+= "Thanks & Regards,\n Claims";
+			        mail.setMessageBody(message_body);
+			        mail.setReceipent(toUser.getUser_email());
+			    	mailConfigDao.sendMail(mail);
+		    	}
+	    	}
+	    	catch(Exception e)
+	    	{
+	    		CustomMethods.logError(e);
+	    	}
        	}
        	return message;
    	}
