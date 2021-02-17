@@ -123,7 +123,7 @@ function importData()
 	if(userfile != "" && userfileFileExtension!="xlsx")
 	{
 		
-		toastr.error("File format not supported. Supported Formats are .xlsx"","Error");
+		toastr.error("Please upload excel file in xlsx format.","Error");
 		return false;
 	}
 	
@@ -154,13 +154,15 @@ function importData()
 	    	$("#importfile").html('Import');
 	        $("#importfile").prop('disabled', false);
 	        $('#import_user_form').css("opacity","");
-	  		if(data = "****")
+	  		if(data == "****")
   			{
-	  			location.reload();
+	  		  toastr.success("File Uploaded successfully",'Success' );
+	  		//	return true;
   			}
 	  		else
   			{
   				toastr.error(data, "Error");
+  				return false;
   			}
 	    }
 });	
