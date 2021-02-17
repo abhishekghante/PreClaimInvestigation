@@ -156,7 +156,7 @@ function importData()
 	        $('#import_user_form').css("opacity","");
 	  		if(data == "****")
   			{
-	  		  toastr.success("File Uploaded successfully",'Success' );
+	  		  location.reload();
 	  		//	return true;
   			}
 	  		else

@@ -180,7 +180,7 @@ public class CaseController {
 				if(message.equals("****"))
 				{
 					userDao.activity_log("RCUTEAM", "Excel", "BULKUPLOAD", user.getUsername());
-				//	session.setAttribute("success_message", "File Uploaded successfully");
+					session.setAttribute("success_message", "File Uploaded successfully");
 					try
 			    	{
 				    	MailConfig mail = mailConfigDao.getActiveConfig();

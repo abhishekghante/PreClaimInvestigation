@@ -22,7 +22,7 @@ boolean allow_delete = user_permission.contains("mailConfig/delete");
 				</div>
 				<div class="actions">
 					<div class="btn-group">
-						<a href="${pageContext.request.contextPath}/mailConfig/pending"
+						<a href="${pageContext.request.contextPath}/mailConfig/add"
 							data-toggle="tooltip" title="Add"
 							class="btn green-haze btn-outline btn-xs pull-right"
 							data-toggle="tooltip" title="" style="margin-right: 5px;"

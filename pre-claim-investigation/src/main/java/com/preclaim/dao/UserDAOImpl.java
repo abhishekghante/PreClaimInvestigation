@@ -70,7 +70,12 @@ public class UserDAOImpl implements UserDAO{
 
 	@Override
 	public String create_user(UserDetails user) {
-		String sql = "INSERT INTO admin_user(full_name, role_name, username, user_email, mobile_number, "
+		String sql = "SELECT count(*) from admin_user where username = '" + user.getUsername() + "'";
+		int usernameExists = template.queryForObject(sql, Integer.class);
+		if(usernameExists > 0)
+			return "Username already exists";
+		
+		sql = "INSERT INTO admin_user(full_name, role_name, username, user_email, mobile_number, "
 				+ "address1, address2, address3, password, state, city, status, user_image, createdBy ,"
 				+ "createdon, updatedDate, updatedBy)"
 				+ "VALUES(?, ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, getdate(), getdate(), '')";

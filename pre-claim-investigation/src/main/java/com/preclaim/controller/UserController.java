@@ -36,6 +36,10 @@ public class UserController {
 	@RequestMapping(value = "/add_user", method = RequestMethod.GET)
 	public String add_user(HttpSession session,Model m)
 	{
+		UserDetails user = (UserDetails) session.getAttribute("User_Login");
+		if(user == null)
+			return "common/login";
+		
 		session.removeAttribute("ScreenDetails");    	
 		ScreenDetails details = new ScreenDetails();
     	details.setScreen_name("../user/add_user.jsp");
@@ -86,6 +90,10 @@ public class UserController {
 	@RequestMapping(value = "/user_list", method = RequestMethod.GET)
 	public String user_list(HttpSession session)
 	{
+		UserDetails user = (UserDetails) session.getAttribute("User_Login");
+		if(user == null)
+			return "common/login";
+		
 		session.removeAttribute("ScreenDetails");    	
 		ScreenDetails details = new ScreenDetails();
     	details.setScreen_name("../user/user_list.jsp");
@@ -108,6 +116,10 @@ public class UserController {
 	@RequestMapping(value = "/role", method = RequestMethod.GET)
 	public String role(HttpSession session, Model m)
 	{
+		UserDetails user = (UserDetails) session.getAttribute("User_Login");
+		if(user == null)
+			return "common/login";
+		
 		session.removeAttribute("ScreenDetails");    	
 		ScreenDetails details = new ScreenDetails();
     	details.setScreen_name("../role/add_role.jsp");

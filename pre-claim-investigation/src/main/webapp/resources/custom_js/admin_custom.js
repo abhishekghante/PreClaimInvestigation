@@ -374,9 +374,9 @@ function updateUserStatus( user_id, status, checkAuthority ) {
 		return false;
 	}
     if(status == 1){
-        $( '#sm_modal_body' ).html( 'Do you really want to deactivate?' );
-    }else{
         $( '#sm_modal_body' ).html( 'Do you really want to activate?' );
+    }else{
+        $( '#sm_modal_body' ).html( 'Do you really want to deactivate?' );
     }
     $( '#small_modal' ).modal();
     $( '#sm_modal_title' ).html( 'Are you Sure?' );

@@ -302,8 +302,7 @@ public class CaseDaoImpl implements CaseDao {
 				{
 					cell = cellIterator.next();
 					caseDetails.setPolicyNumber(readCellStringValue(cell).toUpperCase());
-					if(!(caseDetails.getPolicyNumber().startsWith("C") || 
-							caseDetails.getPolicyNumber().startsWith("U")))
+					if(!(caseDetails.getPolicyNumber().startsWith("C") || caseDetails.getPolicyNumber().startsWith("U")))
 						error_message += "Invalid Policy Number, ";
 				}
 				if(cellIterator.hasNext())
@@ -363,6 +362,7 @@ public class CaseDaoImpl implements CaseDao {
 					try
 					{	
 						caseDetails.setInsuredDOB(readCellDateValue(cell));
+						System.out.println("InsuredDOB "+caseDetails.getInsuredDOB());
 					}
 					catch(Exception e)
 					{
@@ -377,10 +377,11 @@ public class CaseDaoImpl implements CaseDao {
 					try 
 					{
 						caseDetails.setSumAssured(readCellIntValue(cell));
+						System.out.println("sumassured "+caseDetails.getSumAssured());
 					}
 					catch(Exception e)
 					{
-						error_message += "Invalid Sum Assured";
+						error_message += "Invalid Sum Assured, ";
 						caseDetails.setSumAssured(0);
 					}
 				}
@@ -399,7 +400,7 @@ public class CaseDaoImpl implements CaseDao {
 						}
 					}
 					if(caseDetails.getClaimantState().equals(""))
-						error_message = "City not present in database";
+						error_message = "City not present in database, ";
 				}
 				if(cellIterator.hasNext())
 				{
@@ -467,7 +468,7 @@ public class CaseDaoImpl implements CaseDao {
 			}
 			wb.close();
 			//Error File
-			if(error_case != null)
+			if(error_case != null) 
 				writeErrorCase(error_case);
 			return "****";
 		}

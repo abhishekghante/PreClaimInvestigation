@@ -279,6 +279,10 @@ function displayUploadImg(input, PlaceholderID, deleteID, linkID) {
     var roleName       = $( '#add_message_form #roleName').val();
     var assigneeId       = $( '#add_message_form #assigneeId').val();
     
+    var currentDate = new Date();
+    var insuredDateOfBirth = new Date(insuredDOB);
+    var insuredDateOfDeath = new Date(insuredDOD);
+    
     $('#policyNumber').removeClass('has-error-2');
     $("#msgCategory").removeClass('has-error-2');
     $("#insuredName").removeClass('has-error-2');
@@ -318,6 +322,16 @@ function displayUploadImg(input, PlaceholderID, deleteID, linkID) {
         $("#insuredAdd").focus();
         errorFlag = 1;
     }
+    if(nomineeMob)
+   	{
+    	if(nomineeMob.length != 10)
+		{
+	    	$('#nomineeMob').addClass('has-error-2');
+	        $('#nomineeMob').focus();
+	        errorFlag = 1;
+	        toastr.error("Nominee Mobile number should be of 10 digits","Error");
+		}
+   	}
     if(!(msgIntimationType == "PIV" || msgIntimationType == "PIRV" || msgIntimationType == "LIVE"))
    	{
 	    if(nomineeAdd == '')
@@ -327,15 +341,12 @@ function displayUploadImg(input, PlaceholderID, deleteID, linkID) {
 	        $("#nomineeAdd").focus();
 	        errorFlag = 1;
 	    }
-	    if(nomineeMob)
+	    if(nomineeMob == '')
 	   	{
-	    	if(nomineeMob.length != 10)
-    		{
-		    	$('#nomineeMob').addClass('has-error-2');
-		        $('#nomineeMob').focus();
-		        validflag = 0;
-		        toastr.error("Nominee Mobile number should be of 10 digits","Error");
-    		}
+    		$('#nomineeMob').addClass('has-error-2');
+	        $('#nomineeMob').focus();
+	        errorFlag = 1;
+	        toastr.error("Kindly enter Nominee Mobile number","Error");		
 	   	}
 	    if(nomineeName == '')
 	    {
@@ -394,6 +405,30 @@ function displayUploadImg(input, PlaceholderID, deleteID, linkID) {
       	$("#insuredDOB").focus();
       	errorFlag = 1;
     }
+    if(insuredDateOfBirth > currentDate)
+   	{
+    	toastr.error("Insured Date of Birth cannot be greater than Today's Date",'Error');
+      	$("#insuredDOB").addClass('has-error-2');
+      	$("#insuredDOB").focus();
+      	errorFlag = 1;
+   	}
+    if(insuredDOD != "")
+   	{
+	   if(insuredDateOfBirth > insuredDateOfDeath)
+	  	{
+	   		toastr.error('Insured DOB cannot be greater than insured DOD','Error');
+	     	$("#insuredDOD").addClass('has-error-2');
+	     	$("#insuredDOD").focus();
+	     	errorFlag = 1;
+	  	}
+	   if(insuredDateOfDeath > currentDate)
+	  	{
+	   		toastr.error("Insured DOD cannot be greater than Today's Date",'Error');
+	     	$("#insuredDOD").addClass('has-error-2');
+	     	$("#insuredDOD").focus();
+	     	errorFlag = 1;
+	  	}
+   	}
     if(insuredName == '')
     {
       	toastr.error('Please enter Insured Name','Error');

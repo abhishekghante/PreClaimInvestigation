@@ -47,7 +47,7 @@ session.removeAttribute("location_list");
                 </div>
               </div>
               <div class="form-group">
-                <label class="col-md-4 control-label" for="user_email">Email</label>
+                <label class="col-md-4 control-label" for="user_email">Email <span class="text-danger">*</span></label>
                 <div class="col-md-8">
                   <input type="email" placeholder="Email" id="user_email" class="form-control" 
                   	name="user_email">
@@ -102,7 +102,7 @@ session.removeAttribute("location_list");
               <div class="form-group">
                 <label class="col-md-4 control-label" for="username">Username <span class="text-danger">*</span></label>
                 <div class="col-md-8">
-                  <input type="text" required placeholder="User name" maxlength="15" id="username" class="username form-control" name="username">
+                  <input type="text" required placeholder="User name" maxlength=10 id="username" class="username form-control" name="username">
                 </div>
               </div>
               <div class="form-group">

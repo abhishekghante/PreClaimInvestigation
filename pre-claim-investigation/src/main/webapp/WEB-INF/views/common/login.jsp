@@ -122,8 +122,7 @@ for(int i = 0; i < cookies.length ;i++)
       
   <script>
   function loginValidate() {
-	  	debugger;
-	    var username = $('#username').val();
+	  	var username = $('#username').val();
 	    var password = $('#password').val();
 	    var remember_me = "false";
 	    if($("#remember_me").is(":checked"))
