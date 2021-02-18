@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.preclaim.config.Config;
 import com.preclaim.dao.UserDAO;
 import com.preclaim.models.ScreenDetails;
 import com.preclaim.models.UserDetails;
@@ -42,9 +43,9 @@ public class ProfileController {
 		user_details.setUsername(request.getParameter("username"));
 		user_details.setPassword(request.getParameter("password"));
 		user_details.setUserimage(request.getParameter("account_img"));
-		System.out.println(request.getParameter("account_img"));
-		user_details.setUserID(Integer.parseInt(request.getParameter("user_id")));				
-		System.out.println(user_details.toString());
+		user_details.setUserImageb64(Config.upload_directory + user_details.getUserimage());
+		user_details.setUserID(Integer.parseInt(request.getParameter("user_id")));
+		user_details.setUpdatedBy(user_details.getUsername());
 		session.removeAttribute("User_Login");
 		session.setAttribute("User_Login",user_details);
 		String message = dao.updateProfile(user_details);
