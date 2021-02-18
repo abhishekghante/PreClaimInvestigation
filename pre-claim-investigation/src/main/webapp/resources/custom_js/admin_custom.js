@@ -135,12 +135,12 @@ function updateConfigStatus( mailConfigId, status, checkAuthority ) {
                 $("#continuemodal" + mailConfigId).prop('disabled', false);
                 $('#small_modal').modal('hide');
                 
-	            if (msg="****")
+	            if (msg == "****")
 	            {
 	            	location.reload();
 	            }
 	            else
-	            	toastr.error(msg,Error)
+	            	toastr.error(msg,"Error");
             }                      
         });
     });
@@ -356,7 +356,6 @@ function deleteRole( roleId, checkAuthority  ) {
                 $('#small_modal').modal('hide');
                 if(msg == "****")
                 {
-                	toastr.error("Role deleted successfully", "Success");
                 	location.reload();
                 }
                 else

@@ -126,6 +126,11 @@ public class UserController {
     	details.setScreen_title("Role lists");
     	details.setMain_menu("Users");
     	details.setSub_menu1("User Role");
+    	if(session.getAttribute("success_message") != null)
+    	{
+    		details.setSuccess_message1((String)session.getAttribute("success_message"));
+    		session.removeAttribute("success_message");
+    	}
     	session.setAttribute("ScreenDetails", details);
     	List<UserRole> role = dao.role_lists();
     	m.addAttribute("role_list", role);
@@ -144,7 +149,10 @@ public class UserController {
 		role.setStatus(1);
 		String message = dao.create_role(role);
 		if(message.equals("****"))
+		{
+			session.setAttribute("success_message", "Role added successfully");
 			dao.activity_log("ROLE", role.getRole_code(), "ADD", user.getUsername());
+		}
 		return message;
 	}
 	
@@ -154,13 +162,14 @@ public class UserController {
 		UserDetails user = (UserDetails) session.getAttribute("User_Login");
 		if(user == null)
 			return "common/login";
-		UserRole role = new UserRole();
-		role.setRoleId(Integer.parseInt(request.getParameter("roleId")));
-		role.setStatus(0);
-		System.out.println(role.toString());
-		String message = dao.delete_role(role);
+		int roleId = Integer.parseInt(request.getParameter("roleId"));
+		String message = dao.delete_role(roleId);
 		if(message.equals("****"))
-			dao.activity_log("ROLE", String.valueOf(role.getRoleId()), "DELETE", user.getUsername());
+		{
+			session.setAttribute("success_message", "Role & permission deleted successfully");
+			dao.activity_log("ROLE", String.valueOf(roleId), "DELETE", user.getUsername());
+			dao.activity_log("PERMISSION", String.valueOf(roleId), "DELETE", user.getUsername());
+		}
 		return message;
 	}
 	
@@ -171,9 +180,9 @@ public class UserController {
 		if(user == null)
 			return "common/login";
 		UserRole role = new UserRole();
-		role.setRoleId(Integer.parseInt(request.getParameter("edit_roleId")));
-		role.setRole_code(request.getParameter("edit_role_code"));
-		role.setRole(request.getParameter("edit_role"));
+		role.setRoleId(Integer.parseInt(request.getParameter("roleId")));
+		role.setRole_code(request.getParameter("role_code"));
+		role.setRole(request.getParameter("role"));
 		System.out.println(role.toString());
 		String message = dao.updateUserRole(role);
 		if(message.equals("****"))

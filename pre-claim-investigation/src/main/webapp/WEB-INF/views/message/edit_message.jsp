@@ -305,7 +305,7 @@ boolean allow_closure = user_permission.contains("messages/close");
 	              <div class="mt-2 form-group selectDiv">
 		                <label class="col-md-4 control-label" for="fromRole">From Role Name 
 		                	<span class="text-danger">*</span></label>
-		                <div class="col-md-2">
+		                <div class="col-md-3">
 		                  <input name="fromRole" id="fromRole" class="form-control"
 		                  	readonly disabled value = "<%= case_detail.getAssignerRole()%>">
 		                    
@@ -313,7 +313,7 @@ boolean allow_closure = user_permission.contains("messages/close");
 	                
 		                <label class="col-md-2 control-label" for="fromId">From User 
 		                	<span class="text-danger">*</span></label>
-		                <div class="col-md-2">
+		                <div class="col-md-3">
 		                  <input name="fromId" id="fromId" class="form-control"
 		                  	readonly disabled value = "<%= case_detail.getAssignerName()%>">           	
 		            	</div>
@@ -338,19 +338,21 @@ boolean allow_closure = user_permission.contains("messages/close");
 		         <div class="form-group selectDiv" id = "case-closure">
 		                <label class="col-md-4 control-label" for="toRole">Select Role Name 
 		                	<span class="text-danger">*</span></label>
-		                <div class="col-md-2">
-		                  <select name="toRole" id="toRole" class="form-control" tabindex="-1">
+		                <div class="col-md-3">
+		                  <select name="toRole" id="toRole" class="form-control" tabindex="-1"
+		                  	>
 		                    <option value="-1" selected disabled>Select</option>
 		                     <%if(userRole != null){
 		                    	for(UserRole userRoleLists: userRole){%>
-		                    	<option value = "<%=userRoleLists.getRole_code()%>"><%=userRoleLists.getRole() %></option>
+		                    	<option value = "<%=userRoleLists.getRole_code()%>">
+		                    		<%=userRoleLists.getRole() %></option>
 		                    <%}} %> 
 		                  </select>
 		                </div>
 	                
 		                <label class="col-md-2 control-label" for="toId">Select User 
 		                	<span class="text-danger">*</span></label>
-		                <div class="col-md-2">
+		                <div class="col-md-3">
 		                  <select name="toId" id="toId" class="form-control">
 		                  	<option value = '-1' selected disabled>Select</option>
 		                  </select>

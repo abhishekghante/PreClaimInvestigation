@@ -47,7 +47,9 @@ public class ProfileController {
 		System.out.println(user_details.toString());
 		session.removeAttribute("User_Login");
 		session.setAttribute("User_Login",user_details);
-		return dao.updateProfile(user_details);
+		String message = dao.updateProfile(user_details);
+		dao.activity_log("PROFILE", user_details.getUsername(), "UPDATE", user_details.getUsername());
+		return message; 
 	}
     
 }

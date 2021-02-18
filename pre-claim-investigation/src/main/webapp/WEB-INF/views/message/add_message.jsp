@@ -184,7 +184,8 @@ session.removeAttribute("userRole");
                 <label class="col-md-4 control-label" for="roleName">Select Role Name 
                 	<span class="text-danger">*</span></label>
                 <div class="col-md-2">
-                  <select name="roleName" id="roleName" class="form-control" tabindex="-1">
+                  <select name="roleName" id="roleName" class="form-control" tabindex="-1"
+                  	style = "width:auto">
                     <option value="-1" selected disabled>Select</option>
                      <%if(userRole != null){
                     	for(UserRole userRoleLists: userRole){%>

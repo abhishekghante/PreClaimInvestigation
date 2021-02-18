@@ -54,7 +54,8 @@ user_details = (UserDetails) session.getAttribute("User_Login");
                     <%}else{ %>
                     src="data:image/jpg;base64,<%=user_details.getUserImageb64() %>"
                     ><%} %>
-                    <input type="hidden" name="account_image" id="account_image" value="<%=user_details.getUserimage() %>">
+                    <input type="hidden" name="account_image" id="account_image" 
+                    	value="<%=user_details.getUserimage() %>">
                     <input type='file' name="userImage" id="userImage" accept="image/*"  
                     	onchange="displayUploadImg(this, 'account_picture');">
                   </a>
@@ -190,6 +191,8 @@ function uploadFiles(prefix) {
         {
 			if(result == "****")
 				toastr.success("File uploaded successfully","Success");
+			else
+				toastr.error(result,"Error");
         }
     });
 }

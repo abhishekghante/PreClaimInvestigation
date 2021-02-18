@@ -116,11 +116,14 @@ public class UserDAOImpl implements UserDAO{
 	}
 
 	@Override
-	public String delete_role(UserRole role) {
+	public String delete_role(int roleId) {
 		try
 		{
-			String sql = "UPDATE user_role SET status = ?, updated_on = getdate() where roleId = ?";
-			template.update(sql,role.getStatus(),role.getRoleId());
+			String sql =  "DELETE FROM permission WHERE role_code IN "
+					+ "(SELECT role_code FROM user_role where roleId = ?)";
+			template.update(sql, roleId);
+			sql = "DELETE FROM user_role where roleId = ?";
+			template.update(sql, roleId);
 		}
 		catch(Exception ex)
 		{
@@ -390,7 +393,7 @@ public class UserDAOImpl implements UserDAO{
 		try
 		{
 			String sql = "UPDATE admin_user SET full_name = ?, username = ?, user_email = ?,"
-					+ " password = ?, user_image = ?, updatedDate = getDate, updatedBy = ? "
+					+ " password = ?, user_image = ?, updatedDate = getDate(), updatedBy = ? "
 					+ "where user_id = ?";
 			template.update(sql, user_details.getFull_name(), user_details.getUsername(), 
 					user_details.getUser_email(), user_details.getPassword(),user_details.getUserimage(), 

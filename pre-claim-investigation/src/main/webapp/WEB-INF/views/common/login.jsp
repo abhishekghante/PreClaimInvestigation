@@ -2,14 +2,16 @@
 String username = "";
 String password = "";
 Cookie[] cookies = request.getCookies();
-for(int i = 0; i < cookies.length ;i++)
+if(cookies != null)
 {
-	if(cookies[i].getName().equals("pre-claim-user"))
-		username = cookies[i].getValue();
-	if(cookies[i].getName().equals("pre-claim-password"))
-		password = cookies[i].getValue();
+	for(int i = 0; i < cookies.length ;i++)
+	{
+		if(cookies[i].getName().equals("pre-claim-user"))
+			username = cookies[i].getValue();
+		if(cookies[i].getName().equals("pre-claim-password"))
+			password = cookies[i].getValue();
+	}
 }
-
 %>
 <!DOCTYPE html>
 <html lang="en">

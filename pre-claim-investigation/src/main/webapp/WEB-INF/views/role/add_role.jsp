@@ -135,7 +135,6 @@ $(document).ready(function(){
           },
           success : function( msg ) {
               if( msg == "****" ) {
-                  toastr.success('User Role Added Successfully.','Success');
                   location.reload();
               } else {
                   toastr.error(msg,'Error');

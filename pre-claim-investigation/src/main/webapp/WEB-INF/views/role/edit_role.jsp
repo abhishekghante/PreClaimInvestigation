@@ -31,13 +31,15 @@
 <script type="text/javascript">
     function updateRole() {
         var role = $.trim($('#update_role_form #edit_role').val());
+        var role_code = $('#update_role_form #edit_role_code').val();
+        var roleId = $('#update_role_form #edit_roleId').val();
         $('#edit_role').removeClass('has-error-2');
         if( role == "" ){
             $('#edit_role').addClass('has-error-2');
             $('#edit_role').focus();
             return false;
         }
-        var data    = $( "#role_form" ).find( "select, textarea, input" ).serialize();
+        var data    = {"role":role, "role_code" : role_code, "roleId" : roleId};
         console.log(data);
         $.ajax({
             type    : 'POST',

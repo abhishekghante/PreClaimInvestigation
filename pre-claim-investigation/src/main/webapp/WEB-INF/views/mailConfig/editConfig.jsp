@@ -137,7 +137,7 @@ function validateConfig()
 		$("#outgoingServer").addClass("has-error-2");
 		validFlag = 1;
 	}
-	if(password = "" || password == null)
+	if(password == "" || password == null)
 	{
 		toastr.error("Logon Password cannot be blank","Error");
 		$("#password").focus();
