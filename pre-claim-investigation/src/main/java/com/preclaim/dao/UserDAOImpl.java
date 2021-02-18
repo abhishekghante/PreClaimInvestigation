@@ -276,7 +276,7 @@ public class UserDAOImpl implements UserDAO{
 		{
 			String sql = "UPDATE admin_user SET full_name = ?, role_name = ?, user_email = ?, "
 					+ "password = ?, status = ?, user_image = ?, city = ?, state = ?, mobile_number = ?, "
-					+ "address1 = ?, address2 = ?, address3 = ?, updatedDate = getDate(), updatedBy = ? "
+					+ "address1 = ?, address2 = ?, address3 = ?, updatedDate = getdate(), updatedBy = ? "
 					+ "where user_id = ?";
 			template.update(sql, user_details.getFull_name(), user_details.getAccount_type(),
 					user_details.getUser_email(), user_details.getPassword(), user_details.getStatus(),
@@ -397,7 +397,7 @@ public class UserDAOImpl implements UserDAO{
 					+ "where user_id = ?";
 			template.update(sql, user_details.getFull_name(), user_details.getUsername(), 
 					user_details.getUser_email(), user_details.getPassword(),user_details.getUserimage(), 
-					user_details.getUpdatedBy(), user_details.getUserID());				
+					user_details.getUsername(), user_details.getUserID());				
 		}
 		catch(Exception e)
 		{

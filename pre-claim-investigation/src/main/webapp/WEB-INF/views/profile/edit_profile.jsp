@@ -95,8 +95,8 @@ user_details = (UserDetails) session.getAttribute("User_Login");
   </div>
 </div>
 <script type="text/javascript">
-var filename = "";
 $(document).ready(function(){
+  var filename = "";
   $("#account_picture").on('click', function() {
     $("#userImage").trigger('click');
   });
@@ -178,7 +178,7 @@ function uploadFiles(prefix) {
          		formData.append('file[]', value.files[i]);
     });
     if(prefix != undefined)
-		formData.append("prefix",prefix);
+		formData.set("prefix",prefix);
     $.ajax({
         type: "POST",
         url: "${pageContext.request.contextPath}/uploadFile",

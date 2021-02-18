@@ -117,7 +117,7 @@ session.removeAttribute("location_list");
                     <input type='file' id="imgAccount" accept="image/*" 
                     	onchange="displayUploadImg(this, 'account_picture');">
                   </a>
-                  <input type="hidden" id="account_image" name="account_image" value="">
+                  <input type="hidden" id="account_image" name="account_image" value="<%=user_details.getUserimage() %>">
                 </div>
               </div>
             </div>

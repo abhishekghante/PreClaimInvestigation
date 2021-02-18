@@ -94,7 +94,7 @@ session.removeAttribute("location_list");
                     <input type='file' id="input_userimage" accept="image/*" style = "display:none"
                     	onchange="displayUploadImg(this, 'img_userimage');">
                   </a>
-                  <input type="hidden" id="account_image" name="account_image">
+                  <input type="hidden" id="userimage" name="userimage">
                 </div>
               </div>
             </div>
@@ -168,9 +168,9 @@ $(document).ready(function(){
 	  });
 	$("#input_userimage").change(function(e){ 
 		filename = $("#username").val() + "_" +e.target.files[0].name;
-		$("#account_image").val(filename); 
-		console.log($("#account_image").val());
-		uploadFiles($("#username").val());
+		$("#userimage").val(filename); 
+		console.log($("#userimage").val());
+		uploadFiles(filename);
 	  });
 	$("#city").change(function(){
 		$("#state").val($("#city option:selected").data("state"));
@@ -188,7 +188,7 @@ function accountValidate() {
     var username     = $.trim($('#add_account_form #username').val());
     var user_email   = $.trim($('#add_account_form #user_email').val());
     var password     = $.trim($('#add_account_form #password').val());
-    var account_img  = $.trim($('#add_account_form #account_image').val());
+    var account_img  = $.trim($('#add_account_form #userimage').val());
     var account_type = $.trim($('#add_account_form #account_type').val());
     var status       = $.trim($('#add_account_form #status').val());
     var contactNumber = $.trim($('#add_account_form #contactNumber').val());
