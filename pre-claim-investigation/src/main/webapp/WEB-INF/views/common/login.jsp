@@ -2,7 +2,7 @@
 <%
 String username = "";
 String password= "";
-String pass="";
+String encoded_password = "";
 Cookie[] cookies = request.getCookies();
 if(cookies != null)
 {
@@ -11,13 +11,10 @@ if(cookies != null)
 		if(cookies[i].getName().equals("cHJlLWNsYWltLXVzZXI"))
 			username = cookies[i].getValue();
 		if(cookies[i].getName().equals("cHJlLWNsYWltLXBhc3N3b3Jk"))
-			 pass = cookies[i].getValue();
+			encoded_password = cookies[i].getValue();
 	
 		Base64.Decoder decode = Base64.getDecoder();
-		  byte [] a =decode.decode(pass);
-		  password =new String(a);
-		  System.out.println(password);
-
+		  password = new String(decode.decode(encoded_password));
 	}
 }
 %>

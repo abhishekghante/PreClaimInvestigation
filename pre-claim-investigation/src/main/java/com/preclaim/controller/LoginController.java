@@ -63,7 +63,6 @@ public class LoginController {
 			HttpServletResponse response) {
 		String username = request.getParameter("username");
 		Base64.Encoder encoder = Base64.getEncoder();
-		String userN = encoder.encodeToString(request.getParameter("username").getBytes());
 		String password = encoder.encodeToString(request.getParameter("password").getBytes());
 		Login login = new Login(username, password);
 		System.out.println(login.toString());
