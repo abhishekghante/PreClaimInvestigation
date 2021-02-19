@@ -63,10 +63,13 @@ public class LoginController {
 			HttpServletResponse response) {
 		String username = request.getParameter("username");
 		Base64.Encoder encoder = Base64.getEncoder();
+		String userN = encoder.encodeToString(request.getParameter("username").getBytes());
 		String password = encoder.encodeToString(request.getParameter("password").getBytes());
 		Login login = new Login(username, password);
 		System.out.println(login.toString());
 		UserDetails user = dao.validateUser(login);
+		
+		  
 		if (user != null) {
 			if (user.getStatus() == 0)
 				return "User ID disabled. Kindly contact system administrator";
@@ -75,8 +78,8 @@ public class LoginController {
 			session.setAttribute("user_permission", user_permission);
 			String remember_me = request.getParameter("remember_me");
 			if (remember_me.equals("true")) {
-				Cookie cookie_username = new Cookie("pre-claim-user", username);
-				Cookie cookie_password = new Cookie("pre-claim-password", user.getDecodedPassword());
+				Cookie cookie_username = new Cookie("cHJlLWNsYWltLXVzZXI", username);
+				Cookie cookie_password = new Cookie("cHJlLWNsYWltLXBhc3N3b3Jk", password);
 				cookie_username.setMaxAge(60 * 60 * 24 * 365 * 10);
 				cookie_password.setMaxAge(60 * 60 * 24 * 365 * 10);
 				response.addCookie(cookie_username);

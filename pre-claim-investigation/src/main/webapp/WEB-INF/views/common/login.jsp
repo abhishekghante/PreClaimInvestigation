@@ -1,15 +1,23 @@
+<%@page import="java.util.Base64"%>
 <%
 String username = "";
-String password = "";
+String password= "";
+String pass="";
 Cookie[] cookies = request.getCookies();
 if(cookies != null)
 {
 	for(int i = 0; i < cookies.length ;i++)
 	{
-		if(cookies[i].getName().equals("pre-claim-user"))
+		if(cookies[i].getName().equals("cHJlLWNsYWltLXVzZXI"))
 			username = cookies[i].getValue();
-		if(cookies[i].getName().equals("pre-claim-password"))
-			password = cookies[i].getValue();
+		if(cookies[i].getName().equals("cHJlLWNsYWltLXBhc3N3b3Jk"))
+			 pass = cookies[i].getValue();
+	
+		Base64.Decoder decode = Base64.getDecoder();
+		  byte [] a =decode.decode(pass);
+		  password =new String(a);
+		  System.out.println(password);
+
 	}
 }
 %>
