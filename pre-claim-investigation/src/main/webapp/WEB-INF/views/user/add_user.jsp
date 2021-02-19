@@ -260,6 +260,7 @@ function accountValidate() {
           $('#user_email').addClass('has-error-2');
           $('#user_email').focus();
           toastr.error("Email ID not in correct format","Error");
+          validflag = 0;
         }
       }
     else

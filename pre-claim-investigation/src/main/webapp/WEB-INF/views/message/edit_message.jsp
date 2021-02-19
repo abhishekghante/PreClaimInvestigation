@@ -556,6 +556,12 @@ $("#assignmessagesubmit").click(function()
     $("#toId").removeClass('has-error-2');
     
     var errorFlag = 0;
+   
+    if(toStatus=="Closed"){    	
+    	errorFlag = 0;
+    }
+    else{
+    	
     if(toId == null)
     {
         toastr.error('Please select User','Error');
@@ -673,6 +679,7 @@ $("#assignmessagesubmit").click(function()
     	$('#policyNumber').addClass('has-error-2');
     	$('#policyNumber').focus();
     	errorFlag = 1;
+    }
     }
     
     if(errorFlag == 1)
