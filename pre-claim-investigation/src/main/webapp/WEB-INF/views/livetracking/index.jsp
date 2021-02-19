@@ -35,7 +35,7 @@ session.removeAttribute("live_cases");
   <%if(case_list != null){ int i = 1;
 	for(CaseDetails cases:case_list) {%>
 		locations.push(
-				['<a href="${pageContext.request.contextPath}/message/edit?caseId=<%=cases.getCaseId()%>"  title="View Case" class="btn red-haze btn-outline btn-xs">View Case</a>',
+				['<a href="${pageContext.request.contextPath}/message/active_message%>" title="View All Cases" class="btn red-haze btn-outline btn-xs">View Case</a>',
 		<%=cases.getLongitude()%>,<%=cases.getLatitude()%>,<%=i%>]);
   <%i++;}}%>
 

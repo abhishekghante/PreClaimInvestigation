@@ -124,7 +124,7 @@ public class CaseDaoImpl implements CaseDao {
 					{
 						CaseDetailList casedetail = new CaseDetailList();
 						casedetail.setSrNo(rowCount+1);
-						casedetail.setCaseId(rs.getInt("caseId"));
+						casedetail.setCaseId(rs.getLong("caseId"));
 						casedetail.setPolicyNumber(rs.getString("policyNumber"));
 						casedetail.setInsuredName(rs.getString("insuredName"));
 						casedetail.setInvestigationCategoryId(rs.getInt("investigationId"));
@@ -161,7 +161,7 @@ public class CaseDaoImpl implements CaseDao {
 					{
 						CaseDetailList casedetail = new CaseDetailList();
 						casedetail.setSrNo(rowCount+1);
-						casedetail.setCaseId(rs.getInt("caseId"));
+						casedetail.setCaseId(rs.getLong("caseId"));
 						casedetail.setPolicyNumber(rs.getString("policyNumber"));
 						casedetail.setInsuredName(rs.getString("insuredName"));
 						casedetail.setInvestigationCategoryId(rs.getInt("investigationId"));
@@ -533,8 +533,10 @@ public class CaseDaoImpl implements CaseDao {
 		 {
 			String sql = "DELETE FROM case_lists where caseId = ?";	
 			this.template.update(sql,caseId);
+			
 			sql = "DELETE FROM case_movement where caseId = ?";
 			this.template.update(sql,caseId);
+			
 			sql = "DELETE FROM audit_case_movement where caseId = ?";
 			this.template.update(sql,caseId);
 		 }

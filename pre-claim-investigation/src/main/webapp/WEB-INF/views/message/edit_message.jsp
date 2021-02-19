@@ -449,25 +449,28 @@ $("#assignmessagesubmit").click(function()
     var toRole = "";
     var validFlag = 1;
     
-    if(toStatus != "Closed")
-   	{
-	    toId = $( '#edit_message_form #toId' ).val();
-	    toRole = $( '#edit_message_form #toRole' ).val();
-   	}
-    if(toId == null)
-   	{
-   		toastr.error("Kindly select user", "Error");
-   		validFlag = 0;
-   	}
     if(toStatus == null)
    	{
    		toastr.error("Kindly select status", "Error");
    		validFlag = 0;
    	}
-    if(toRole == null)
+    
+    if(toStatus != "Closed")
    	{
-   		toastr.error("Kindly select User Role", "Error");
-   		validFlag = 0;
+	    toId = $( '#edit_message_form #toId' ).val();
+	    toRole = $( '#edit_message_form #toRole' ).val();
+   	
+	    if(toId == null)
+	   	{
+	   		toastr.error("Kindly select user", "Error");
+	   		validFlag = 0;
+	   	}
+	    
+	    if(toRole == null)
+	   	{
+	   		toastr.error("Kindly select User Role", "Error");
+	   		validFlag = 0;
+	   	}
    	}
     
     if(toStatus == "Rejected" && toRemarks == "")
@@ -539,6 +542,10 @@ $("#assignmessagesubmit").click(function()
     var toStatus       = $( '#edit_message_form #toStatus' ).val();
     var toRemarks      = $( '#edit_message_form #toRemarks' ).val();
     
+    var currentDate = new Date();
+    var insuredDateOfBirth = new Date(insuredDOB);
+    var insuredDateOfDeath = new Date(insuredDOD);
+    
     $('#policyNumber').removeClass('has-error-2');
     $("#msgCategory").removeClass('has-error-2');
     $("#insuredName").removeClass('has-error-2');
@@ -557,25 +564,28 @@ $("#assignmessagesubmit").click(function()
     
     var errorFlag = 0;
    
-    if(toStatus=="Closed"){    	
-    	errorFlag = 0;
+    if(toStatus != "Closed")
+    {    		
+	    if(toId == null)
+	    {
+	        toastr.error('Please select User','Error');
+	        $("#toId").addClass('has-error-2');
+	        $("#toId").focus();
+	        errorFlag = 1;
+	    }
+	    if(toRole == null)
+	    {
+	        toastr.error('Role Name cannot be empty','Error');
+	        $("#toRole").addClass('has-error-2');
+	        $("#toRole").focus();
+	        errorFlag = 1;
+	    }
     }
-    else{
-    	
-    if(toId == null)
-    {
-        toastr.error('Please select User','Error');
-        $("#toId").addClass('has-error-2');
-        $("#toId").focus();
-        errorFlag = 1;
-    }
-    if(toRole == null)
-    {
-        toastr.error('Role Name cannot be empty','Error');
-        $("#toRole").addClass('has-error-2');
-        $("#toRole").focus();
-        errorFlag = 1;
-    }
+    else
+   	{
+    	toRole = "";
+   		toId = "";
+   	}
     if(insuredAdd == '')
     {
         toastr.error('Please enter Insured Address','Error');
@@ -666,6 +676,30 @@ $("#assignmessagesubmit").click(function()
       	$("#insuredName").focus();
       	errorFlag = 1;
     }
+    if(insuredDateOfBirth >= currentDate)
+   	{
+    	toastr.error("Insured Date of Birth cannot be greater than equal to Today's Date",'Error');
+      	$("#insuredDOB").addClass('has-error-2');
+      	$("#insuredDOB").focus();
+      	errorFlag = 1;
+   	}
+    if(insuredDOD != "")
+   	{
+	   if(insuredDateOfBirth >= insuredDateOfDeath)
+	  	{
+	   		toastr.error('Insured DOB cannot be greater than equal to Insured DOD','Error');
+	     	$("#insuredDOD").addClass('has-error-2');
+	     	$("#insuredDOD").focus();
+	     	errorFlag = 1;
+	  	}
+	   if(insuredDateOfDeath > currentDate)
+	  	{
+	   		toastr.error("Insured DOD cannot be greater than Today's Date",'Error');
+	     	$("#insuredDOD").addClass('has-error-2');
+	     	$("#insuredDOD").focus();
+	     	errorFlag = 1;
+	  	}
+   	}
     if(msgCategory == '')
     {
         toastr.error('Investigation Category cannot be empty','Error');
@@ -679,7 +713,6 @@ $("#assignmessagesubmit").click(function()
     	$('#policyNumber').addClass('has-error-2');
     	$('#policyNumber').focus();
     	errorFlag = 1;
-    }
     }
     
     if(errorFlag == 1)
@@ -759,6 +792,8 @@ $("#toStatus").change(function(){
 	console.log($("#toStatus option:selected").val());
 	var status = $(this).val();
 	
+	if(status == "Closed")
+		return;
 	$.ajax({
 	    type: "POST",
 	    url: 'getUserRoleBystatus',
@@ -771,7 +806,6 @@ $("#toStatus").change(function(){
 	  			{
 	  				options += "<option value ='" + userList[i].username + "'>" + userList[i].full_name + "</option>";  
 	  			}
-	  		console.log(options);
 	    	$("#toId").append(options);
 	    }
 });

@@ -2,7 +2,7 @@ package com.preclaim.models;
 
 public class UserRole {
 
-	private int roleId;
+	private long roleId;
 	private String role;
 	private String role_code;
 	private int status;
@@ -13,10 +13,10 @@ public class UserRole {
 		this.role_code = "";
 		this.status = 0;
 	}
-	public int getRoleId() {
+	public long getRoleId() {
 		return roleId;
 	}
-	public void setRoleId(int roleId) {
+	public void setRoleId(long roleId) {
 		this.roleId = roleId;
 	}
 	public String getRole() {

@@ -183,9 +183,8 @@ session.removeAttribute("userRole");
               <div class="form-group selectDiv">
                 <label class="col-md-4 control-label" for="roleName">Select Role Name 
                 	<span class="text-danger">*</span></label>
-                <div class="col-md-2">
-                  <select name="roleName" id="roleName" class="form-control" tabindex="-1"
-                  	style = "width:auto">
+                <div class="col-md-3">
+                  <select name="roleName" id="roleName" class="form-control" tabindex="-1">
                     <option value="-1" selected disabled>Select</option>
                      <%if(userRole != null){
                     	for(UserRole userRoleLists: userRole){%>
@@ -196,7 +195,7 @@ session.removeAttribute("userRole");
                 
                 <label class="col-md-2 control-label" for="userRole">Select User 
                 	<span class="text-danger">*</span></label>
-                <div class="col-md-2">
+                <div class="col-md-3">
                   <select name="assigneeId" id="assigneeId" class="form-control">
                   	<option value = '-1' selected disabled>Select</option>
                   </select>
@@ -406,18 +405,18 @@ function displayUploadImg(input, PlaceholderID, deleteID, linkID) {
       	$("#insuredDOB").focus();
       	errorFlag = 1;
     }
-    if(insuredDateOfBirth > currentDate)
+    if(insuredDateOfBirth >= currentDate)
    	{
-    	toastr.error("Insured Date of Birth cannot be greater than Today's Date",'Error');
+    	toastr.error("Insured Date of Birth cannot be greater than equal to Today's Date",'Error');
       	$("#insuredDOB").addClass('has-error-2');
       	$("#insuredDOB").focus();
       	errorFlag = 1;
    	}
     if(insuredDOD != "")
    	{
-	   if(insuredDateOfBirth > insuredDateOfDeath)
+	   if(insuredDateOfBirth >= insuredDateOfDeath)
 	  	{
-	   		toastr.error('Insured DOB cannot be greater than insured DOD','Error');
+	   		toastr.error('Insured DOB cannot be greater than equal to Insured DOD','Error');
 	     	$("#insuredDOD").addClass('has-error-2');
 	     	$("#insuredDOD").focus();
 	     	errorFlag = 1;

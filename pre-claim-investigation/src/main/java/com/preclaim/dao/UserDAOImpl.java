@@ -35,10 +35,10 @@ public class UserDAOImpl implements UserDAO{
 			public UserRole mapRow(ResultSet rs, int row) throws SQLException
 			{
 				UserRole role = new UserRole();
-				role.setRoleId(rs.getInt(1));
-				role.setRole(rs.getString(2));
-				role.setRole_code(rs.getString(3));
-				role.setStatus(rs.getInt(4));
+				role.setRoleId(rs.getLong("roleId"));
+				role.setRole(rs.getString("role"));
+				role.setRole_code(rs.getString("role_code"));
+				role.setStatus(rs.getInt("status"));
 				return role;
 			}
 		});
@@ -52,17 +52,17 @@ public class UserDAOImpl implements UserDAO{
 		      sql = "select * from user_role where 'approve/' + role_code in (\n"
 				      + "select module from permission where module like 'approve/%' and role_code = ?)";
 		else if(status.equals("Reassigned"))
-		      sql="select * from user_role where 'reassign/'+ role_code in (\n"
+		      sql = "select * from user_role where 'reassign/'+ role_code in (\n"
 				+ "select module from permission where module like 'reassign/%' and role_code = ?)";
 		      
 		return template.query(sql,new Object[] {role_code}, new RowMapper<UserRole>(){			
 			public UserRole mapRow(ResultSet rs, int row) throws SQLException
 			{
 				UserRole role = new UserRole();
-				role.setRoleId(rs.getInt(1));
-				role.setRole(rs.getString(2));
-				role.setRole_code(rs.getString(3));
-				role.setStatus(rs.getInt(4));
+				role.setRoleId(rs.getLong("roleId"));
+				role.setRole(rs.getString("role"));
+				role.setRole_code(rs.getString("role_code"));
+				role.setStatus(rs.getInt("status"));
 				return role;
 			}
 		});
@@ -102,6 +102,7 @@ public class UserDAOImpl implements UserDAO{
 			int count = template.queryForObject(sql, Integer.class);
 			if(count > 0)
 				return "Role code already exists";
+			
 			sql = "INSERT INTO user_role(role, role_code, status, created_on, updated_on) "
 					+ "VALUES(?, ?, ?, getdate(), getdate())";
 			template.update(sql, role.getRole(), role.getRole_code(), role.getStatus());
@@ -122,6 +123,7 @@ public class UserDAOImpl implements UserDAO{
 			String sql =  "DELETE FROM permission WHERE role_code IN "
 					+ "(SELECT role_code FROM user_role where roleId = ?)";
 			template.update(sql, roleId);
+			
 			sql = "DELETE FROM user_role where roleId = ?";
 			template.update(sql, roleId);
 		}
