@@ -230,14 +230,15 @@ public class MailConfigDaoImpl implements MailConfigDao {
         properties.put("mail.smtp.auth", "true");
         properties.put("mail.smtp.host", mail.getHost());
         properties.put("mail.smtp.port", mail.getPort());
-        if(mail.getEncryptionType().equals("SSL"))
+        properties.put("mail.smtp.starttls.enable", "false");  
+        /*if(mail.getEncryptionType().equals("SSL"))
         {
         	properties.put("mail.smtp.socketFactory.port", mail.getPort());
         	properties.put("mail.smtp.socketFactory.class","javax.net.ssl.SSLSocketFactory");
         }
         else if(mail.getEncryptionType().equals("TLS"))
         	properties.put("mail.smtp.starttls.enable", "true");
-        
+        */
      // Get the default Session object.
         Session session = Session.getInstance(properties, new Authenticator() {
         	@Override
