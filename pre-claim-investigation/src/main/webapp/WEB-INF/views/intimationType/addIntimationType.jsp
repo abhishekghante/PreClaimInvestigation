@@ -68,6 +68,8 @@ function addIntimationType() {
 	      $("#addIntimationTypesubmit").prop('disabled', true);
 	  },
 	  success: function( data ) {
+		  $("#addIntimationTypesubmit").html('Add Intimation');
+	      $("#addIntimationTypesubmit").prop('disabled', false);
 	    if(data == "****")
 	    {
 	      location.reload();
