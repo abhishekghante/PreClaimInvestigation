@@ -38,7 +38,7 @@ ScreenDetails details = (ScreenDetails) session.getAttribute("ScreenDetails");
           <div class="col-md-12">
           <form id="import_user_form" class="form-horizontal" method = "POST" enctype="multipart/form-data">
               <div class="form-group">
-                <label class="col-md-4 padding-left-5 col-xs-4 control-label">Import Data</label>
+                <label class="col-md-2 padding-left-5 col-xs-4 control-label">Import Data</label>
                 <div class="col-md-6 padding-left-0 col-xs-6">
                   <input type="file" name="userfile" id="userfile" class="form-control" required>
                   <note>Kindly upload .xlsx file only</note>
@@ -52,14 +52,14 @@ ScreenDetails details = (ScreenDetails) session.getAttribute("ScreenDetails");
                   			id = "error_log"><i class =" fa fa-exclamation"></i></a>
                   	<%}%>
                 </div>
-                <div class="col-md-12 text-center">
+                <div class="col-md-6 text-center">
                   <div>
                   	<a style="display: inline-block;" href="../resources/uploads/Import Case.xlsx">Click to download sample "Excel" file</a>
                   </div>
                 </div>
               </div>
               <div class="form-group selectDiv">
-                <label class="col-md-4 control-label" for="roleName">Select Role Name 
+                <label class="col-md-2 control-label" for="roleName">Select Role Name 
                 	<span class="text-danger">*</span></label>
                 <div class="col-md-2">
                   <select name="roleName" id="roleName" class="form-control" tabindex="-1" required>
@@ -68,14 +68,6 @@ ScreenDetails details = (ScreenDetails) session.getAttribute("ScreenDetails");
                     	for(UserRole userRoleLists: userRole){%>
                     	<option value = "<%=userRoleLists.getRole_code()%>"><%=userRoleLists.getRole() %></option>
                     <%}} %> 
-                  </select>
-                </div>
-                
-                <label class="col-md-2 control-label" for="assigneeId">Select User 
-                	<span class="text-danger">*</span></label>
-                <div class="col-md-2">
-                  <select name="assigneeId" id="assigneeId" class="form-control" required>
-                  	<option value = '-1' selected disabled>Select</option>
                   </select>
                 </div>
                 
@@ -96,37 +88,31 @@ $(document).ready(function(){
 function importData()
 {
 	var roleName = $("#import_user_form #roleName").val();
-	var userId = $("#import_user_form #assigneeId").val();
 	var importfile = $('input[type="file"]').val();
 	
 	var userfile = $('#userfile').val().toLowerCase();
 	var userfileFileExtension = userfile.substring(userfile.lastIndexOf('.') + 1);
 	
+	var errorFlag = 0;
+	
 	if(roleName == null)
-	{
-		
+	{	
 		toastr.error("Kindly select Assignee Role","Error");	
-		return false;
-	}
-	if(userId == null)
-	{
-		
-		toastr.error("Kindly select Assignee","Error");
-		return false;
+		errorFlag = 1;
 	}
 	if(userfile == "" )
 	{
-		
 		toastr.error("Please select Excel file","Error");
-		return false;
+		errorFlag = 1;
 	}
 	if(userfile != "" && userfileFileExtension!="xlsx")
-	{
-		
+	{	
 		toastr.error("Please upload excel file in xlsx format.","Error");
-		return false;
+		errorFlag = 1;
 	}
 	
+	if(errorFlag == 1)
+		return false;
 	
 	var formData = new FormData();
 	var files = $('[type="file"]');
@@ -137,7 +123,7 @@ function importData()
             count++;
             formData.append('userfile', value.files[0]);
         });
-        formData.append("userId", userId);
+        formData.append("roleName", roleName); 
     }
     $("#importfile").html('<img src="${pageContext.request.contextPath}/resources/img/input-spinner.gif"> Loading...');
     $("#importfile").prop('disabled', true);
@@ -157,7 +143,6 @@ function importData()
 	  		if(data == "****")
   			{
 	  		  location.reload();
-	  		//	return true;
   			}
 	  		else
   			{
@@ -172,7 +157,7 @@ function importData()
 </script>
 
 
-<script>
+<!-- <script>
 $("#roleName").change(function(){
 	console.log($("#roleName option:selected").val());
 	var roleCode = $(this).val();
@@ -198,4 +183,4 @@ $("#roleName").change(function(){
 });
 
 });
-</script>
+</script> -->

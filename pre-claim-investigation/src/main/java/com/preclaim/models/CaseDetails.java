@@ -29,6 +29,7 @@ public class CaseDetails {
 	private String audioFilePath;
 	private String videoFilePath;
 	private String signatureFilePath;
+	private String imageFilePath;
 	private String capturedDate;
 	private String approvedStatus;
 	private String assignerRole;
@@ -39,6 +40,9 @@ public class CaseDetails {
 	private String createdDate;
 	private String updatedDate;
 	private String updatedBy;
+	private String caseSubStatus;
+	private String notCleanCategory;
+	private String paymentApproved;;
 
 	public CaseDetails() {
 		caseId = 0;
@@ -76,6 +80,10 @@ public class CaseDetails {
 		createdDate = "";
 		updatedDate = "";
 		updatedBy = "";
+		notCleanCategory = "";
+		caseSubStatus = "";
+		paymentApproved = "";
+
 	}
 
 	public long getCaseId() {
@@ -294,6 +302,14 @@ public class CaseDetails {
 		this.signatureFilePath = signatureFilePath;
 	}
 
+	public String getImageFilePath() {
+		return imageFilePath;
+	}
+
+	public void setImageFilePath(String imageFilePath) {
+		this.imageFilePath = imageFilePath;
+	}
+
 	public String getCapturedDate() {
 		return capturedDate;
 	}
@@ -374,6 +390,30 @@ public class CaseDetails {
 		this.updatedBy = updatedBy;
 	}
 
+	public String getNotCleanCategory() {
+		return notCleanCategory;
+	}
+
+	public void setNotCleanCategory(String notCleanCategory) {
+		this.notCleanCategory = notCleanCategory;
+	}
+
+	public String getCaseSubStatus() {
+		return caseSubStatus;
+	}
+
+	public void setCaseSubStatus(String caseSubStatus) {
+		this.caseSubStatus = caseSubStatus;
+	}
+
+	public String getPaymentApproved() {
+		return paymentApproved;
+	}
+
+	public void setPaymentApproved(String paymentApproved) {
+		this.paymentApproved = paymentApproved;
+	}
+
 	@Override
 	public String toString() {
 		return "CaseDetails [caseId=" + caseId + ", policyNumber=" + policyNumber + ", investigationId="
@@ -389,7 +429,9 @@ public class CaseDetails {
 				+ signatureFilePath + ", capturedDate=" + capturedDate + ", approvedStatus=" + approvedStatus
 				+ ", assignerRole=" + assignerRole + ", assignerName=" + assignerName + ", assignerStatus="
 				+ assignerStatus + ", assignerRemarks=" + assignerRemarks + ", createdBy=" + createdBy
-				+ ", createdDate=" + createdDate + ", updatedDate=" + updatedDate + ", updatedBy=" + updatedBy + "]";
+				+ ", createdDate=" + createdDate + ", updatedDate=" + updatedDate + ", updatedBy=" + updatedBy
+				+ ", caseSubStatus=" + caseSubStatus + ", notCleanCategory=" + notCleanCategory + ", paymentApproved="
+				+ paymentApproved + "]";
 	}
-}
 
+}

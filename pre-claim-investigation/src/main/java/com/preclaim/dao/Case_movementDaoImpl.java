@@ -31,16 +31,19 @@ public class Case_movementDaoImpl implements Case_movementDao {
 	public String CreatecaseMovement(CaseMovement caseMovement) {
 		try
 		{
-		   String query="INSERT INTO case_movement(caseId, fromID, toId, caseStatus, remarks, "
-		   		+ "createdDate, updatedDate) values(?, ?, ?, ?, ?, getdate(), getdate()) ";
+		   String query="INSERT INTO case_movement(caseId, fromID, toId, caseStatus, remarks, user_role, zone,"
+		   		+ "createdDate, updatedDate) values(?, ?, ?, ?, ?, ?, ?, getdate(), getdate()) ";
 		   this.template.update(query,caseMovement.getCaseId(), caseMovement.getFromId(), 
-				   caseMovement.getToId(), caseMovement.getCaseStatus(), caseMovement.getRemarks());
-		 
-		   query="INSERT INTO audit_case_movement(caseId, fromID, toId, caseStatus, remarks, "
-		   		+ "createdDate, updatedDate) values(?, ?, ?, ?, ?, getdate(), getdate()) ";
+				   caseMovement.getToId(), caseMovement.getCaseStatus(), caseMovement.getRemarks(), caseMovement.getUser_role(), caseMovement.getZone());
+
+		   /*
+		   query="INSERT INTO audit_case_movement(caseId, fromID, toId, caseStatus, remarks,user_role, zone,"
+		   		+ "createdDate, updatedDate) values(?, ?, ?, ?, ?, ?, ?, getdate(), getdate()) ";
 		   this.template.update(query,caseMovement.getCaseId(), caseMovement.getFromId(), 
-				   caseMovement.getToId(),caseMovement.getCaseStatus(), caseMovement.getRemarks());
-			
+				   caseMovement.getToId(),caseMovement.getCaseStatus(), caseMovement.getRemarks() , caseMovement.getUser_role(), caseMovement.getZone());
+			*/
+		   query = "INSERT INTO audit_case_movement SELECT * FROM case_movement where caseId = ?";
+		   this.template.update(query,caseMovement.getCaseId());
 	    }
 		catch(Exception e) 
 		{	
@@ -70,25 +73,14 @@ public class Case_movementDaoImpl implements Case_movementDao {
 	public String updateCaseMovement(CaseMovement caseMovement) {
 		try
 		{
-		   String query="UPDATE case_movement SET fromID = ?, toId = ?, caseStatus = ?, remarks = ?, "
-		   		+ "updatedDate = getdate() where caseId = ?";
+		   String query = "UPDATE case_movement SET fromID = ?, toId = ?, caseStatus = ?, remarks = ?, "
+		   		+ "user_role = ?, updatedDate = getdate() where caseId = ?";
 		   this.template.update(query,caseMovement.getFromId(), caseMovement.getToId(), 
-				   caseMovement.getCaseStatus(),caseMovement.getRemarks(), caseMovement.getCaseId());
+				   caseMovement.getCaseStatus(),caseMovement.getRemarks(), 
+				   caseMovement.getUser_role(), caseMovement.getCaseId());
 		 
-		   query = "INSERT INTO audit_case_movement(caseId, fromID, toId, caseStatus, remarks, "
-		   		+ "createdDate, updatedDate) "
-		   		+ "values(?, ?, ?, ?, ?, getdate(), getdate()) ";
-		   this.template.update(query, caseMovement.getCaseId(), caseMovement.getFromId(), 
-				   caseMovement.getToId(), caseMovement.getCaseStatus(), caseMovement.getRemarks());
-			
-		   if(caseMovement.getCaseStatus().equals("Closed"))
-		   {
-			   query = "UPDATE case_lists SET caseStatus = ?, updatedBy = ?, updatedDate = getDate() "
-			   		+ "where caseId = ?";
-			   template.update(query,caseMovement.getCaseStatus(), caseMovement.getFromId(), 
-					   caseMovement.getCaseId());
-		   }
-		   
+		   query = "INSERT INTO audit_case_movement SELECT * FROM case_movement where caseId = ?";
+			   this.template.update(query,caseMovement.getCaseId());
 	    }
 		catch(Exception e) 
 		{	
@@ -102,7 +94,7 @@ public class Case_movementDaoImpl implements Case_movementDao {
 
 	@Override
 	public List<CaseHistory> getCaseMovementHistory(long caseId) {
-		String sql = "SELECT * FROM audit_case_movement where caseId = ? order by createdDate";	
+		String sql = "SELECT * FROM audit_case_movement where caseId = ? order by updatedDate";	
 		List<CaseHistory> case_details = template.query(sql, new Object[] {caseId}, 
 				(ResultSet rs, int rowNum) -> 
 		{

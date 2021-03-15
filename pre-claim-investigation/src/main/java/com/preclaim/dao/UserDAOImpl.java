@@ -76,15 +76,15 @@ public class UserDAOImpl implements UserDAO{
 			return "Username already exists";
 		
 		sql = "INSERT INTO admin_user(full_name, role_name, username, user_email, mobile_number, "
-				+ "address1, address2, address3, password, state, city, status, user_image, createdBy ,"
+				+ "address1, address2, address3, fees, password, state, city, status, user_image, createdBy ,"
 				+ "createdon, updatedDate, updatedBy)"
-				+ "VALUES(?, ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, getdate(), getdate(), '')";
+				+ "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, getdate(), getdate(), '')";
 		System.out.println(user.getPassword());
 		try 
 		{
 			template.update(sql, user.getFull_name(), user.getAccount_type(), user.getUsername(),
-					user.getUser_email(),user.getContactNumber(), user.getAddress1(),user.getAddress2(),user.getAddress3(), user.getPassword(), user.getState(),
-					user.getCity(), user.getStatus(), user.getUserimage(), user.getCreatedBy());
+					user.getUser_email(),user.getContactNumber(), user.getAddress1(),user.getAddress2(),user.getAddress3(),user.getFees(),
+					user.getPassword(), user.getState(), user.getCity(), user.getStatus(), user.getUserimage(), user.getCreatedBy());
 		}
 		catch(Exception e)
 		{
@@ -219,6 +219,7 @@ public class UserDAOImpl implements UserDAO{
 						details.setAddress1(rs.getString("address1"));
 						details.setAddress2(rs.getString("address2"));
 						details.setAddress3(rs.getString("address3"));
+						details.setFees(rs.getDouble("fees"));
 						details.setCreatedBy(rs.getString("createdBy"));
 						details.setUpdatedBy(rs.getString("updatedBy"));
 						details.setCity(rs.getString("city"));
@@ -460,5 +461,26 @@ public class UserDAOImpl implements UserDAO{
 			}
 		});
 	}
-		
+
+	@Override
+	public List<UserDetails> getUserRoleList(String zone) {
+			try
+			{
+				String sql = "select * from admin_user where role_name='REGMAN' and city IN(select city from location_lists where zone =?)";			
+				List<UserDetails> user_list = this.template.query(sql,new Object[] {zone}, 
+						(ResultSet rs, int count) -> {
+							UserDetails user = new UserDetails();
+							user.setFull_name(rs.getString("full_name"));
+							user.setUser_email(rs.getString("user_email"));
+							return user;
+						});
+				return user_list;
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+				CustomMethods.logError(e);
+				return null;
+			}		
+		}
 }
