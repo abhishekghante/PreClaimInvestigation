@@ -7,7 +7,7 @@ List<String> user_permission=(List<String>)session.getAttribute("user_permission
     <div class="portlet box">
       <div class="portlet-title">
         <div class="caption">
-          <i class="icon-users font-green-sharp"></i>
+          <i class="icon-bar-chart font-green-sharp"></i>
           <span class="caption-subject font-green-sharp sbold">Top 15 Investigator</span>
         </div>
        <%--  <div class="actions">
@@ -74,6 +74,16 @@ $("#downloadInvestigatorReport").click(function(){
 	{
 		toastr.error("End Date cannot be blank","Error");
 		errorFlag = 1;
+	}
+	if(startDate != "" && endDate != "")
+	{
+		var beginDate = new Date(startDate);
+	    var lastDate = new Date(endDate);
+	    if(beginDate >= lastDate)
+    	{
+	    	toastr.error("Start Date cannot be greater than End Date","Error");
+			errorFlag = 1;
+    	}
 	}
 	if(errorFlag == 1)
 		return;

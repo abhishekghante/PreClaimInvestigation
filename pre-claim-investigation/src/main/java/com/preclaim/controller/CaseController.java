@@ -174,7 +174,7 @@ public class CaseController {
 				Path path = Paths.get(Config.upload_directory + filename);
 				Files.write(path, temp);
 
-				message = caseDao.addBulkUpload(filename, user.getUsername(), role);
+				message = caseDao.addBulkUpload(filename, user, role);
 				if (message.equals("****")) {
 					userDao.activity_log("RCUTEAM", "Excel", "BULKUPLOAD", user.getUsername());
 					session.setAttribute("success_message", "File Uploaded successfully");
@@ -389,7 +389,7 @@ public class CaseController {
 		
 		long caseId = caseDetail.getCaseId();
 		
-		CaseMovement case_movement = new CaseMovement(caseId, fromId, toId, toStatus, toRemarks,user.getAccount_type());
+		CaseMovement case_movement = new CaseMovement(caseId, fromId, toId, toStatus, toRemarks, toRole);
 		String message = caseMovementDao.updateCaseMovement(case_movement);
 		if (message.equals("****")) 
 		{
@@ -442,7 +442,7 @@ public class CaseController {
 		}
 		caseDao.updateCaseTypeAndSubType(caseDetail);
 		String toRemarks = request.getParameter("toRemarks");
-		CaseMovement case_movement = new CaseMovement(caseId, fromId, toId, toStatus, toRemarks,user.getAccount_type());
+		CaseMovement case_movement = new CaseMovement(caseId, fromId, toId, toStatus, toRemarks,toRole);
 		String message = caseMovementDao.updateCaseMovement(case_movement);
 		if (message.equals("****")) {
 			session.setAttribute("success_message", "Case assigned successfully");

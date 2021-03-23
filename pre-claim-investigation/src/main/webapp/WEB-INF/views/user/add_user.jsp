@@ -127,7 +127,7 @@ session.removeAttribute("location_list");
                	</label>
                 <div class="col-md-8">
                   <input type="number" placeholder="fees" name="fees" id="fees" 
-                  	class="form-control" value="%{getText('{0,number,#,###.##}',{fees})}">
+                  	class="form-control" value="0">
                 </div>
               </div>
               
@@ -186,6 +186,13 @@ $(document).ready(function(){
 		$("#state").val($("#city option:selected").data("state"));
 		$("#zone").val($("#city option:selected").data("zone"));		
 	});
+	$("#account_type").change(function(){
+		if($(this).val() != "AGNSUP")
+			$("#fees").prop("readonly",true);
+		else
+			$("#fees").prop("readonly",false);
+	});
+	
 });
 </script>
 <script>
@@ -228,19 +235,19 @@ function accountValidate() {
         validflag = 0;
         toastr.error("Kindly enter Contact Number","Error");
     }
-    if( fees == "" ){
-        $('#fees').addClass('has-error-2');
-        $('#fees').focus();
-        validflag = 0;
-        toastr.error("Kindly enter fees","Error");
-    }
-    else if(contactNumber.length != 10)
+    else if(contactNumber != "" && contactNumber.length != 10)
    	{
     	$('#contactNumber').addClass('has-error-2');
         $('#contactNumber').focus();
         validflag = 0;
         toastr.error("Mobile number should be of 10 digits","Error");
    	}
+    if( account_type == "AGNSUP" && fees == "0" ){
+        $('#fees').addClass('has-error-2');
+        $('#fees').focus();
+        validflag = 0;
+        toastr.error("Kindly enter fees","Error");
+    }
     if( state == "" ){
         $('#state').addClass('has-error-2');
         $('#state').focus();
@@ -285,7 +292,7 @@ function accountValidate() {
    	{
     	$('#user_email').addClass('has-error-2');
         $('#user_email').focus();
-        toastr.error("Email-ID cannot be blank");
+        toastr.error("Email-ID cannot be blank","Error");
    	}
     if( username == "" ){
         $('#username').addClass('has-error-2');
